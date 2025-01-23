@@ -48,14 +48,12 @@ class Swoole extends Base
             $this->onConnect($info["remote_ip"], $info["remote_port"]);
         });
 
-        $this->server->on("receive", function (
+        $this->server->on("receive", fn (
             Server $server,
             int $fd,
             int $reactorId,
             string $data
-        ) use ($policy) {
-            $server->send($fd, $this->response($policy, $data));
-        });
+        ) => $server->send($fd, $this->response($policy, $data) . PHP_EOL . PHP_EOL));
 
         $this->server->on("close", function (Server $server, int $fd) {
             $info = $server->getClientInfo($fd);
