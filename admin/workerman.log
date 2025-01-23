@@ -1,0 +1,8 @@
+2025-01-22 11:30:15 pid:7 Workerman[artisan] start in DEBUG mode
+2025-01-22 11:30:26 pid:7 Workerman[artisan] received signal SIGINT
+2025-01-22 11:30:26 pid:7 Workerman[artisan] stopping
+2025-01-22 11:30:26 pid:7 Workerman[artisan] has been stopped
+2025-01-23 06:25:30 pid:34211 Workerman[artisan] start in DEBUG mode
+2025-01-23 06:25:31 pid:34211 Workerman[artisan] received signal SIGINT
+2025-01-23 06:25:31 pid:34211 Workerman[artisan] stopping
+2025-01-23 06:25:31 pid:34211 Workerman[artisan] has been stopped

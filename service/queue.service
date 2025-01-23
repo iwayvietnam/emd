@@ -1,0 +1,21 @@
+# Email mass delivery queue worker using systemd
+# ----------------------------------
+#
+# /lib/systemd/system/queue.service
+#
+# run this command to enable service:
+# systemctl enable queue.service
+
+[Unit]
+Description=Email mass delivery queue worker
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+Restart=on-failure
+WorkingDirectory=/path/to/emd
+ExecStart=/usr/bin/php /path/to/emd/artisan queue:work --env=production
+
+[Install]
+WantedBy=multi-user.target

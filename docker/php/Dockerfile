@@ -1,0 +1,19 @@
+FROM php:alpine
+
+LABEL maintainer="nguyennv@iwayvietnam.com"
+
+RUN docker-php-ext-configure opcache --enable-opcache \
+    && apk add --no-cache icu-dev openldap-dev bash \
+    && pecl install redis \
+    && docker-php-ext-install intl ldap mysqli pcntl pdo_mysql \
+    && docker-php-ext-enable intl ldap mysqli pcntl pdo_mysql opcache redis \
+    && docker-php-source delete
+
+WORKDIR /var/www/html
+VOLUME ["/var/www/html"]
+
+EXPOSE 80 54321
+
+COPY ./entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]

@@ -1,0 +1,21 @@
+# Email mass delivery policy service using systemd
+# ----------------------------------
+#
+# /lib/systemd/system/policy.service
+#
+# run this command to enable service:
+# systemctl enable policy.service
+
+[Unit]
+Description=Email mass delivery policy service
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+Restart=on-failure
+WorkingDirectory=/path/to/emd
+ExecStart=/usr/bin/php /path/to/emd/artisan policy:listen start
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,140 @@
+networks:
+    emd-network:
+        name: emd-network
+
+services:
+    # mariadb service
+    emd-mariadb:
+        container_name: emd-mariadb
+        image: mariadb:latest
+        hostname: emd-mariadb
+        restart: unless-stopped
+        environment:
+            - MARIADB_ROOT_PASSWORD=rootPassw0rd
+            - MARIADB_DATABASE=emd
+            - MARIADB_USER=emd
+            - MARIADB_PASSWORD=emdPassw0rd
+            - TZ=Asia/Ho_Chi_Minh
+        volumes:
+            - ./volumes/mariadb:/var/lib/mysql
+            - ./volumes/mariadb:/var/log/mysql
+        networks:
+            - emd-network
+        healthcheck:
+            test: ['CMD', 'healthcheck.sh', '--connect --innodb_initialized']
+            retries: 3
+            timeout: 5s
+
+    # valkey service
+    emd-valkey:
+        container_name: emd-valkey
+        image: valkey/valkey:8.0.1-alpine
+        hostname: emd-valkey
+        restart: unless-stopped
+        volumes:
+            - ./volumes/valkey:/data
+        networks:
+            - emd-network
+        healthcheck:
+            test: ['CMD', 'valkey-cli', 'ping']
+            retries: 3
+            timeout: 5s
+
+    # web admin service
+    emd-web-app:
+        container_name: emd-web-app
+        image: php:emd-web-app
+        build: php
+        hostname: emd-web-app
+        restart: unless-stopped
+        working_dir: /var/www/html
+        command: /var/www/html/artisan serve --host=0.0.0.0 --port=80
+        depends_on:
+            - emd-mariadb
+            - emd-valkey
+        environment:
+            - APP_NAME="Email Mass Delivery Admin Panel"
+            - APP_ENV=local
+            - APP_KEY=base64:sSAVrsLTdjAZs7Z9tdDHq/W9d5UiPDjmNlyAVEzTK+o=
+            - APP_DEBUG=true
+            - APP_TIMEZONE=Asia/Ho_Chi_Minh
+            - APP_DOMAIN=emd.org.vn
+            - FORCE_HTTPS=false
+            - APP_URL=http://0.0.0.0:8008
+            - DB_CONNECTION=mysql
+            - DB_HOST=emd-mariadb
+            - DB_PORT=3306
+            - DB_DATABASE=emd
+            - DB_USERNAME=emd
+            - DB_PASSWORD=emdPassw0rd
+            - CACHE_STORE=redis
+            - REDIS_HOST=emd-valkey
+            - SESSION_DRIVER=redis
+            - SESSION_STORE=redis
+            - SESSION_SECURE_COOKIE=false
+            - SESSION_DOMAIN=
+            - POLICY_SERVER_NAME="Access Policy Delegation"
+            - POLICY_SERVER_WORKER=4
+            - POLICY_DAEMONIZE=true
+            - POLICY_LISTEN_HOST=0.0.0.0
+            - POLICY_LISTEN_PORT=54321
+            # - MAIL_MAILER=mail.emd.org.vn
+            # - MAIL_HOST=smtp.emd.org.vn
+            # - MAIL_PORT=587
+            # - MAIL_ENCRYPTION=tls
+            # - MAIL_USERNAME=username
+            # - MAIL_PASSWORD=password
+            # - MAIL_EHLO_DOMAIN=emd.org.vn
+            # - MAIL_QUEUE_NAME=emails
+            # - MAIL_SHOULD_QUEUE=false
+            # - MAIL_TRACK_CLICK=false
+            # - QUEUE_CONNECTION=redis
+            # - API_REQUEST_PER_MINUTE=600
+            - TZ=Asia/Ho_Chi_Minh
+        volumes:
+            - ../admin:/var/www/html
+        ports:
+            - "8008:80"
+        networks:
+            - emd-network
+
+    emd-opendkim:
+        container_name: emd-opendkim
+        image: instrumentisto/opendkim:alpine
+        hostname: emd-opendkim
+        restart: unless-stopped
+        environment:
+            - TZ=Asia/Ho_Chi_Minh
+        depends_on:
+            - emd-mariadb
+        volumes:
+            - ./opendkim/custom.conf:/etc/opendkim/conf.d/10-custom.conf:ro
+        networks:
+            - emd-network
+
+    # postfix service
+    emd-postfix:
+        container_name: emd-postfix
+        image: postfix:emd
+        build: postfix
+        hostname: emd-postfix
+        restart: unless-stopped
+        environment:
+            - DKIM_ENABLE=true
+            - DKIM_SERVICE=inet:emd-opendkim:8891
+            - POLICY_ENABLE=true
+            - POLICY_SERVICE=inet:emd-web-app:54321
+            - TZ=Asia/Ho_Chi_Minh
+        depends_on:
+            - emd-web-app
+            - emd-opendkim
+        volumes:
+            - ./postfix/master.cf:/etc/postfix/master.cf:ro
+            - ./volumes/postfix/log:/var/log
+            - ./volumes/postfix/mail:/var/mail
+            - ./volumes/postfix/spool:/var/spool/postfix
+        ports:
+            - "2525:25"
+            - "10025:10025"
+        networks:
+            - emd-network

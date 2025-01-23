@@ -1,0 +1,60 @@
+networks:
+    mta-network:
+        name: mta-network
+
+services:
+    # mariadb service
+    mta-mariadb:
+        container_name: mta-mariadb
+        image: mariadb:latest
+        hostname: mta-mariadb
+        restart: unless-stopped
+        environment:
+            - MARIADB_ROOT_PASSWORD=rootPassw0rd
+            - MARIADB_DATABASE=mta
+            - MARIADB_USER=mta
+            - MARIADB_PASSWORD=mtaPassw0rd
+            - TZ=Asia/Ho_Chi_Minh
+        volumes:
+            - ./volumes/mariadb:/var/lib/mysql
+            - ./volumes/mariadb:/var/log/mysql
+        networks:
+            - mta-network
+        healthcheck:
+            test: ['CMD', 'healthcheck.sh', '--connect --innodb_initialized']
+            retries: 3
+            timeout: 5s
+
+    # opendkim service
+    mta-opendkim:
+        container_name: mta-opendkim
+        image: instrumentisto/opendkim:alpine
+        hostname: mta-opendkim
+        restart: unless-stopped
+        environment:
+            - TZ=Asia/Ho_Chi_Minh
+        depends_on:
+            - mta-mariadb
+        volumes:
+            - ./opendkim/custom.conf:/etc/opendkim/conf.d/10-custom.conf:ro
+        networks:
+            - mta-network
+
+    # postfix service
+    mta-postfix:
+        container_name: mta-postfix
+        image: postfix:mta
+        build: postfix
+        hostname: mta-postfix
+        restart: unless-stopped
+        environment:
+            - POLICY_SERVICE=inet:0.0.0.0:54321
+            - TZ=Asia/Ho_Chi_Minh
+        depends_on:
+            - mta-mariadb
+        volumes:
+            - ./postfix/master.cf:/etc/postfix/master.cf:ro
+            - ./volumes/postfix/spool:/var/spool/postfix
+            - ./volumes/postfix/log:/var/log
+        networks:
+            - mta-network
