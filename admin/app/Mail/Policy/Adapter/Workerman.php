@@ -59,7 +59,9 @@ class Workerman extends Base
         $this->worker->onMessage = fn (
             Connection $connection,
             string $data
-        ) => $connection->close($this->response($policy, $data) . "\n\n");
+        ) => $connection->close(
+            $this->response($policy, $data) . PHP_EOL . PHP_EOL
+        );
 
         $this->worker->onClose = fn (Connection $connection) => $this->onClose(
             $connection->getRemoteAddress(),
