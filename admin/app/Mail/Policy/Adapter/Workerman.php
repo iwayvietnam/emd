@@ -44,7 +44,7 @@ class Workerman extends Base
             self::POLICY_WORKER
         );
         Worker::$daemonize = (bool) config("policy.daemonize", self::POLICY_DAEMONIZE);
-        Worker::$logFile = storage_path() . '/logs/workerman.log';
+        Worker::$logFile = storage_path('logs') . '/workerman.log';
         Worker::$pidFile = storage_path() . '/workerman.pid';
     }
 
