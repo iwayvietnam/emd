@@ -30,11 +30,11 @@ class OpenSwoole extends Base
     {
         $this->server = new Server(
             config("policy.listen_host", self::LISTEN_HOST),
-            config("policy.listen_port", self::LISTEN_PORT)
+            (int) config("policy.listen_port", self::LISTEN_PORT)
         );
         $this->server->set([
-            "worker_num" => config("policy.server_worker", self::POLICY_WORKER),
-            "daemonize" => config("policy.daemonize", self::POLICY_DAEMONIZE),
+            "worker_num" => (int) config("policy.server_worker", self::POLICY_WORKER),
+            "daemonize" => (bool) config("policy.daemonize", self::POLICY_DAEMONIZE),
         ]);
     }
 

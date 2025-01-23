@@ -95,6 +95,7 @@ services:
             - ../admin:/var/www/html
         ports:
             - "8008:80"
+            - "54321:54321"
         networks:
             - emd-network
 

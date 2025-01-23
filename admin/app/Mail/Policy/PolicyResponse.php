@@ -34,6 +34,7 @@ class PolicyResponse implements ResponseInterface
     public function getVerdict(): string
     {
         return trim(implode([
+            "action=",
             $this->verdict->value,
             " ",
             $this->message,

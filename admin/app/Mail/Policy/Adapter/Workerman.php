@@ -39,11 +39,11 @@ class Workerman extends Base
         );
 
         $this->worker->name = config("policy.server_name", self::POLICY_NAME);
-        $this->worker->count = config(
+        $this->worker->count = (int) config(
             "policy.server_worker",
             self::POLICY_WORKER
         );
-        Worker::$daemonize = config("policy.daemonize", self::POLICY_DAEMONIZE);
+        Worker::$daemonize = (bool) config("policy.daemonize", self::POLICY_DAEMONIZE);
     }
 
     /**
@@ -51,26 +51,20 @@ class Workerman extends Base
      */
     public function handle(PolicyInterface $policy): void
     {
-        $this->worker->onConnect = function (Connection $connection) {
-            $this->onConnect(
-                $connection->getRemoteAddress(),
-                $connection->getRemotePort()
-            );
-        };
+        $this->worker->onConnect = fn (Connection $connection) => $this->onConnect(
+            $connection->getRemoteAddress(),
+            $connection->getRemotePort()
+        );
 
-        $this->worker->onMessage = function (
+        $this->worker->onMessage = fn (
             Connection $connection,
             string $data
-        ) use ($policy) {
-            $connection->send($this->response($policy, $data));
-        };
+        ) => $connection->close($this->response($policy, $data) . "\n\n");
 
-        $this->worker->onClose = function (Connection $connection) {
-            $this->onClose(
-                $connection->getRemoteAddress(),
-                $connection->getRemotePort()
-            );
-        };
+        $this->worker->onClose = fn (Connection $connection) => $this->onClose(
+            $connection->getRemoteAddress(),
+            $connection->getRemotePort()
+        );
 
         Worker::runAll();
     }

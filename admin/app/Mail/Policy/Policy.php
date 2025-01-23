@@ -62,6 +62,7 @@ class Policy implements PolicyInterface
                 }
                 return new PolicyResponse(AccessVerdict::Ok);
             case ProtocolState::EndOfMessage:
+                return new PolicyResponse(AccessVerdict::Ok);
                 if ($this->quotaIsExceeded($request)) {
                     return new PolicyResponse(
                         AccessVerdict::Reject,
@@ -95,8 +96,15 @@ class Policy implements PolicyInterface
             "address" => $address,
             "sender" => $sender,
         ]);
-        $verdict = $this->clientAccesses[$sender] ?? ([$address] ?? ["verdict"]);
-        return AccessVerdict::tryFrom($verdict) === AccessVerdict::Reject;
+        if (isset($this->clientAccesses[$sender][$address]["verdict"])) {
+            $verdict = $this->clientAccesses[$sender][$address]["verdict"];
+            logger()->debug($verdict);
+            return AccessVerdict::tryFrom($verdict) === AccessVerdict::Reject;
+        }
+        else {
+            return true;
+        }
+        
     }
 
     private function rateIsExceeded(RequestInterface $request): bool
@@ -108,13 +116,15 @@ class Policy implements PolicyInterface
             "sender" => $sender,
         ]);
 
-        $counterKey = self::counterKey($request, ClientAccess::RATE_LIMIT_SUFFIX);
-        $policy = $this->clientAccesses[$sender] ?? ([$address] ?? ["policy"]);
-        if (!empty($policy) && !empty($policy['rate_limit'])) {
-            if (RateLimiter::tooManyAttempts($counterKey, $policy['rate_limit'])) {
-                return true;
+        if (isset($this->clientAccesses[$sender][$address]["policy"])) {
+            $counterKey = self::counterKey($request, ClientAccess::RATE_LIMIT_SUFFIX);
+            $policy = $this->clientAccesses[$sender][$address]["policy"];
+            if (!empty($policy) && !empty($policy['rate_limit'])) {
+                if (RateLimiter::tooManyAttempts($counterKey, $policy['rate_limit'])) {
+                    return true;
+                }
+                RateLimiter::hit($counterKey, (int) $policy['rate_period']);
             }
-            RateLimiter::hit($counterKey, (int) $policy['rate_period']);
         }
         return false;
     }
@@ -128,17 +138,19 @@ class Policy implements PolicyInterface
             "sender" => $sender,
         ]);
 
-        $counterKey = self::counterKey($request, ClientAccess::QUOTA_LIMIT_SUFFIX);
-        $policy = $this->clientAccesses[$sender] ?? ([$address] ?? ["policy"]);
-        if (!empty($policy) && !empty($policy['quota_limit'])) {
-            if (RateLimiter::tooManyAttempts($counterKey, $policy['quota_limit'])) {
-                return true;
+        if (isset($this->clientAccesses[$sender][$address]["policy"])) {
+            $counterKey = self::counterKey($request, ClientAccess::QUOTA_LIMIT_SUFFIX);
+            $policy = $this->clientAccesses[$sender][$address]["policy"];
+            if (!empty($policy) && !empty($policy['quota_limit'])) {
+                if (RateLimiter::tooManyAttempts($counterKey, $policy['quota_limit'])) {
+                    return true;
+                }
+                RateLimiter::increment(
+                    $counterKey,
+                    (int) $policy['quota_period'],
+                    $request->getSize()
+                );
             }
-            RateLimiter::increment(
-                $counterKey,
-                (int) $policy['quota_period'],
-                $request->getSize()
-            );
         }
 
         return false;
@@ -162,7 +174,7 @@ class Policy implements PolicyInterface
         return $verdict === AccessVerdict::Reject;
     }
 
-    private function clientTransport(RequestInterface $request): ?string
+    private function clientTransport(RequestInterface $request): string
     {
         $address = $request->getClientAddress();
         $sender = $request->getSender();
@@ -170,7 +182,10 @@ class Policy implements PolicyInterface
             "address" => $address,
             "sender" => $sender,
         ]);
-        return $this->clientAccesses[$sender] ?? ([$address] ?? ["transport"]);
+        if (isset($this->clientAccesses[$sender][$address]["transport"])) {
+            return $this->clientAccesses[$sender][$address]["transport"];
+        }
+        return "";
     }
 
     private static function counterKey(
