@@ -35,6 +35,9 @@ class Swoole extends Base
         $this->server->set([
             "worker_num" => (int) config("policy.server_worker", self::POLICY_WORKER),
             "daemonize" => (bool) config("policy.daemonize", self::POLICY_DAEMONIZE),
+            'log_file' => storage_path('logs') . '/swoole.log',
+            "log_level" => config("app.debug") ? 0 : 2,
+            'pid_file' => '/var/run/swoole.pid',
         ]);
     }
 
@@ -48,12 +51,17 @@ class Swoole extends Base
             $this->onConnect($info["remote_ip"], $info["remote_port"]);
         });
 
-        $this->server->on("receive", fn (
+        $this->server->on("receive", function (
             Server $server,
             int $fd,
             int $reactorId,
             string $data
-        ) => $server->send($fd, $this->response($policy, $data) . PHP_EOL . PHP_EOL));
+        ) use ($policy) {
+            $server->send(
+                $fd, $this->response($policy, $data) . PHP_EOL . PHP_EOL
+            );
+            $server->close($fd);
+        });
 
         $this->server->on("close", function (Server $server, int $fd) {
             $info = $server->getClientInfo($fd);
