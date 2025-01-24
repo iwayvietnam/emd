@@ -37,7 +37,7 @@ class Swoole extends Base
             "daemonize" => (bool) config("policy.daemonize", self::POLICY_DAEMONIZE),
             'log_file' => storage_path('logs') . '/swoole.log',
             "log_level" => config("app.debug") ? 0 : 2,
-            'pid_file' => '/var/run/swoole.pid',
+            "pid_file" => "/var/run/swoole.pid",
         ]);
     }
 
