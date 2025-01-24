@@ -8,7 +8,7 @@ Setting up OpenDKIM is essential for creating a trusted email server that ensure
 
 First, you’ll need to enable the EPEL repository by running:
 ```sh
-dnf install epel-release
+dnf -y install epel-release
 ```
 
 Then you’ll have to enable the CodeReady builder repository:
@@ -18,7 +18,7 @@ dnf config-manager –set-enabled crb
 
 * Install OpenDKIM and the related tools
 ```sh
-dnf install opendkim opendkim-tools opendbx-mysql
+dnf -y install opendkim opendkim-tools opendbx-mysql
 ```
 
 * Configure OpenDKIM
