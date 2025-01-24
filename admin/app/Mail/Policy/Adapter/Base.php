@@ -17,7 +17,7 @@ abstract class Base implements AdapterInterface
 {
     protected function response(PolicyInterface $policy, string $data): string
     {
-        return $policy->check(PolicyRequest::fromData($data))->getVerdict();
+        return $policy->check(PolicyRequest::fromData($data))->getAction();
     }
 
     protected function onConnect(string $remoteIp, int $remotePort): void

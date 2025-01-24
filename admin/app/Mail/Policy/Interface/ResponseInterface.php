@@ -12,9 +12,9 @@ namespace App\Mail\Policy\Interface;
 interface ResponseInterface
 {
     /**
-     * Get response verdict
+     * Get response action
      *
      * @return string
      */
-    function getVerdict(): string;
+    function getAction(): string;
 }

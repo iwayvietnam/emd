@@ -31,7 +31,7 @@ class PolicyResponse implements ResponseInterface
     /**
      * {@inheritdoc}
      */
-    public function getVerdict(): string
+    public function getAction(): string
     {
         return trim(implode([
             "action=",
