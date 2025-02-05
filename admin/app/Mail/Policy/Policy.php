@@ -110,11 +110,9 @@ class Policy implements PolicyInterface
         if (isset($this->clientAccesses[$sender][$address]["verdict"])) {
             $verdict = $this->clientAccesses[$sender][$address]["verdict"];
             return AccessVerdict::tryFrom($verdict) === AccessVerdict::Reject;
-        }
-        else {
+        } else {
             return true;
         }
-        
     }
 
     private function rateIsExceeded(RequestInterface $request): bool
@@ -122,13 +120,21 @@ class Policy implements PolicyInterface
         $address = $request->getClientAddress();
         $sender = $request->getSender();
         if (isset($this->clientAccesses[$sender][$address]["policy"])) {
-            $counterKey = self::counterKey($request, ClientAccess::RATE_LIMIT_SUFFIX);
+            $counterKey = self::counterKey(
+                $request,
+                ClientAccess::RATE_LIMIT_SUFFIX
+            );
             $policy = $this->clientAccesses[$sender][$address]["policy"];
-            if (!empty($policy) && !empty($policy['rate_limit'])) {
-                if (RateLimiter::tooManyAttempts($counterKey, $policy['rate_limit'])) {
+            if (!empty($policy) && !empty($policy["rate_limit"])) {
+                if (
+                    RateLimiter::tooManyAttempts(
+                        $counterKey,
+                        $policy["rate_limit"]
+                    )
+                ) {
                     return true;
                 }
-                RateLimiter::hit($counterKey, (int) $policy['rate_period']);
+                RateLimiter::hit($counterKey, (int) $policy["rate_period"]);
             }
         }
         return false;
@@ -139,15 +145,23 @@ class Policy implements PolicyInterface
         $address = $request->getClientAddress();
         $sender = $request->getSender();
         if (isset($this->clientAccesses[$sender][$address]["policy"])) {
-            $counterKey = self::counterKey($request, ClientAccess::QUOTA_LIMIT_SUFFIX);
+            $counterKey = self::counterKey(
+                $request,
+                ClientAccess::QUOTA_LIMIT_SUFFIX
+            );
             $policy = $this->clientAccesses[$sender][$address]["policy"];
-            if (!empty($policy) && !empty($policy['quota_limit'])) {
-                if (RateLimiter::tooManyAttempts($counterKey, $policy['quota_limit'])) {
+            if (!empty($policy) && !empty($policy["quota_limit"])) {
+                if (
+                    RateLimiter::tooManyAttempts(
+                        $counterKey,
+                        $policy["quota_limit"]
+                    )
+                ) {
                     return true;
                 }
                 RateLimiter::increment(
                     $counterKey,
-                    (int) $policy['quota_period'],
+                    (int) $policy["quota_period"],
                     $request->getSize()
                 );
             }
@@ -176,11 +190,15 @@ class Policy implements PolicyInterface
     }
 
     private static function counterKey(
-        RequestInterface $request, string $suffix
-    ): string
-    {
+        RequestInterface $request,
+        string $suffix
+    ): string {
         return sha1(
-            $request->getSender() . "|" . $request->getClientAddress() . "|" . $suffix
+            $request->getSender() .
+                "|" .
+                $request->getClientAddress() .
+                "|" .
+                $suffix
         );
     }
 }

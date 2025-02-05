@@ -33,9 +33,15 @@ class Swoole extends Base
             (int) config("policy.listen_port", self::LISTEN_PORT)
         );
         $this->server->set([
-            "worker_num" => (int) config("policy.server_worker", self::POLICY_WORKER),
-            "daemonize" => (bool) config("policy.daemonize", self::POLICY_DAEMONIZE),
-            'log_file' => storage_path('logs') . '/swoole.log',
+            "worker_num" => (int) config(
+                "policy.server_worker",
+                self::POLICY_WORKER
+            ),
+            "daemonize" => (bool) config(
+                "policy.daemonize",
+                self::POLICY_DAEMONIZE
+            ),
+            "log_file" => storage_path("logs") . "/swoole.log",
             "log_level" => config("app.debug") ? 0 : 2,
             "pid_file" => "/var/run/swoole.pid",
         ]);
@@ -58,7 +64,8 @@ class Swoole extends Base
             string $data
         ) use ($policy) {
             $server->send(
-                $fd, $this->response($policy, $data) . PHP_EOL . PHP_EOL
+                $fd,
+                $this->response($policy, $data) . PHP_EOL . PHP_EOL
             );
             $server->close($fd);
         });

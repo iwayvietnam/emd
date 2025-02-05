@@ -43,8 +43,11 @@ class Workerman extends Base
             "policy.server_worker",
             self::POLICY_WORKER
         );
-        Worker::$daemonize = (bool) config("policy.daemonize", self::POLICY_DAEMONIZE);
-        Worker::$logFile = storage_path("logs") . '/workerman.log';
+        Worker::$daemonize = (bool) config(
+            "policy.daemonize",
+            self::POLICY_DAEMONIZE
+        );
+        Worker::$logFile = storage_path("logs") . "/workerman.log";
         Worker::$pidFile = "/var/run/workerman.pid";
     }
 
@@ -53,19 +56,21 @@ class Workerman extends Base
      */
     public function handle(PolicyInterface $policy): void
     {
-        $this->worker->onConnect = fn (Connection $connection) => $this->onConnect(
+        $this->worker->onConnect = fn(
+            Connection $connection
+        ) => $this->onConnect(
             $connection->getRemoteAddress(),
             $connection->getRemotePort()
         );
 
-        $this->worker->onMessage = fn (
+        $this->worker->onMessage = fn(
             Connection $connection,
             string $data
         ) => $connection->close(
             $this->response($policy, $data) . PHP_EOL . PHP_EOL
         );
 
-        $this->worker->onClose = fn (Connection $connection) => $this->onClose(
+        $this->worker->onClose = fn(Connection $connection) => $this->onClose(
             $connection->getRemoteAddress(),
             $connection->getRemotePort()
         );
