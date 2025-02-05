@@ -95,7 +95,6 @@ services:
             - ../admin:/var/www/html
         ports:
             - "8008:80"
-            - "54321:54321"
         networks:
             - emd-network
 
@@ -134,8 +133,5 @@ services:
             - ./volumes/postfix/log:/var/log
             - ./volumes/postfix/mail:/var/mail
             - ./volumes/postfix/spool:/var/spool/postfix
-        ports:
-            - "2525:25"
-            - "10025:10025"
         networks:
             - emd-network
