@@ -30,16 +30,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if ((bool) env("FORCE_HTTPS", false)) {
-            URL::forceScheme("https");
-        }
+        URL::forceScheme(
+            (bool) env("FORCE_HTTPS", false) ? "https" : "http"
+        );
 
-        $limit = (int) env("API_REQUEST_PER_MINUTE", 600);
         RateLimiter::for(
             "api",
-            static fn (Request $request) => Limit::perMinute($limit)->by(
-                $request->user()?->id ?: $request->ip()
-            )
+            static fn(Request $request) => Limit::perMinute(
+                (int) env("API_REQUEST_PER_MINUTE", 600)
+            )->by($request->user()?->id ?: $request->ip())
         );
     }
 }
