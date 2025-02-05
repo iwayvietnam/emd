@@ -45,19 +45,30 @@ class Policy implements PolicyInterface
                 if ($this->isRejected($request)) {
                     return new PolicyResponse(
                         AccessVerdict::Reject,
-                        "Client is rejected!"
+                        sprintf(
+                            "Client %s:%s is rejected!",
+                            $request->getSender(),
+                            $request->getClientAddress()
+                        )
                     );
                 }
                 if ($this->rateIsExceeded($request)) {
                     return new PolicyResponse(
                         AccessVerdict::Reject,
-                        "Client rate is exceeded!"
+                        sprintf(
+                            "The rate of client %s:%s is exceeded!",
+                            $request->getSender(),
+                            $request->getClientAddress()
+                        )
                     );
                 }
                 if ($this->recipientIsRestricted($request)) {
                     return new PolicyResponse(
                         AccessVerdict::Reject,
-                        "Recipient is restricted!"
+                        sprintf(
+                            "Recipient %s is restricted!",
+                            $request->getRecipient()
+                        )
                     );
                 }
                 return new PolicyResponse(AccessVerdict::Ok);
@@ -66,7 +77,11 @@ class Policy implements PolicyInterface
                 if ($this->quotaIsExceeded($request)) {
                     return new PolicyResponse(
                         AccessVerdict::Reject,
-                        "Client quota is exceeded!"
+                        sprintf(
+                            "The quota of client %s:%s is exceeded!",
+                            $request->getSender(),
+                            $request->getClientAddress()
+                        )
                     );
                 }
                 $transport = $this->clientTransport($request);
@@ -92,13 +107,8 @@ class Policy implements PolicyInterface
     {
         $address = $request->getClientAddress();
         $sender = $request->getSender();
-        logger()->debug("Check access policy for client {sender}:{address}.", [
-            "address" => $address,
-            "sender" => $sender,
-        ]);
         if (isset($this->clientAccesses[$sender][$address]["verdict"])) {
             $verdict = $this->clientAccesses[$sender][$address]["verdict"];
-            logger()->debug($verdict);
             return AccessVerdict::tryFrom($verdict) === AccessVerdict::Reject;
         }
         else {
@@ -111,11 +121,6 @@ class Policy implements PolicyInterface
     {
         $address = $request->getClientAddress();
         $sender = $request->getSender();
-        logger()->debug("Check rate policy for client {sender}:{address}.", [
-            "address" => $address,
-            "sender" => $sender,
-        ]);
-
         if (isset($this->clientAccesses[$sender][$address]["policy"])) {
             $counterKey = self::counterKey($request, ClientAccess::RATE_LIMIT_SUFFIX);
             $policy = $this->clientAccesses[$sender][$address]["policy"];
@@ -133,11 +138,6 @@ class Policy implements PolicyInterface
     {
         $address = $request->getClientAddress();
         $sender = $request->getSender();
-        logger()->debug("Check quota policy for client {sender}:{address}.", [
-            "address" => $address,
-            "sender" => $sender,
-        ]);
-
         if (isset($this->clientAccesses[$sender][$address]["policy"])) {
             $counterKey = self::counterKey($request, ClientAccess::QUOTA_LIMIT_SUFFIX);
             $policy = $this->clientAccesses[$sender][$address]["policy"];
@@ -159,15 +159,6 @@ class Policy implements PolicyInterface
     private function recipientIsRestricted(RequestInterface $request): bool
     {
         $recipient = $request->getRecipient();
-        logger()->debug(
-            "Check {recipient} recipient is restricted for client {sender}:{address}.",
-            [
-                "address" => $request->getClientAddress(),
-                "sender" => $request->getSender(),
-                "recipient" => $recipient,
-            ]
-        );
-
         $verdict = AccessVerdict::tryFrom(
             $this->restrictedRecipients[$recipient] ?? ""
         );
@@ -178,10 +169,6 @@ class Policy implements PolicyInterface
     {
         $address = $request->getClientAddress();
         $sender = $request->getSender();
-        logger()->debug("Get transport for client {sender}:{address}.", [
-            "address" => $address,
-            "sender" => $sender,
-        ]);
         if (isset($this->clientAccesses[$sender][$address]["transport"])) {
             return $this->clientAccesses[$sender][$address]["transport"];
         }
