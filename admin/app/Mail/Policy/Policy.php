@@ -43,45 +43,45 @@ class Policy implements PolicyInterface
         switch ($state) {
             case ProtocolState::Rcpt:
                 if ($this->isRejected($request)) {
+                    logger()->error("Client {sender}:{address} is rejected.", [
+                        "sender" => $request->getSender(),
+                        "address" => $request->getClientAddress(),
+                    ]);
                     return new PolicyResponse(
                         AccessVerdict::Reject,
-                        sprintf(
-                            "Client %s:%s is rejected!",
-                            $request->getSender(),
-                            $request->getClientAddress()
-                        )
+                        "Client access is not allowed!"
                     );
                 }
                 if ($this->rateIsExceeded($request)) {
+                    logger()->error("Rate limit of client {sender}:{address} is exceeded", [
+                        "sender" => $request->getSender(),
+                        "address" => $request->getClientAddress(),
+                    ]);
                     return new PolicyResponse(
                         AccessVerdict::Reject,
-                        sprintf(
-                            "Rate limit of client %s:%s is exceeded. Retry later!",
-                            $request->getSender(),
-                            $request->getClientAddress()
-                        )
+                        "Rate limit is exceeded. Retry later!"
                     );
                 }
                 if ($this->recipientIsRestricted($request)) {
+                    logger()->error("Recipient {recipient} is restricted.", [
+                        "recipient" => $request->getRecipient(),
+                    ]);
                     return new PolicyResponse(
                         AccessVerdict::Reject,
-                        sprintf(
-                            "Recipient %s is restricted!",
-                            $request->getRecipient()
-                        )
+                        "Recipient address is restricted!"
                     );
                 }
                 return new PolicyResponse(AccessVerdict::Ok);
             case ProtocolState::EndOfMessage:
                 return new PolicyResponse(AccessVerdict::Ok);
                 if ($this->quotaIsExceeded($request)) {
+                    logger()->error("Quota limit of client {sender}:{address} is exceeded.", [
+                        "sender" => $request->getSender(),
+                        "address" => $request->getClientAddress(),
+                    ]);
                     return new PolicyResponse(
                         AccessVerdict::Reject,
-                        sprintf(
-                            "Quota limit of client %s:%s is exceeded. Retry later!",
-                            $request->getSender(),
-                            $request->getClientAddress()
-                        )
+                        "Quota limit is exceeded. Retry later!"
                     );
                 }
                 $transport = $this->clientTransport($request);
@@ -98,7 +98,7 @@ class Policy implements PolicyInterface
                 }
                 return new PolicyResponse(AccessVerdict::Ok);
             default:
-                logger()->error("Invalid protocol state {state}.", [
+                logger()->error("Protocol state {state} is invalid.", [
                     "state" => $state,
                 ]);
                 return new PolicyResponse(
