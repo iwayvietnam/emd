@@ -56,7 +56,7 @@ class Policy implements PolicyInterface
                     return new PolicyResponse(
                         AccessVerdict::Reject,
                         sprintf(
-                            "The rate of client %s:%s is exceeded!",
+                            "Rate limit of client %s:%s is exceeded. Retry later!",
                             $request->getSender(),
                             $request->getClientAddress()
                         )
@@ -78,7 +78,7 @@ class Policy implements PolicyInterface
                     return new PolicyResponse(
                         AccessVerdict::Reject,
                         sprintf(
-                            "The quota of client %s:%s is exceeded!",
+                            "Quota limit of client %s:%s is exceeded. Retry later!",
                             $request->getSender(),
                             $request->getClientAddress()
                         )
@@ -86,6 +86,11 @@ class Policy implements PolicyInterface
                 }
                 $transport = $this->clientTransport($request);
                 if (!empty($transport)) {
+                    logger()->debug("Transport {sender}:{address} to {transport}.", [
+                        "sender" => $request->getSender(),
+                        "address" => $request->getClientAddress(),
+                        "transport" => $transport,
+                    ]);
                     return new PolicyResponse(
                         AccessVerdict::Filter,
                         $transport
