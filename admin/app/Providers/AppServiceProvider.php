@@ -34,11 +34,12 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme("https");
         }
 
-        RateLimiter::for("api", function (Request $request) {
-            $limit = (int) env("API_REQUEST_PER_MINUTE", 600);
-            return Limit::perMinute($limit)->by(
+        $limit = (int) env("API_REQUEST_PER_MINUTE", 600);
+        RateLimiter::for(
+            "api",
+            static fn (Request $request) => Limit::perMinute($limit)->by(
                 $request->user()?->id ?: $request->ip()
-            );
-        });
+            )
+        );
     }
 }
