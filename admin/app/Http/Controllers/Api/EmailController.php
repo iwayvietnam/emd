@@ -23,7 +23,7 @@ use Symfony\Component\Mailer\Exception\ExceptionInterface as MailerException;
  */
 class EmailController extends Controller
 {
-    const QUEUE_NAME = 'emails';
+    const QUEUE_NAME = "emails";
 
     /**
      * Create a new controller instance.
@@ -45,7 +45,7 @@ class EmailController extends Controller
     {
         return JsonResource::collection(
             Message::where([
-                'user_id' => $request->user()->id,
+                "user_id" => $request->user()->id,
             ])->paginate()
         );
     }
@@ -59,10 +59,12 @@ class EmailController extends Controller
      */
     public function show(Request $request, int $id): JsonResource
     {
-        return new JsonResource(Message::firstWhere([
-            'id'      => $id,
-            'user_id' => $request->user()->id,
-        ]));
+        return new JsonResource(
+            Message::firstWhere([
+                "id" => $id,
+                "user_id" => $request->user()->id,
+            ])
+        );
     }
 
     /**
@@ -75,8 +77,8 @@ class EmailController extends Controller
     public function devices(Request $request, int $id): JsonResource
     {
         $message = Message::firstWhere([
-            'id'      => $id,
-            'user_id' => $request->user()->id,
+            "id" => $id,
+            "user_id" => $request->user()->id,
         ]);
         return new JsonResource($message?->devices ?? []);
     }
@@ -90,71 +92,72 @@ class EmailController extends Controller
     public function send(Request $request): JsonResource
     {
         $request->validate([
-            'recipient'  => 'required',
-            'message_id' => 'required',
-            'subject'    => 'required',
-            'content'    => 'required',
+            "recipient" => "required",
+            "message_id" => "required",
+            "subject" => "required",
+            "content" => "required",
         ]);
 
         if (!filter_var($request->recipient, FILTER_VALIDATE_EMAIL)) {
             throw ValidationException::withMessages([
-                'recipient' => ['The recipient is incorrect.'],
+                "recipient" => ["The recipient is incorrect."],
             ]);
         }
 
         $uploads = $request->uploads;
         if (is_array($uploads)) {
             $uploads = array_map(
-                static fn ($upload) => Cache::get($upload), $uploads
+                static fn($upload) => Cache::get($upload),
+                $uploads
             );
         }
 
         $message = new Message([
-            'user_id'    => $request->user()->id,
-            'from_name'  => $request->user()->name,
-            'from_email' => $request->user()->email,
-            'reply_to'   => $request->reply_to ?? $request->user()->email,
-            'message_id' => $request->message_id,
-            'subject'    => $request->subject,
-            'content'    => $request->content,
-            'ip_address' => $request->ip(),
-            'recipient'  => $request->recipient,
-            'headers'    => $request->input('headers'),
+            "user_id" => $request->user()->id,
+            "from_name" => $request->user()->name,
+            "from_email" => $request->user()->email,
+            "reply_to" => $request->reply_to ?? $request->user()->email,
+            "message_id" => $request->message_id,
+            "subject" => $request->subject,
+            "content" => $request->content,
+            "ip_address" => $request->ip(),
+            "recipient" => $request->recipient,
+            "headers" => $request->input("headers"),
         ]);
         $message->uploads = $uploads ?? [];
         $message->save();
 
         $failed = false;
         try {
-            $shouldQueue = (bool) env('MAIL_SHOULD_QUEUE', false);
-            $trackClick  = (bool) env('MAIL_TRACK_CLICK',  false);
+            $shouldQueue = (bool) env("MAIL_SHOULD_QUEUE", true);
+            $trackClick = (bool) env("MAIL_TRACK_CLICK", false);
             if ($shouldQueue) {
                 Mail::to($message->recipient)->queue(
                     (new SendMessage($message, $trackClick))->onQueue(
-                        env('MAIL_QUEUE_NAME', self::QUEUE_NAME)
+                        env("MAIL_QUEUE_NAME", self::QUEUE_NAME)
                     )
                 );
-            }
-            else {
+            } else {
                 Mail::to($message->recipient)->send(
                     new SendMessage($message, $trackClick)
                 );
             }
             $message->sent_at = now();
             $message->save();
-        }
-        catch (MailerException $e) {
+        } catch (MailerException $e) {
             Log::error($e);
             $failed = $e;
         }
 
         if ($failed) {
-            return new JsonResource(MessageFailure::create([
-                'message_id'  => $message->id,
-                'severity'    => __('Send message failed'),
-                'description' => $failed->getMessage(),
-                'failed_at'   => now(),
-            ]));
+            return new JsonResource(
+                MessageFailure::create([
+                    "message_id" => $message->id,
+                    "severity" => __("Send message failed"),
+                    "description" => $failed->getMessage(),
+                    "failed_at" => now(),
+                ])
+            );
         }
 
         return new JsonResource($message);

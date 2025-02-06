@@ -89,7 +89,7 @@ Environment variables:
 | MAIL_PASSWORD        | Mail User Password      | null                   |
 | MAIL_EHLO_DOMAIN     | Mail Ehlo Domain        | null                   |
 | MAIL_QUEUE_NAME      | Mail Queue Name         | emails                 |
-| MAIL_SHOULD_QUEUE    | Message Should Queue    | false                  |
+| MAIL_SHOULD_QUEUE    | Message Should Queue    | true                   |
 | MAIL_TRACK_CLICK     | Mail Track Click        | false                  |
 | QUEUE_CONNECTION     | Queue Connection Name   | sync                   |
 | API_REQUEST_RATE     | Api Request Rate        | 600                    |

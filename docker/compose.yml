@@ -87,7 +87,7 @@ services:
             - MAIL_PASSWORD=password
             - MAIL_EHLO_DOMAIN=emd.org.vn
             - MAIL_QUEUE_NAME=emails
-            - MAIL_SHOULD_QUEUE=false
+            - MAIL_SHOULD_QUEUE=true
             - MAIL_TRACK_CLICK=false
             - QUEUE_CONNECTION=redis
             - API_REQUEST_RATE=600

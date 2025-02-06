@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Cache;
  */
 class UploadController extends Controller
 {
-    const UPLOAD_DIR = 'attachments';
+    const UPLOAD_DIR = "attachments";
 
     /**
      * Upload files.
@@ -27,15 +27,11 @@ class UploadController extends Controller
      */
     public function upload(Request $request): JsonResource
     {
-        $storeDir = self::UPLOAD_DIR . '/' . $request->user()->email;
+        $storeDir = self::UPLOAD_DIR . "/" . $request->user()->email;
         $files = [];
         foreach ($request->allFiles() as $file) {
             $files[] = $file->hashName();
-            Cache::put(
-                $file->hashName(),
-                $file->store($storeDir),
-                3600
-            );
+            Cache::put($file->hashName(), $file->store($storeDir), 3600);
         }
         JsonResource::withoutWrapping();
         return new JsonResource($files);
