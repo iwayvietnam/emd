@@ -123,7 +123,7 @@ class DkimKeyResource extends Resource
             $records = array_map(
                 fn($record) => $record->getValue(),
                 \Amp\Dns\query(
-                    $dkim->selector . "._domainkey." . $dkim->domain->name,
+                    $dkim->selector . "._domainkey." . $dkim->domain,
                     DnsRecord::TXT
                 )
             );
