@@ -171,7 +171,7 @@ User=www-data
 Group=www-data
 Restart=on-failure
 WorkingDirectory=/path/to/emd
-ExecStart=/usr/bin/php artisan queue:work --env=production --sleep=3 --tries=3
+ExecStart=/usr/bin/php artisan queue:work --env=production
 
 [Install]
 WantedBy=multi-user.target
