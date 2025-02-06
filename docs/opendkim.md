@@ -1,10 +1,10 @@
 OpenDKIM Installation & Configuration
 =====================================
-* Introduction
+### Introduction
 
 Setting up OpenDKIM is essential for creating a trusted email server that ensures your emails won’t be marked as spam. In this tutorial, we’ll walk you through the steps of installing and configuring OpenDKIM
 
-* Enable the necessary repositories
+### Enable the necessary repositories
 
 First, you’ll need to enable the EPEL repository by running:
 ```sh
@@ -16,11 +16,11 @@ Then you’ll have to enable the CodeReady builder repository:
 dnf config-manager –set-enabled crb
 ```
 
-* Install OpenDKIM and the related tools
+### Install OpenDKIM and the related tools
 ```sh
 dnf -y install opendkim opendkim-tools opendbx-mysql
 ```
 
-* Configure OpenDKIM
+### Configure OpenDKIM
 
-* Integrate OpenDKIM with Postfix
+### Integrate OpenDKIM with Postfix
