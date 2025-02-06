@@ -129,12 +129,12 @@ class EmailController extends Controller
 
         $failed = false;
         try {
-            $shouldQueue = (bool) env("MAIL_SHOULD_QUEUE", true);
-            $trackClick = (bool) env("MAIL_TRACK_CLICK", false);
+            $shouldQueue = (bool) config("mail.should_queue", true);
+            $trackClick = (bool) config("mail.track_click", false);
             if ($shouldQueue) {
                 Mail::to($message->recipient)->queue(
                     (new SendMessage($message, $trackClick))->onQueue(
-                        env("MAIL_QUEUE_NAME", self::QUEUE_NAME)
+                        config("mail.queue_name", self::QUEUE_NAME)
                     )
                 );
             } else {

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Email Mass Delivery Admin Panel'),
 
     /*
     |--------------------------------------------------------------------------
@@ -123,4 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'api_rate' => env('API_REQUEST_RATE', 600),
+    'domain' => env('APP_DOMAIN', 'yourdomain.com'),
+    'https' => env('FORCE_HTTPS', false),
 ];
