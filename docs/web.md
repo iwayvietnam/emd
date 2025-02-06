@@ -76,8 +76,8 @@ Environment variables:
 | APP_KEY              | Encryption Key          | null                   |
 | APP_DEBUG            | Application Debug Mode  | false                  |
 | APP_TIMEZONE         | Application Timezone    | Asia/Ho_Chi_Minh       |
-| APP_URL              | Application URL         | http://emd.example.com |
-| APP_DOMAIN           | Application Domain      | emd.example.com        |
+| APP_URL              | Application URL         | http://localhost       |
+| APP_DOMAIN           | Application Domain      | yourdomain.com         |
 | FORCE_HTTPS          | Force Https             | false                  |
 | DB_CONNECTION        | Database Connection     | mysql                  |
 | DB_HOST              | Database Host           | 127.0.0.1              |
