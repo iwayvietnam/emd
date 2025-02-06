@@ -123,7 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    'api_rate' => env('API_REQUEST_RATE', 600),
+    'api_rate' => (int) env('API_REQUEST_RATE', 600),
     'domain' => env('APP_DOMAIN', 'yourdomain.com'),
-    'https' => env('FORCE_HTTPS', false),
+    'https' => (bool) env('FORCE_HTTPS', false),
 ];
