@@ -65,41 +65,41 @@ cp .env.example .env
 ```
 
 Environment variables:
-| Name              | Description              | Default                |
-|-------------------|--------------------------|------------------------|
-| APP_NAME          | Application Name         | SMTP API               |
-| APP_ENV           | Application Environment  | production             |
-| APP_KEY           | Encryption Key           | null                   |
-| APP_DEBUG         | Application Debug Mode   | false                  |
-| APP_TIMEZONE      | Application Timezone     | Asia/Ho_Chi_Minh       |
-| APP_URL           | Application URL          | http://emd.example.com |
-| APP_DOMAIN        | Application Domain       | emd.example.com        |
-| FORCE_HTTPS       | Force Https              | false                  |
-| DB_CONNECTION     | Database Connection Name | mysql                  |
-| DB_HOST           | Database Host            | 127.0.0.1              |
-| DB_PORT           | Database Port            | 3306                   |
-| DB_DATABASE       | Database Name            | laravel                |
-| DB_USERNAME       | Database User Name       | root                   |
-| DB_PASSWORD       | Database User Password   | null                   |
-| MAIL_MAILER       | Default Mailer           | smtp                   |
-| MAIL_HOST         | Mail Host Name           | 127.0.0.1              |
-| MAIL_PORT         | Mail Port                | 587                    |
-| MAIL_ENCRYPTION   | Mail Encryption          | tls                    |
-| MAIL_USERNAME     | Mail User Name           | null                   |
-| MAIL_PASSWORD     | Mail User Password       | null                   |
-| MAIL_EHLO_DOMAIN  | Mail Ehlo Domain         | null                   |
-| MAIL_QUEUE_NAME   | Mail Queue Name          | emails                 |
-| MAIL_SHOULD_QUEUE | Message Should Queue     | false                  |
-| MAIL_TRACK_CLICK  | Mail Track Click         | false                  |
-| QUEUE_CONNECTION  | Queue Connection Name    | sync                   |
-| API_REQUEST_RATE  | Api Request Rate         | 600                    |
-| POLICY_SERVER_NAME   | Policy Server Name    | Access Policy          |
-| POLICY_SERVER_WORKER | Policy Server Worker  | 4                      |
-| POLICY_DAEMONIZE     | Policy Daemonize      | true                   |
-| POLICY_LISTEN_HOST   | Policy Listen Host    | 0.0.0.0                |
-| POLICY_LISTEN_PORT   | Policy Listen Port    | 54321                  |
+| Name                 | Description             | Default                |
+|----------------------|-------------------------|------------------------|
+| APP_NAME             | Application Name        | SMTP API               |
+| APP_ENV              | Application Environment | production             |
+| APP_KEY              | Encryption Key          | null                   |
+| APP_DEBUG            | Application Debug Mode  | false                  |
+| APP_TIMEZONE         | Application Timezone    | Asia/Ho_Chi_Minh       |
+| APP_URL              | Application URL         | http://emd.example.com |
+| APP_DOMAIN           | Application Domain      | emd.example.com        |
+| FORCE_HTTPS          | Force Https             | false                  |
+| DB_CONNECTION        | Database Connection     | mysql                  |
+| DB_HOST              | Database Host           | 127.0.0.1              |
+| DB_PORT              | Database Port           | 3306                   |
+| DB_DATABASE          | Database Name           | laravel                |
+| DB_USERNAME          | Database User Name      | root                   |
+| DB_PASSWORD          | Database User Password  | null                   |
+| MAIL_MAILER          | Default Mailer          | smtp                   |
+| MAIL_HOST            | Mail Host Name          | 127.0.0.1              |
+| MAIL_PORT            | Mail Port               | 587                    |
+| MAIL_ENCRYPTION      | Mail Encryption         | tls                    |
+| MAIL_USERNAME        | Mail User Name          | null                   |
+| MAIL_PASSWORD        | Mail User Password      | null                   |
+| MAIL_EHLO_DOMAIN     | Mail Ehlo Domain        | null                   |
+| MAIL_QUEUE_NAME      | Mail Queue Name         | emails                 |
+| MAIL_SHOULD_QUEUE    | Message Should Queue    | false                  |
+| MAIL_TRACK_CLICK     | Mail Track Click        | false                  |
+| QUEUE_CONNECTION     | Queue Connection Name   | sync                   |
+| API_REQUEST_RATE     | Api Request Rate        | 600                    |
+| POLICY_SERVER_NAME   | Policy Server Name      | Access Policy          |
+| POLICY_SERVER_WORKER | Policy Server Worker    | 4                      |
+| POLICY_DAEMONIZE     | Policy Daemonize        | true                   |
+| POLICY_LISTEN_HOST   | Policy Listen Host      | 0.0.0.0                |
+| POLICY_LISTEN_PORT   | Policy Listen Port      | 54321                  |
 
-Generate the application & passport keys. Re-cache.
+Generate the application key & passport keys. Re-cache.
 ```sh
 php artisan key:generate
 php artisan passport:keys
