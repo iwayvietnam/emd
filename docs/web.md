@@ -17,6 +17,10 @@ In this document, we'll cover some great starting points
 for making sure your Laravel application is deployed properly.
 
 ### Nginx Configuration
+```sh
+vi /etc/nginx/conf.d/virtual.host.conf
+```
+
 ```nginx
 server {
     listen 80;
@@ -39,9 +43,9 @@ server {
     location = /robots.txt  { access_log off; log_not_found off; }
  
     error_page 404 /index.php;
- 
+
     location ~ \.php$ {
-        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+        fastcgi_pass unix:/run/php-fpm/php8.2.sock;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         include fastcgi_params;
     }
