@@ -144,7 +144,7 @@ ExecReload=/usr/bin/php artisan policy:listen restart
 [Install]
 WantedBy=multi-user.target
 ```
-Set `User` & `Group` with your web user & group.
+Set `User` & `Group` with your web server user & group.
 Set `WorkingDirectory` with your Laravel application directory.
 
 Enabling & starting the policy service
@@ -177,7 +177,7 @@ ExecStart=/usr/bin/php artisan queue:work --env=production --sleep=3 --tries=3
 WantedBy=multi-user.target
 ```
 
-Set `User` & `Group` with your web user & group.
+Set `User` & `Group` with your web server user & group.
 Set `WorkingDirectory` with your Laravel application directory.
 
 Enabling & starting the queue service
