@@ -120,5 +120,70 @@ Create a new user account:
 php artisan make:filament-user
 ```
 
+### Running Policy Service as a Systemd Service
+Create a new file in the “/etc/systemd/system/” directory with a .service extension,
+such as policy.service”.
+```sh
+vi /etc/systemd/system/policy.service 
+```
+Add the following content to the file:
+```sh
+[Unit]
+Description=Email mass delivery policy service
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+Restart=on-failure
+WorkingDirectory=/path/to/emd
+ExecStart=/usr/bin/php artisan policy:listen start
+
+[Install]
+WantedBy=multi-user.target
+```
+Set `User` & `Group` with your web user & group.
+Set `WorkingDirectory` with your Laravel application directory.
+
+Enabling & starting the policy service
+```sh
+systemctl daemon-reload
+systemctl enable policy.service
+systemctl start policy.service
+```
+
+### Running Queue Worker as a Systemd Service
+Create a new file in the “/etc/systemd/system/” directory with a .service extension,
+such as queue.service”.
+```sh
+vi /etc/systemd/system/queue.service 
+```
+Add the following content to the file:
+```sh
+[Unit]
+Description=Email mass delivery queue worker
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+Restart=on-failure
+WorkingDirectory=/path/to/emd
+ExecStart=/usr/bin/php artisan policy:listen start
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Set `User` & `Group` with your web user & group.
+Set `WorkingDirectory` with your Laravel application directory.
+
+Enabling & starting the queue service
+```sh
+systemctl daemon-reload
+systemctl enable queue.service
+systemctl start queue.service
+```
+
 ### Rate Limiting
 * API restrict the amount of traffic for a given user by 600 request per minute
