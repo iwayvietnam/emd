@@ -138,6 +138,8 @@ Group=www-data
 Restart=on-failure
 WorkingDirectory=/path/to/emd
 ExecStart=/usr/bin/php artisan policy:listen start
+ExecStop=/usr/bin/php artisan policy:listen stop
+ExecReload=/usr/bin/php artisan policy:listen restart
 
 [Install]
 WantedBy=multi-user.target
