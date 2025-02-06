@@ -154,35 +154,38 @@ systemctl enable policy.service
 systemctl start policy.service
 ```
 
-### Running Queue Worker as a Systemd Service
-Create a new file in the “/etc/systemd/system/” directory with a .service extension,
-such as queue.service”.
+### Running Queue Worker
+* Install Supervisor
 ```sh
-vi /etc/systemd/system/queue.service 
-```
-Add the following content to the file:
-```sh
-[Unit]
-Description=Email mass delivery queue worker
-After=network.target
-
-[Service]
-User=www-data
-Group=www-data
-Restart=on-failure
-WorkingDirectory=/path/to/emd
-ExecStart=/usr/bin/php artisan queue:work --env=production
-
-[Install]
-WantedBy=multi-user.target
+dnf -y install epel-release
+dnf -y install supervisor 
 ```
 
-Set `User` & `Group` with your web server user & group.
-Set `WorkingDirectory` with your Laravel application directory.
-
-Enabling & starting the queue service
+* Configuring Supervisor
+Supervisor configuration files are typically stored
+in the /etc/supervisor/conf.d directory.
+Within this directory, you may create any number of configuration files
+that instruct supervisor how your processes should be monitored.
+For example, let's create a queue-worker.conf file that starts and monitors queue:work processes:
 ```sh
-systemctl daemon-reload
-systemctl enable queue.service
-systemctl start queue.service
+[program:queue-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /path/to/emd/artisan queue:work  --env=production
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=www-data
+numprocs=8
+redirect_stderr=true
+stdout_logfile=/path/to/emd/storage/logs/worker.log
+stopwaitsecs=3600
+```
+
+* Starting Supervisor
+Once the configuration file has been created, you may update the
+Supervisor configuration and start the processes using the following commands:
+```sh
+systemctl enable supervisord
+systemctl start supervisord
 ```
