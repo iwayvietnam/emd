@@ -71,7 +71,10 @@ Environment variables:
 | APP_ENV           | Application Environment  | production             |
 | APP_KEY           | Encryption Key           | null                   |
 | APP_DEBUG         | Application Debug Mode   | false                  |
-| APP_URL           | Application URL          | http://api.example.com |
+| APP_TIMEZONE      | Application Timezone     | Asia/Ho_Chi_Minh       |
+| APP_URL           | Application URL          | http://emd.example.com |
+| APP_DOMAIN        | Application Domain       | emd.example.com        |
+| FORCE_HTTPS       | Force Https              | false                  |
 | DB_CONNECTION     | Database Connection Name | mysql                  |
 | DB_HOST           | Database Host            | 127.0.0.1              |
 | DB_PORT           | Database Port            | 3306                   |
@@ -79,7 +82,7 @@ Environment variables:
 | DB_USERNAME       | Database User Name       | root                   |
 | DB_PASSWORD       | Database User Password   | null                   |
 | MAIL_MAILER       | Default Mailer           | smtp                   |
-| MAIL_HOST         | Mail Host Name           | smtp.example.com       |
+| MAIL_HOST         | Mail Host Name           | 127.0.0.1              |
 | MAIL_PORT         | Mail Port                | 587                    |
 | MAIL_ENCRYPTION   | Mail Encryption          | tls                    |
 | MAIL_USERNAME     | Mail User Name           | null                   |

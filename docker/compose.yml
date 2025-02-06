@@ -59,8 +59,8 @@ services:
             - APP_DEBUG=true
             - APP_TIMEZONE=Asia/Ho_Chi_Minh
             - APP_DOMAIN=emd.org.vn
-            - FORCE_HTTPS=false
             - APP_URL=http://0.0.0.0:8008
+            - FORCE_HTTPS=false
             - DB_CONNECTION=mysql
             - DB_HOST=emd-mariadb
             - DB_PORT=3306
@@ -68,6 +68,7 @@ services:
             - DB_USERNAME=emd
             - DB_PASSWORD=emdPassw0rd
             - CACHE_STORE=redis
+            - CACHE_PREFIX=
             - REDIS_HOST=emd-valkey
             - SESSION_DRIVER=redis
             - SESSION_STORE=redis
