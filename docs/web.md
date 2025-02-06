@@ -184,6 +184,3 @@ systemctl daemon-reload
 systemctl enable queue.service
 systemctl start queue.service
 ```
-
-### Rate Limiting
-* API restrict the amount of traffic for a given user by 600 request per minute
