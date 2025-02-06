@@ -73,7 +73,7 @@ services:
             - SESSION_STORE=redis
             - SESSION_SECURE_COOKIE=false
             - SESSION_DOMAIN=
-            - POLICY_SERVER_NAME="Access Policy Delegation"
+            - POLICY_SERVER_NAME="Access Policy"
             - POLICY_SERVER_WORKER=4
             - POLICY_DAEMONIZE=true
             - POLICY_LISTEN_HOST=0.0.0.0
@@ -85,11 +85,11 @@ services:
             - MAIL_USERNAME=username
             - MAIL_PASSWORD=password
             - MAIL_EHLO_DOMAIN=emd.org.vn
-            - MAIL_QUEUE_NAME=mail_queue
+            - MAIL_QUEUE_NAME=emails
             - MAIL_SHOULD_QUEUE=false
             - MAIL_TRACK_CLICK=false
             - QUEUE_CONNECTION=redis
-            - API_REQUEST_PER_MINUTE=600
+            - API_REQUEST_RATE=600
             - TZ=Asia/Ho_Chi_Minh
         volumes:
             - ../admin:/var/www/html

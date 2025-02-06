@@ -23,5 +23,4 @@ dnf -y install opendkim opendkim-tools opendbx-mysql
 
 * Configure OpenDKIM
 
-
 * Integrate OpenDKIM with Postfix

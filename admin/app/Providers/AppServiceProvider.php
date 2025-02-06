@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for(
             "api",
             static fn(Request $request) => Limit::perMinute(
-                (int) env("API_REQUEST_PER_MINUTE", 600)
+                (int) env("API_REQUEST_RATE", 600)
             )->by($request->user()?->id ?: $request->ip())
         );
     }
