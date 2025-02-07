@@ -5,7 +5,7 @@ OpenDKIM Installation & Configuration
 Setting up OpenDKIM is essential for creating a trusted email server that ensures your emails won’t be marked as spam. In this tutorial, we’ll walk you through the steps of installing and configuring OpenDKIM
 
 ### Enable the necessary repositories
-
+* RHEL Compatibility OS (CentOS, Alma Linux, Rocky Linux, ...)
 First, you’ll need to enable the EPEL repository by running:
 ```sh
 dnf -y install epel-release
