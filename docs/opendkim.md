@@ -29,7 +29,7 @@ cp /etc/opendkim.conf{,.orig}
 
 Type the following command to edit the OpenDKIM configuration file:
 ```sh
-vim /etc/opendkim.conf
+vi /etc/opendkim.conf
 ```
 
 Add/edit the following information:
