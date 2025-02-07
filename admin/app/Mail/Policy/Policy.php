@@ -177,11 +177,9 @@ class Policy implements PolicyInterface
 
     private function recipientIsRestricted(RequestInterface $request): bool
     {
-        $recipient = $request->getRecipient();
-        $verdict = AccessVerdict::tryFrom(
-            $this->restrictedRecipients[$recipient] ?? ""
-        );
-        return $verdict === AccessVerdict::Reject;
+        return AccessVerdict::tryFrom(
+            $this->restrictedRecipients[$request->getRecipient()] ?? ""
+        ) === AccessVerdict::Reject;
     }
 
     private function clientTransport(RequestInterface $request): string
