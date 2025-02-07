@@ -23,7 +23,7 @@ use Symfony\Component\Mailer\Exception\ExceptionInterface as MailerException;
  */
 class EmailController extends Controller
 {
-    const QUEUE_NAME = "emails";
+    const QUEUE_NAME = "default";
 
     /**
      * Create a new controller instance.
