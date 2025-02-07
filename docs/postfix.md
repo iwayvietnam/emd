@@ -35,6 +35,8 @@ postconf -e smtpd_relay_restrictions=permit
 ```
 Note: Replace `127.0.0.1:54321` with your policy service host and port.
 
+#### Configure sender tranport map for Postfix
+
 #### Configure out with rate control for Postfix
 
 * Type the following command to edit the Postfix master configuration file:
