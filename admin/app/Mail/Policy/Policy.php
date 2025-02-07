@@ -61,6 +61,18 @@ class Policy implements PolicyInterface
                     );
                 }
                 $transport = $this->clientTransport($request);
+                return new PolicyResponse(AccessVerdict::Ok);
+            case ProtocolState::EndOfMessage:
+                if ($this->quotaIsExceeded($request)) {
+                    logger()->error("Quota limit of client {sender}:{address} is exceeded.", [
+                        "sender" => $request->getSender(),
+                        "address" => $request->getClientAddress(),
+                    ]);
+                    return new PolicyResponse(
+                        AccessVerdict::Reject,
+                        "Quota limit is exceeded. Retry later!"
+                    );
+                }
                 if (!empty($transport)) {
                     logger()->debug("Transport {sender}:{address} to {transport}.", [
                         "sender" => $request->getSender(),
@@ -70,19 +82,6 @@ class Policy implements PolicyInterface
                     return new PolicyResponse(
                         AccessVerdict::Filter,
                         $transport
-                    );
-                }
-                return new PolicyResponse(AccessVerdict::Ok);
-            case ProtocolState::EndOfMessage:
-                logger()->debug("End of message protocol state.");
-                if ($this->quotaIsExceeded($request)) {
-                    logger()->error("Quota limit of client {sender}:{address} is exceeded.", [
-                        "sender" => $request->getSender(),
-                        "address" => $request->getClientAddress(),
-                    ]);
-                    return new PolicyResponse(
-                        AccessVerdict::Reject,
-                        "Quota limit is exceeded. Retry later!"
                     );
                 }
                 return new PolicyResponse(AccessVerdict::Ok);
