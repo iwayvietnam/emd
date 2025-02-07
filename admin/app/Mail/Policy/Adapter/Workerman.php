@@ -48,7 +48,7 @@ class Workerman extends Base
             self::POLICY_DAEMONIZE
         );
         Worker::$logFile = storage_path("logs") . "/workerman.log";
-        Worker::$pidFile = "/var/run/workerman.pid";
+        Worker::$pidFile = storage_path() . "/workerman.pid";
     }
 
     /**
