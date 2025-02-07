@@ -57,8 +57,9 @@ server {
 ```
 
 ### Installation
-Install composer dependencies
+Install composer & dependencies
 ```sh
+dnf -y install composer
 composer install --optimize-autoloader --no-dev --prefer-dist
 ```
 
@@ -137,9 +138,9 @@ User=www-data
 Group=www-data
 Restart=on-failure
 WorkingDirectory=/path/to/emd
-ExecStart=/usr/bin/php artisan policy:listen start
-ExecStop=/usr/bin/php artisan policy:listen stop
-ExecReload=/usr/bin/php artisan policy:listen restart
+ExecStart=php artisan policy:listen start
+ExecStop=php artisan policy:listen stop
+ExecReload=php artisan policy:listen restart
 
 [Install]
 WantedBy=multi-user.target
