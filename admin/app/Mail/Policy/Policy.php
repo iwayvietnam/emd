@@ -72,18 +72,6 @@ class Policy implements PolicyInterface
                         "Quota limit is exceeded. Retry later!"
                     );
                 }
-                $transport = $this->clientTransport($request);
-                if (!empty($transport)) {
-                    logger()->debug("Transport {sender}:{address} to {transport}.", [
-                        "sender" => $request->getSender(),
-                        "address" => $request->getClientAddress(),
-                        "transport" => $transport,
-                    ]);
-                    return new PolicyResponse(
-                        AccessVerdict::Filter,
-                        $transport
-                    );
-                }
                 return new PolicyResponse(AccessVerdict::Ok);
             default:
                 logger()->error("Protocol state {state} is invalid.", [
@@ -169,16 +157,6 @@ class Policy implements PolicyInterface
         return AccessVerdict::tryFrom(
             $restrictedRecipients[$request->getRecipient()] ?? ""
         ) === AccessVerdict::Reject;
-    }
-
-    private function clientTransport(RequestInterface $request): string
-    {
-        $address = $request->getClientAddress();
-        $sender = $request->getSender();
-        if (isset($this->clientAccesses[$sender][$address]["transport"])) {
-            return $this->clientAccesses[$sender][$address]["transport"];
-        }
-        return "";
     }
 
     private static function counterKey(
