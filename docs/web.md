@@ -125,7 +125,7 @@ php artisan make:filament-user
 Create a new file in the “/etc/systemd/system/” directory with a .service extension,
 such as policy.service”.
 ```sh
-vi /etc/systemd/system/policy.service 
+vi /lib/systemd/system/policy.service
 ```
 Add the following content to the file:
 ```sh
@@ -139,8 +139,6 @@ Group=www-data
 Restart=on-failure
 WorkingDirectory=/path/to/emd
 ExecStart=php artisan policy:listen start
-ExecStop=php artisan policy:listen stop
-ExecReload=php artisan policy:listen restart
 
 [Install]
 WantedBy=multi-user.target
@@ -159,7 +157,7 @@ systemctl start policy.service
 Create a new file in the “/etc/systemd/system/” directory with a .service extension,
 such as queue.service”.
 ```sh
-vi /etc/systemd/system/queue.service 
+vi /lib/systemd/system/policy.service
 ```
 Add the following content to the file:
 ```sh
