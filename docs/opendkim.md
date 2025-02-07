@@ -22,7 +22,7 @@ dnf -y install opendkim opendkim-tools opendbx-mysql
 ```
 
 ### Configure OpenDKIM
-OpenDKIM configuration file is located in /etc/opendkim.conf, so before making any changes make a backup:
+OpenDKIM main configuration file is /etc/opendkim.conf, so before making any changes make a backup:
 ```sh
 cp /etc/opendkim.conf{,.orig}
 ```
@@ -56,13 +56,14 @@ systemctl start opendkim
 ```
 
 ### Integrate OpenDKIM with Postfix
-To integrate OpenDKIM with Postfix, we need to add the following lines to /etc/postfix/main.cf:
+To integrate OpenDKIM with Postfix, type the following commands to edit the Postfix configuration file:
 ```ini
-smtpd_milters           = inet:127.0.0.1:8891
-non_smtpd_milters       = $smtpd_milters
-milter_default_action   = accept
-milter_protocol         = 2
+postconf -e milter_protocol=2
+postconf -e milter_default_action=accept
+postconf -e smtpd_milters=inet:127.0.0.1:8891
+postconf -e non_smtpd_milters=inet:127.0.0.1:8891
 ```
+Note: Replace `127.0.0.1:8891` with your OpenDKIM host and port.
 
 Restart Postfix service
 ```sh

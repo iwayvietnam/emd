@@ -4,9 +4,9 @@ set -e
 export PATH=/usr/local/bin:/usr/local/sbin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/X11R6/bin
 
 DKIM_ENABLE=${DKIM_ENABLE:-false}
-DKIM_SERVICE=${DKIM_SERVICE:-inet:localhost:8891}
+DKIM_SERVICE=${DKIM_SERVICE:-inet:127.0.0.1:8891}
 POLICY_ENABLE=${POLICY_ENABLE:-false}
-POLICY_SERVICE=${POLICY_SERVICE:-inet:localhost:54321}
+POLICY_SERVICE=${POLICY_SERVICE:-inet:127.0.0.1:54321}
 
 # DKIM configuration
 if [[ "$DKIM_ENABLE" == "true" ]]; then
