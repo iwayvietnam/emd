@@ -34,20 +34,18 @@ vi /etc/opendkim.conf
 
 Add/edit the following information:
 ```ini
-AutoRestartRate         10/1h
 LogWhy                  Yes
 Syslog                  Yes
 SyslogSuccess           Yes
 Mode                    sv
 Canonicalization        relaxed/simple
-SigningTable dsn:mysql://emd:emdPassw0rd@emd-mariadb/emd/table=dkim_keys?keycol=domain?datacol=id
-KeyTable     dsn:mysql://emd:emdPassw0rd@emd-mariadb/emd/table=dkim_keys?keycol=id?datacol=domain,selector,private_key
+SigningTable dsn:mysql://user:password@host:port/database/table=dkim_keys?keycol=domain?datacol=id
+KeyTable     dsn:mysql://user:password@host:port/database/table=dkim_keys?keycol=id?datacol=domain,selector,private_key
 SignatureAlgorithm      rsa-sha256
 Socket                  inet:8891@localhost
 PidFile                 /var/run/opendkim/opendkim.pid
 UMask                   022
 UserID                  opendkim:opendkim
-TemporaryDirectory      /var/tmp
 ```
 Replace `SigningTable` & `KeyTable` with your database configuration.
 
