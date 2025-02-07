@@ -60,7 +60,6 @@ class Policy implements PolicyInterface
                         "Recipient address is restricted!"
                     );
                 }
-                $transport = $this->clientTransport($request);
                 return new PolicyResponse(AccessVerdict::Ok);
             case ProtocolState::EndOfMessage:
                 if ($this->quotaIsExceeded($request)) {
@@ -73,6 +72,7 @@ class Policy implements PolicyInterface
                         "Quota limit is exceeded. Retry later!"
                     );
                 }
+                $transport = $this->clientTransport($request);
                 if (!empty($transport)) {
                     logger()->debug("Transport {sender}:{address} to {transport}.", [
                         "sender" => $request->getSender(),
