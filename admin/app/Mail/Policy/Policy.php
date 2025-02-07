@@ -62,7 +62,7 @@ class Policy implements PolicyInterface
                 }
                 return new PolicyResponse(AccessVerdict::Ok);
             case ProtocolState::EndOfMessage:
-                return new PolicyResponse(AccessVerdict::Ok);
+                logger()->debug("End of message protocol state.");
                 if ($this->quotaIsExceeded($request)) {
                     logger()->error("Quota limit of client {sender}:{address} is exceeded.", [
                         "sender" => $request->getSender(),
