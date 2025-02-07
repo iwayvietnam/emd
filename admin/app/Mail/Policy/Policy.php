@@ -177,6 +177,9 @@ class Policy implements PolicyInterface
 
     private function recipientIsRestricted(RequestInterface $request): bool
     {
+        logger()->debug("Check recipient restriction for {recipient}.", [
+            "recipient" => $request->getRecipient(),
+        ]);
         return AccessVerdict::tryFrom(
             $this->restrictedRecipients[$request->getRecipient()] ?? ""
         ) === AccessVerdict::Reject;
