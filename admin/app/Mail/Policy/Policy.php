@@ -20,25 +20,14 @@ use Illuminate\Support\Facades\RateLimiter;
  */
 class Policy implements PolicyInterface
 {
-    private readonly array $clientAccesses;
-    private readonly array $restrictedRecipients;
-
-    /**
-     * Constructor
-     *
-     * @return self
-     */
-    public function __construct()
-    {
-        $this->clientAccesses = ClientAccess::cachedAccesses();
-        $this->restrictedRecipients = RestrictedRecipient::cachedRecipients();
-    }
+    private array $clientAccesses = [];
 
     /**
      * {@inheritdoc}
      */
     public function check(RequestInterface $request): ResponseInterface
     {
+        $this->clientAccesses = ClientAccess::cachedAccesses();
         $state = ProtocolState::tryFrom($request->getProtocolState());
         switch ($state) {
             case ProtocolState::Rcpt:
@@ -177,11 +166,9 @@ class Policy implements PolicyInterface
 
     private function recipientIsRestricted(RequestInterface $request): bool
     {
-        logger()->debug("Check recipient restriction for {recipient}.", [
-            "recipient" => $request->getRecipient(),
-        ]);
+        $restrictedRecipients = RestrictedRecipient::cachedRecipients();
         return AccessVerdict::tryFrom(
-            $this->restrictedRecipients[$request->getRecipient()] ?? ""
+            $restrictedRecipients[$request->getRecipient()] ?? ""
         ) === AccessVerdict::Reject;
     }
 
