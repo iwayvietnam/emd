@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TransportResource\Pages;
-use App\Models\ClientTransport;
+use App\Models\SenderTransport;
 use App\Models\Transport;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
@@ -69,7 +69,7 @@ class TransportResource extends Resource
                 Actions\DeleteAction::make()->before(static function (
                     Actions\DeleteAction $action
                 ) {
-                    if (self::haveClientTransport([$action->getRecord()->id])) {
+                    if (self::haveSenderTransport([$action->getRecord()->id])) {
                         self::cancelDelete($action);
                     }
                 }),
@@ -83,7 +83,7 @@ class TransportResource extends Resource
                         foreach ($action->getRecords() as $record) {
                             $ids[] = (int) $record->id;
                         }
-                        if (self::haveClientTransport($ids)) {
+                        if (self::haveSenderTransport($ids)) {
                             self::cancelDelete($action);
                         }
                     }),
@@ -100,9 +100,9 @@ class TransportResource extends Resource
         ];
     }
 
-    private static function haveClientTransport(array $ids): bool
+    private static function haveSenderTransport(array $ids): bool
     {
-        return ClientTransport::whereIn("transport_id", $ids)->count() > 0;
+        return SenderTransport::whereIn("transport_id", $ids)->count() > 0;
     }
 
     private static function cancelDelete(Actions\Action $action): void
@@ -112,7 +112,7 @@ class TransportResource extends Resource
             ->title(__("Unable to delete transport"))
             ->body(
                 __(
-                    "You must delete all client transports belongs to the transport."
+                    "You must delete all sender transports belongs to the transport."
                 )
             )
             ->send();
