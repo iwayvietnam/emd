@@ -19,7 +19,6 @@ use Filament\Resources\Pages\ListRecords;
  */
 class ListSenderTransports extends ListRecords
 {
-    const SENDER_TRANSPORT_FILE = '/etc/postfix/sender_transport';
     const POSTMAP_COMMAND = 'postmap %s';
 
     protected static string $resource = SenderTransportResource::class;

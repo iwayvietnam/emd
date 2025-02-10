@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for(
             "api",
             static fn(Request $request) => Limit::perMinute(
-                (int) config("emd.mail.api_rate", 600)
+                (int) config("emd.api_rate", 600)
             )->by($request->user()?->id ?: $request->ip())
         );
     }

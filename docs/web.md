@@ -103,6 +103,7 @@ Environment variables:
 | POLICY_DAEMONIZE     | Policy Daemonize        | true                   |
 | POLICY_LISTEN_HOST   | Policy Listen Host      | 0.0.0.0                |
 | POLICY_LISTEN_PORT   | Policy Listen Port      | 54321                  |
+| SENDER_TRANSPORT     | Sender Transport Map    | sender_transport       |
 
 Generate the application key & passport keys. Re-cache.
 ```sh
