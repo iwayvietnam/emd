@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Sender transport model class
@@ -31,4 +32,9 @@ class SenderTransport extends Model
         "sender",
         "transport",
     ];
+
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(Client::class, "client_id");
+    }
 }
