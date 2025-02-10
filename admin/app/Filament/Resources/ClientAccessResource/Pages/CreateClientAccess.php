@@ -5,7 +5,6 @@ namespace App\Filament\Resources\ClientAccessResource\Pages;
 use App\Filament\Resources\ClientAccessResource;
 use App\Models\Client;
 use App\Models\Policy;
-use App\Models\Transport;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -30,7 +29,7 @@ class CreateClientAccess extends CreateRecord
     public function form(Form $form): Form
     {
         return $form->schema([
-            Grid::make(3)->schema([
+            Grid::make(2)->schema([
                 Select::make("client_id")
                     ->options(Client::all()->pluck("name", "id"))
                     ->required()
@@ -39,10 +38,6 @@ class CreateClientAccess extends CreateRecord
                     ->options(Policy::all()->pluck("name", "id"))
                     ->required()
                     ->label(__("Policy")),
-                Select::make("transport_id")
-                    ->options(Transport::all()->pluck("name", "id"))
-                    ->required()
-                    ->label(__("Transport")),
             ]),
             Textarea::make("ip_addresses")
                 ->required()
@@ -61,17 +56,13 @@ class CreateClientAccess extends CreateRecord
         );
         if (!empty($addresses)) {
             $client = Client::find($data["client_id"]);
-            $transport = Transport::find($data["transport_id"]);
             foreach ($addresses as $ip) {
                 $model = $this->getModel()::firstOrCreate([
                     "client_id" => $data["client_id"],
                     "policy_id" => $data["policy_id"],
-                    "transport_id" => $data["transport_id"],
                     "sender" => $client->sender_address,
                     "client_ip" => $ip,
                     "verdict" => $data["verdict"],
-                    "transport" =>
-                        $transport->transport . ":" . $transport->nexthop,
                 ]);
             }
             return $model;

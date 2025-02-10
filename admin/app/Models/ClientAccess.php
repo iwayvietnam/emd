@@ -34,11 +34,9 @@ class ClientAccess extends Model
     protected $fillable = [
         "client_id",
         "policy_id",
-        "transport_id",
         "sender",
         "client_ip",
         "verdict",
-        "transport",
     ];
 
     public function client(): BelongsTo
@@ -67,7 +65,6 @@ class ClientAccess extends Model
                     ],
                     "client" => $model->client->name,
                     "verdict" => $model->verdict,
-                    "transport" => $model->transport,
                 ];
             }
             Cache::put($cacheKey, $accesses);

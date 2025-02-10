@@ -33,14 +33,14 @@ class Transport extends Model
 
         static::updating(static function (self $model) {
             if ($model->isDirty("transport") || $model->isDirty("nexthop")) {
-                ClientAccess::where("transport_id", $model->id)->update([
+                SenderTransport::where("transport_id", $model->id)->update([
                     "transport" => $model->transport . ":" . $model->nexthop,
                 ]);
             }
         });
 
         static::deleting(static function (self $model) {
-            ClientAccess::where("transport_id", $model->id)->delete();
+            SenderTransport::where("transport_id", $model->id)->delete();
         });
     }
 }

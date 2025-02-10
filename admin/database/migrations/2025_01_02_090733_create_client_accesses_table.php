@@ -15,16 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('client_id')->index();
             $table->foreignId('policy_id')->index();
-            $table->foreignId('transport_id')->index();
             $table->string('sender');
             $table->ipAddress('client_ip');
             $table->enum('verdict', [
                 'OK',
-                'FILTER',
-                'DEFER',
                 'REJECT',
+                'DEFER',
             ]);
-            $table->string('transport');
             $table->timestamps();
         });
     }
