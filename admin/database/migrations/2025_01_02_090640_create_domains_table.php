@@ -15,11 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('email')->unique();
+            $table->string('organization', 1024)->nullable();
             $table->text('description')->nullable();
-            $table->text('dns_mx_record')->nullable();
-            $table->text('dns_dmarc_record')->nullable();
-            $table->text('dns_ptr_record')->nullable();
-            $table->text('dns_spf_record')->nullable();
+
             $table->timestamps();
         });
     }

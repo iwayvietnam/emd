@@ -29,11 +29,8 @@ class Domain extends Model
     protected $fillable = [
         "name",
         "email",
+        "organization",
         "description",
-        "dns_mx_record",
-        "dns_dmarc_record",
-        "dns_ptr_record",
-        "dns_spf_record",
     ];
 
     public function clients(): HasMany

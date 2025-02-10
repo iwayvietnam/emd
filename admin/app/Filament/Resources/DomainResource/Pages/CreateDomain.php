@@ -60,13 +60,12 @@ class CreateDomain extends CreateRecord
                 ->required()
                 ->unique()
                 ->label(__("Email Address")),
+            TextInput::make("organization")
+                ->columnSpan(2)
+                ->label(__("Organization")),
             Textarea::make("description")
                 ->columnSpan(2)
                 ->label(__("Description")),
-            TextInput::make("dns_mx_record")->label(__("Mx Record")),
-            TextInput::make("dns_dmarc_record")->label(__("Dmarc Record")),
-            TextInput::make("dns_ptr_record")->label(__("Ptr Record")),
-            TextInput::make("dns_spf_record")->label(__("Spf Record")),
         ]);
     }
 
