@@ -28,6 +28,7 @@ class CreateSenderTransport extends CreateRecord
             Select::make("client_id")
                 ->options(Client::all()->pluck("name", "id"))
                 ->required()
+                ->unique()
                 ->label(__("Client")),
             Select::make("transport_id")
                 ->options(Transport::all()->pluck("name", "id"))
