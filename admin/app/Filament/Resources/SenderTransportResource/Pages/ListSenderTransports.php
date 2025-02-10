@@ -28,7 +28,7 @@ class ListSenderTransports extends ListRecords
     {
         return [
             Actions\CreateAction::make()->label(__("New Sender Transport")),
-            Actions\Action::make()
+            Actions\Action::make('sync')
                 ->action(static fn() => self::syncSenderTransports())
                 ->label(__("Sync To Mail Servers")),
         ];
