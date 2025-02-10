@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Email Mass Delivery Admin Panel'),
+    'name' => env('APP_NAME', 'Laravel'),
 
     /*
     |--------------------------------------------------------------------------
@@ -95,7 +95,7 @@ return [
     |
     */
 
-    'cipher' => 'AES-256-GCM',
+    'cipher' => 'AES-256-CBC',
 
     'key' => env('APP_KEY'),
 
@@ -122,8 +122,4 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
-
-    'api_rate' => (int) env('API_REQUEST_RATE', 600),
-    'domain' => env('APP_DOMAIN', 'yourdomain.com'),
-    'https' => (bool) env('FORCE_HTTPS', false),
 ];

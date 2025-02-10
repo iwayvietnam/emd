@@ -29,20 +29,18 @@ class Swoole extends Base
     public function __construct()
     {
         $this->server = new Server(
-            config("policy.listen_host", self::LISTEN_HOST),
-            (int) config("policy.listen_port", self::LISTEN_PORT)
+            config("emd.policy.listen_host", self::LISTEN_HOST),
+            (int) config("emd.policy.listen_port", self::LISTEN_PORT)
         );
         $this->server->set([
             "worker_num" => (int) config(
-                "policy.server_worker",
-                self::POLICY_WORKER
+                "emd.policy.server_worker", self::POLICY_WORKER
             ),
             "daemonize" => (bool) config(
-                "policy.daemonize",
-                self::POLICY_DAEMONIZE
+                "emd.policy.daemonize", self::POLICY_DAEMONIZE
             ),
             "log_file" => storage_path("logs") . "/swoole.log",
-            "log_level" => config("app.debug") ? 0 : 2,
+            "log_level" => config("emd.app.debug") ? 0 : 2,
             "pid_file" => storage_path() . "/swoole.pid",
         ]);
     }

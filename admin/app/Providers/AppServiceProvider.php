@@ -30,14 +30,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        URL::forceScheme(
-            (bool) config("app.https", false) ? "https" : "http"
-        );
+        URL::forceScheme((bool) config("emd.https", false) ? "https" : "http");
 
         RateLimiter::for(
             "api",
             static fn(Request $request) => Limit::perMinute(
-                (int) config("app.api_rate", 600)
+                (int) config("emd.mail.api_rate", 600)
             )->by($request->user()?->id ?: $request->ip())
         );
     }

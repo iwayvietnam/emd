@@ -16,7 +16,7 @@ final class Service
 
     public static function listen(): void
     {
-        $adapter = config("policy.adapter", self::DEFAULT_ADAPTER);
+        $adapter = config("emd.policy.adapter", self::DEFAULT_ADAPTER);
         (new $adapter())->handle(new Policy());
     }
 }

@@ -113,7 +113,4 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
-    'should_queue' => (bool) env('MAIL_SHOULD_QUEUE', true),
-    'queue_name' => env('MAIL_QUEUE_NAME', 'default'),
-    'track_click' => (bool) env('MAIL_TRACK_CLICK', false),
 ];

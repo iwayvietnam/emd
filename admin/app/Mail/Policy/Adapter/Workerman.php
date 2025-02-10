@@ -32,19 +32,22 @@ class Workerman extends Base
         $this->worker = new Worker(
             implode([
                 "tcp://",
-                config("policy.listen_host", self::LISTEN_HOST),
+                config("emd.policy.listen_host", self::LISTEN_HOST),
                 ":",
-                config("policy.listen_port", self::LISTEN_PORT),
+                config("emd.policy.listen_port", self::LISTEN_PORT),
             ])
         );
 
-        $this->worker->name = config("policy.server_name", self::POLICY_NAME);
+        $this->worker->name = config(
+            "emd.policy.server_name",
+            self::POLICY_NAME
+        );
         $this->worker->count = (int) config(
-            "policy.server_worker",
+            "emd.policy.server_worker",
             self::POLICY_WORKER
         );
         Worker::$daemonize = (bool) config(
-            "policy.daemonize",
+            "emd.policy.daemonize",
             self::POLICY_DAEMONIZE
         );
         Worker::$logFile = storage_path("logs") . "/workerman.log";
