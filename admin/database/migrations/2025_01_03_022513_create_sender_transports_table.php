@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('sender_transports', static function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id')->index();
+            $table->foreignId('client_id')->unique();
             $table->foreignId('transport_id')->index();
             $table->string('sender')->unique();
             $table->string('transport');
