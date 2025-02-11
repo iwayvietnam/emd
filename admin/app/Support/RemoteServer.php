@@ -6,13 +6,13 @@ use phpseclib3\Net\SFTP;
 use phpseclib3\Crypt\PublicKeyLoader;
 
 /**
- * Remote manager class
+ * Remote server class
  *
  * @package  App
  * @category Support
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
-class RemoteManager
+class RemoteServer
 {
     protected SFTP $ssh;
 

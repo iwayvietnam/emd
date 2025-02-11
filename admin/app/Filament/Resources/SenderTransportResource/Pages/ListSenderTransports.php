@@ -5,7 +5,7 @@ namespace App\Filament\Resources\SenderTransportResource\Pages;
 use App\Filament\Resources\SenderTransportResource;
 use App\Models\MailServer;
 use App\Models\SenderTransport;
-use App\Support\RemoteManager;
+use App\Support\RemoteServer;
 use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
