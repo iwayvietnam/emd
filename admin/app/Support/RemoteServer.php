@@ -49,7 +49,7 @@ class RemoteServer
         }
     }
 
-    public function runRemoteCommand(string $command)
+    public function runCommand(string $command)
     {
         try {
             $this->ssh->enableQuietMode();

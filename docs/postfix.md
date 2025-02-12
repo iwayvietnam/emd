@@ -36,6 +36,11 @@ postconf -e smtpd_relay_restrictions=permit
 Note: Replace `127.0.0.1:54321` with your policy service host and port.
 
 #### Configure sender tranport map for Postfix
+Type the following commands to edit the Postfix main configuration file:
+```sh
+postconf -e sender_dependent_default_transport_maps=lmdb:/etc/postfix/sender_transport
+postmap lmdb:/etc/postfix/sender_transport
+```
 
 #### Configure out with rate control for Postfix
 
@@ -45,7 +50,7 @@ vi /etc/postfix/master.cf
 ```
 
 * Add out transport with rabbit rate control:
-```ini
+```
 rabbit    unix  -       -       n       -       -       smtp
    -o syslog_name=postfix/rabbit
    -o rabbit_destination_concurrency_limit=20
@@ -55,7 +60,7 @@ rabbit    unix  -       -       n       -       -       smtp
 ```
 
 * Add out transport with turtle rate control:
-```ini
+```
 turtle    unix  -       -       n       -       -       smtp
    -o syslog_name=postfix/turtle
    -o turtle_destination_concurrency_limit=1
@@ -64,12 +69,12 @@ turtle    unix  -       -       n       -       -       smtp
    -o turtle_initial_destination_concurrency=1
 ```
 
-* Restart Postfix service
+#### Restart Postfix service
 ```sh
 systemctl restart postfix
 ```
 
-* Type the following command to test sending email:
+#### Test email sending:
 ```sh
 smtp-source -f sender@example.com -t recipient@example.com -S "Test send mail" 127.0.0.1:25
 ```

@@ -35,6 +35,21 @@ class ListSenderTransports extends ListRecords
 
     private static function syncSenderTransports(): void
     {
+        $senderTransports = "";
+        foreach (SenderTransport::all() as $model) {
+            $senderTransports .= $model->sender . " " . $model->transport;
+        }
+
+        $remoteFile = config("emd.sender_transport");
+        foreach (MailServer::all() as $model) {
+            $remoteServer = new RemoteServer(
+                $model->ip_address,
+                $model->ssh_port,
+                $model->ssh_user,
+                $model->ssh_private_key
+            );
+            $remoteServer->uploadContent($remoteFile, $senderTransports);
+        }
         Notification::make()
             ->title(__("Sender transports have been synchronized to mail servers!"))
             ->success()
