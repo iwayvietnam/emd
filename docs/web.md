@@ -6,8 +6,7 @@ Web Admin Installation & Configuration
 * PHP 8.2.x or later with extensions: Ctype, cURL, DOM, Fileinfo, Filter, Hash, Intl,
 Mbstring, MySQL native driver, OpenSSL, PCRE, PDO, Session, Tokenizer, XML
 * Database server: MariaDB 10.10+ or MySQL 5.7+ or PostgreSQL 11.0+ or SQL Server 2017+
-* [Laravel](https://laravel.com) framework version 11.x
-* [Filament](https://filamentphp.com) Admin Panel version 3.x
+* (optionals) Redis/Valkey, Memcache for caching
 
 ## Deployment
 When you're ready to deploy your Laravel application to production,
