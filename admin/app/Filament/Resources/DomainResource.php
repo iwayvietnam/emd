@@ -106,21 +106,6 @@ class DomainResource extends Resource
                         ->icon("heroicon-m-eye")
                         ->label(__("Query Dmarc Record")),
                 ]),
-            ])
-            ->bulkActions([
-                Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make()->before(static function (
-                        Actions\DeleteBulkAction $action
-                    ) {
-                        $ids = [0];
-                        foreach ($action->getRecords() as $record) {
-                            $ids[] = (int) $record->id;
-                        }
-                        if (self::haveClient($ids)) {
-                            self::cancelDelete($action);
-                        }
-                    }),
-                ]),
             ]);
     }
 

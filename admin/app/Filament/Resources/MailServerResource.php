@@ -107,11 +107,9 @@ class MailServerResource extends Resource
                     ->sortable()
                     ->label(__("Created At")),
             ])
-            ->actions([Actions\EditAction::make()])
-            ->bulkActions([
-                Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make(),
-                ]),
+            ->actions([
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ]);
     }
 

@@ -70,11 +70,6 @@ class ClientAccessResource extends Resource
                     ->label("Reset Quota Counter"),
                 Actions\DeleteAction::make(),
             ]),
-        ])
-        ->bulkActions([
-            Actions\BulkActionGroup::make([
-                Actions\DeleteBulkAction::make(),
-            ]),
         ]);
     }
 

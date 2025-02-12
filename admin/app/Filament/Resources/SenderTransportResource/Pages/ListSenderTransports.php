@@ -55,7 +55,9 @@ class ListSenderTransports extends ListRecords
             );
         }
         Notification::make()
-            ->title(__("Sender transports have been synchronized to mail servers!"))
+            ->title(
+                __("Sender transports have been synchronized to mail servers!")
+            )
             ->success()
             ->send();
     }

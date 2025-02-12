@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SenderTransportResource\Pages;
 use App\Models\SenderTransport;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -35,14 +35,7 @@ class SenderTransportResource extends Resource
             TextColumn::make("sender")->label(__("Sender Address")),
             TextColumn::make("transport")->label(__("Transport")),
         ])
-        ->actions([
-            Actions\DeleteAction::make(),
-        ])
-        ->bulkActions([
-            Actions\BulkActionGroup::make([
-                Actions\DeleteBulkAction::make(),
-            ]),
-        ]);
+        ->actions([DeleteAction::make()]);
     }
 
     public static function getPages(): array

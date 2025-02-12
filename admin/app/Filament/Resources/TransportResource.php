@@ -73,21 +73,6 @@ class TransportResource extends Resource
                         self::cancelDelete($action);
                     }
                 }),
-            ])
-            ->bulkActions([
-                Actions\BulkActionGroup::make([
-                    Actions\DeleteBulkAction::make()->before(static function (
-                        Actions\DeleteBulkAction $action
-                    ) {
-                        $ids = [0];
-                        foreach ($action->getRecords() as $record) {
-                            $ids[] = (int) $record->id;
-                        }
-                        if (self::haveSenderTransport($ids)) {
-                            self::cancelDelete($action);
-                        }
-                    }),
-                ]),
             ]);
     }
 
