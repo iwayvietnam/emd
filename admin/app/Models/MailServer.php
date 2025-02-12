@@ -33,4 +33,16 @@ class MailServer extends Model
         "ssh_private_key",
         "ssh_public_key",
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            "ssh_private_key" => "encrypted",
+        ];
+    }
 }
