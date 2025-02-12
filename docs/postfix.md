@@ -38,8 +38,8 @@ Note: Replace `127.0.0.1:54321` with your policy service host and port.
 #### Configure sender tranport map for Postfix
 Type the following commands to edit the Postfix main configuration file:
 ```sh
-postconf -e sender_dependent_default_transport_maps=/etc/postfix/sender_transport
-postmap /etc/postfix/sender_transport
+postconf -e sender_dependent_default_transport_maps=lmdb:/etc/postfix/sender_transport
+postmap lmdb:/etc/postfix/sender_transport
 ```
 
 #### Configure out with rate control for Postfix
