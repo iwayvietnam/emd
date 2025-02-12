@@ -49,6 +49,9 @@ class ListSenderTransports extends ListRecords
                 $model->ssh_private_key
             );
             $remoteServer->uploadContent($remoteFile, $senderTransports);
+            $remoteServer->runCommand(
+                sprintf(self::POSTMAP_COMMAND, $remoteFile)
+            );
         }
         Notification::make()
             ->title(__("Sender transports have been synchronized to mail servers!"))
