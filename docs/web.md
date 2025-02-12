@@ -21,7 +21,7 @@ for making sure your Laravel application is deployed properly.
 vi /etc/nginx/conf.d/virtual.host.conf
 ```
 
-```nginx
+```
 server {
     listen 80;
     listen [::]:80;
@@ -129,7 +129,7 @@ such as policy.service”.
 vi /lib/systemd/system/policy.service
 ```
 Add the following content to the file:
-```sh
+```
 [Unit]
 Description=Email mass delivery policy service
 After=network.target
@@ -161,7 +161,7 @@ such as queue.service”.
 vi /lib/systemd/system/policy.service
 ```
 Add the following content to the file:
-```sh
+```
 [Unit]
 Description=Email mass delivery queue service
 After=network.target

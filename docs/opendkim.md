@@ -33,7 +33,7 @@ vi /etc/opendkim.conf
 ```
 
 Add/edit the following information:
-```ini
+```
 LogWhy                  Yes
 Syslog                  Yes
 SyslogSuccess           Yes
@@ -57,7 +57,7 @@ systemctl start opendkim
 
 ### Integrate OpenDKIM with Postfix
 To integrate OpenDKIM with Postfix, type the following commands to edit the Postfix configuration file:
-```ini
+```sh
 postconf -e milter_protocol=2
 postconf -e milter_default_action=accept
 postconf -e smtpd_milters=inet:127.0.0.1:8891
