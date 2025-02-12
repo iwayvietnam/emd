@@ -26,6 +26,8 @@ use Filament\Tables\Table;
  */
 class PolicyResource extends Resource
 {
+    const MB = 1000000;
+
     protected static ?string $model = Policy::class;
     protected static ?string $navigationGroup = "Access Control";
     protected static ?string $navigationIcon = "heroicon-o-shield-check";
@@ -51,11 +53,10 @@ class PolicyResource extends Resource
                 ->integer()
                 ->minValue(0)
                 ->default(0)
-                ->live()
                 ->label(__("Quota"))
                 ->helperText(
                     __(
-                        "Maximum capacity in bytes that client can send per time unit."
+                        "Maximum capacity in megabytes that client can send per time unit."
                     )
                 ),
             Select::make("quota_period")
@@ -68,7 +69,6 @@ class PolicyResource extends Resource
                 ->integer()
                 ->minValue(0)
                 ->default(0)
-                ->live()
                 ->label(__("Rate"))
                 ->helperText(
                     __(
@@ -91,8 +91,8 @@ class PolicyResource extends Resource
                 TextColumn::make("quota_limit")
                     ->state(
                         static fn(Policy $policy) => implode([
-                            $policy->quota_limit,
-                            " Bytes ",
+                            intval($policy->quota_limit / self::MB),
+                            " MB(s) ",
                             LimitPeriod::tryFrom(
                                 $policy->quota_period
                             )?->getLabel(),
@@ -103,7 +103,7 @@ class PolicyResource extends Resource
                     ->state(
                         static fn(Policy $policy) => implode([
                             $policy->rate_limit,
-                            " Messages ",
+                            " Message(s) ",
                             LimitPeriod::tryFrom(
                                 $policy->rate_period
                             )?->getLabel(),

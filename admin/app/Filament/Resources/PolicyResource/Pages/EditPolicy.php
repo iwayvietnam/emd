@@ -25,4 +25,18 @@ class EditPolicy extends EditRecord
     {
         return static::getResource()::getUrl();
     }
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        $data['quota_limit'] = intval(
+            $data['quota_limit'] / static::getResource()::MB
+        );
+        return $data;
+    }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['quota_limit'] = $data['quota_limit'] * static::getResource()::MB;
+        return $data;
+    }
 }
