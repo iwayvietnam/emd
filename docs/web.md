@@ -70,40 +70,40 @@ cp .env.example .env
 ```
 
 Environment variables:
-| Name                 | Description             | Default                |
-|----------------------|-------------------------|------------------------|
-| APP_NAME             | Application Name        | SMTP API               |
-| APP_ENV              | Application Environment | production             |
-| APP_KEY              | Encryption Key          | null                   |
-| APP_DEBUG            | Application Debug Mode  | false                  |
-| APP_TIMEZONE         | Application Timezone    | Asia/Ho_Chi_Minh       |
-| APP_URL              | Application URL         | http://localhost       |
-| APP_DOMAIN           | Application Domain      | yourdomain.com         |
-| FORCE_HTTPS          | Force Https             | false                  |
-| DB_CONNECTION        | Database Connection     | mysql                  |
-| DB_HOST              | Database Host           | 127.0.0.1              |
-| DB_PORT              | Database Port           | 3306                   |
-| DB_DATABASE          | Database Name           | laravel                |
-| DB_USERNAME          | Database User Name      | root                   |
-| DB_PASSWORD          | Database User Password  | null                   |
-| MAIL_MAILER          | Default Mailer          | smtp                   |
-| MAIL_HOST            | Mail Host Name          | 127.0.0.1              |
-| MAIL_PORT            | Mail Port               | 587                    |
-| MAIL_ENCRYPTION      | Mail Encryption         | tls                    |
-| MAIL_USERNAME        | Mail User Name          | null                   |
-| MAIL_PASSWORD        | Mail User Password      | null                   |
-| MAIL_EHLO_DOMAIN     | Mail Ehlo Domain        | null                   |
-| MAIL_QUEUE_NAME      | Mail Queue Name         | default                |
-| MAIL_SHOULD_QUEUE    | Message Should Queue    | true                   |
-| MAIL_TRACK_CLICK     | Mail Track Click        | false                  |
-| QUEUE_CONNECTION     | Queue Connection Name   | sync                   |
-| API_REQUEST_RATE     | Api Request Rate        | 600                    |
-| POLICY_SERVER_NAME   | Policy Server Name      | Access Policy          |
-| POLICY_SERVER_WORKER | Policy Server Worker    | 4                      |
-| POLICY_DAEMONIZE     | Policy Daemonize        | true                   |
-| POLICY_LISTEN_HOST   | Policy Listen Host      | 0.0.0.0                |
-| POLICY_LISTEN_PORT   | Policy Listen Port      | 54321                  |
-| SENDER_TRANSPORT     | Sender Transport Map    | sender_transport       |
+| Name                 | Description             |
+|----------------------|-------------------------|
+| APP_NAME             | Application Name        |
+| APP_ENV              | Application Environment |
+| APP_KEY              | Encryption Key          |
+| APP_DEBUG            | Application Debug Mode  |
+| APP_TIMEZONE         | Application Timezone    |
+| APP_URL              | Application URL         |
+| APP_DOMAIN           | Application Domain      |
+| FORCE_HTTPS          | Force Https             |
+| DB_CONNECTION        | Database Connection     |
+| DB_HOST              | Database Host           |
+| DB_PORT              | Database Port           |
+| DB_DATABASE          | Database Name           |
+| DB_USERNAME          | Database User Name      |
+| DB_PASSWORD          | Database User Password  |
+| MAIL_MAILER          | Default Mailer          |
+| MAIL_HOST            | Mail Host Name          |
+| MAIL_PORT            | Mail Port               |
+| MAIL_ENCRYPTION      | Mail Encryption         |
+| MAIL_USERNAME        | Mail User Name          |
+| MAIL_PASSWORD        | Mail User Password      |
+| MAIL_EHLO_DOMAIN     | Mail Ehlo Domain        |
+| MAIL_QUEUE_NAME      | Mail Queue Name         |
+| MAIL_SHOULD_QUEUE    | Message Should Queue    |
+| MAIL_TRACK_CLICK     | Mail Track Click        |
+| QUEUE_CONNECTION     | Queue Connection Name   |
+| API_REQUEST_RATE     | Api Request Rate        |
+| POLICY_SERVER_NAME   | Policy Server Name      |
+| POLICY_SERVER_WORKER | Policy Server Worker    |
+| POLICY_DAEMONIZE     | Policy Daemonize        |
+| POLICY_LISTEN_HOST   | Policy Listen Host      |
+| POLICY_LISTEN_PORT   | Policy Listen Port      |
+| SENDER_TRANSPORT     | Sender Transport Map    |
 
 Generate the application key & passport keys. Re-cache.
 ```sh
