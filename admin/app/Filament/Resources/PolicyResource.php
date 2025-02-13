@@ -26,7 +26,7 @@ use Filament\Tables\Table;
  */
 class PolicyResource extends Resource
 {
-    const MB = 1000000;
+    const MB = 1048576;
 
     protected static ?string $model = Policy::class;
     protected static ?string $navigationGroup = "Access Control";
