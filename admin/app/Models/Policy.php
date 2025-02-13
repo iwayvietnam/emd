@@ -38,6 +38,16 @@ class Policy extends Model
     {
         parent::boot();
 
+        static::saving(static function (self $model) {
+            if ($model->quota_limit == 0) {
+                $model->quota_period = 0;
+            }
+
+            if ($model->rate_limit == 0) {
+                $model->rate_period = 0;
+            }
+        });
+
         static::deleting(static function (self $model) {
             ClientAccess::where("policy_id", $model->id)->delete();
         });
