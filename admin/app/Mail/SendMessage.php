@@ -36,10 +36,8 @@ class SendMessage extends Mailable
      */
     public function __construct(
         private Message $message,
-        private bool $trackClick = false,
-    )
-    {
-    }
+        private bool $trackClick = false
+    ) {}
 
     /**
      * Get the message envelope.
@@ -51,13 +49,11 @@ class SendMessage extends Mailable
         return new Envelope(
             from: new Address(
                 $this->message->from_email,
-                $this->message->from_name,
+                $this->message->from_name
             ),
             to: $this->message->recipients,
-            replyTo: [
-                $this->message->reply_to,
-            ],
-            subject: $this->message->subject,
+            replyTo: [$this->message->reply_to],
+            subject: $this->message->subject
         );
     }
 
@@ -70,7 +66,7 @@ class SendMessage extends Mailable
     {
         return new Headers(
             messageId: $this->message->message_id,
-            text: $this->message->headers ?? [],
+            text: $this->message->headers ?? []
         );
     }
 
@@ -84,7 +80,7 @@ class SendMessage extends Mailable
         return new Content(
             htmlString: $this->trackingOpen(
                 $this->trackingClick($this->message->content)
-            ),
+            )
         );
     }
 
@@ -124,9 +120,7 @@ class SendMessage extends Mailable
         if ($this->trackClick) {
             foreach ($this->message->urls() as $url) {
                 $searches[] = $url->url;
-                $replaces[] = route(
-                    'tracking_click', ['idHash' => $url->hash]
-                );
+                $replaces[] = route("tracking_click", ["idHash" => $url->hash]);
             }
         }
         return str_replace($searches, $replaces, $content);
@@ -135,16 +129,17 @@ class SendMessage extends Mailable
     private function trackingOpen(string $content)
     {
         $trackingImg = str_replace(
-            '{tracking_pixel}',
-            route('tracking_open', ['idHash' => $this->message->hash]),
+            "{tracking_pixel}",
+            route("tracking_open", ["idHash" => $this->message->hash]),
             self::TRACKING_IMG
         );
-        if (str_contains($content, '</body>')) {
+        if (str_contains($content, "</body>")) {
             $content = str_replace(
-                '</body>', $trackingImg . '</body>', $content
+                "</body>",
+                $trackingImg . "</body>",
+                $content
             );
-        }
-        else {
+        } else {
             $content .= $trackingImg;
         }
         return $content;

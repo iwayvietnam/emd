@@ -29,7 +29,7 @@ class CreatePolicy extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['quota_limit'] = $data['quota_limit'] * static::getResource()::MB;
+        $data["quota_limit"] = $data["quota_limit"] * static::getResource()::MB;
         return $data;
     }
 }

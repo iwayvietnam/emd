@@ -34,43 +34,44 @@ class ClientAccessResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
-            TextColumn::make("policy.name")->label(__("Policy")),
-            TextColumn::make("client.name")->label(__("Client")),
-            TextColumn::make("sender")->label(__("Sender Address")),
-            TextColumn::make("client_ip")->label(__("Client Ip")),
-            TextColumn::make("verdict")->label(__("Verdict")),
-        ])
-        ->filters([
-            SelectFilter::make("policy_id")
-                ->options(Policy::all()->pluck("name", "id"))
-                ->label(__("Policy")),
-        ])
-        ->actions([
-            Actions\ActionGroup::make([
-                Actions\Action::make("reset_rate")
-                    ->requiresConfirmation()
-                    ->action(
-                        static fn(
-                            ClientAccess $record
-                        ) => self::resetRateCounter($record)
-                    )
-                    ->icon("heroicon-m-check-badge")
-                    ->color("primary")
-                    ->label("Reset Rate Counter"),
-                Actions\Action::make("reset_quata")
-                    ->requiresConfirmation()
-                    ->action(
-                        static fn(
-                            ClientAccess $record
-                        ) => self::resetQuotaCounter($record)
-                    )
-                    ->icon("heroicon-m-check-badge")
-                    ->color("primary")
-                    ->label("Reset Quota Counter"),
-                Actions\DeleteAction::make(),
-            ]),
-        ]);
+        return $table
+            ->columns([
+                TextColumn::make("policy.name")->label(__("Policy")),
+                TextColumn::make("client.name")->label(__("Client")),
+                TextColumn::make("sender")->label(__("Sender Address")),
+                TextColumn::make("client_ip")->label(__("Client Ip")),
+                TextColumn::make("verdict")->label(__("Verdict")),
+            ])
+            ->filters([
+                SelectFilter::make("policy_id")
+                    ->options(Policy::all()->pluck("name", "id"))
+                    ->label(__("Policy")),
+            ])
+            ->actions([
+                Actions\ActionGroup::make([
+                    Actions\Action::make("reset_rate")
+                        ->requiresConfirmation()
+                        ->action(
+                            static fn(
+                                ClientAccess $record
+                            ) => self::resetRateCounter($record)
+                        )
+                        ->icon("heroicon-m-check-badge")
+                        ->color("primary")
+                        ->label("Reset Rate Counter"),
+                    Actions\Action::make("reset_quata")
+                        ->requiresConfirmation()
+                        ->action(
+                            static fn(
+                                ClientAccess $record
+                            ) => self::resetQuotaCounter($record)
+                        )
+                        ->icon("heroicon-m-check-badge")
+                        ->color("primary")
+                        ->label("Reset Quota Counter"),
+                    Actions\DeleteAction::make(),
+                ]),
+            ]);
     }
 
     public static function getPages(): array
@@ -107,8 +108,6 @@ class ClientAccessResource extends Resource
         ClientAccess $record,
         string $suffix
     ): string {
-        return sha1(
-            $record->sender  . "|" .  $record->client_ip  . "|" .  $suffix
-        );
+        return sha1($record->sender . "|" . $record->client_ip . "|" . $suffix);
     }
 }

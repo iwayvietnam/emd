@@ -22,7 +22,9 @@ class ListRestrictedRecipients extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()->label(__("Create Restrict Recipients")),
+            Actions\CreateAction::make()->label(
+                __("Create Restrict Recipients")
+            ),
             Actions\Action::make("clear_cache")
                 ->action(static fn() => self::clearRestrictedCache())
                 ->label(__("Clear Cache")),
@@ -33,7 +35,9 @@ class ListRestrictedRecipients extends ListRecords
     {
         RestrictedRecipient::clearCache();
         Notification::make()
-            ->title(__("Restricted recipients have been removed from the cache!"))
+            ->title(
+                __("Restricted recipients have been removed from the cache!")
+            )
             ->success()
             ->send();
     }

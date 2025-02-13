@@ -19,10 +19,7 @@ class RemoteQueue implements QueueInterface
      * @param RemoteServer $remoteServer
      * @return self
      */
-    public function __construct(
-        private readonly RemoteServer $remoteServer
-    ) {
-    }
+    public function __construct(private readonly RemoteServer $remoteServer) {}
 
     /**
      * {@inheritdoc}

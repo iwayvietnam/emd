@@ -21,8 +21,7 @@ class RemoteServer
         private readonly int $remotePort = 22,
         private readonly string $remoteUser = "root",
         private readonly string $privateKey = ""
-    )
-    {
+    ) {
         if (!empty($this->privateKey)) {
             $this->ssh = new SFTP($this->remoteHost, $this->remotePort);
             if (

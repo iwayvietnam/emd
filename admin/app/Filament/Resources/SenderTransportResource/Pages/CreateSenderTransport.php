@@ -41,9 +41,9 @@ class CreateSenderTransport extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['sender'] = Client::find($data["client_id"])->sender_address;
+        $data["sender"] = Client::find($data["client_id"])->sender_address;
         $transport = Transport::find($data["transport_id"]);
-        $data['transport'] = $transport->transport . ":" . $transport->nexthop;
+        $data["transport"] = $transport->transport . ":" . $transport->nexthop;
         return $data;
     }
 

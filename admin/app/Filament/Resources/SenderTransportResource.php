@@ -30,19 +30,20 @@ class SenderTransportResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
-            TextColumn::make("client.name")->label(__("Client")),
-            TextColumn::make("sender")->label(__("Sender Address")),
-            TextColumn::make("transport")->label(__("Transport")),
-        ])
-        ->actions([DeleteAction::make()]);
+        return $table
+            ->columns([
+                TextColumn::make("client.name")->label(__("Client")),
+                TextColumn::make("sender")->label(__("Sender Address")),
+                TextColumn::make("transport")->label(__("Transport")),
+            ])
+            ->actions([DeleteAction::make()]);
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSenderTransports::route('/'),
-            'create' => Pages\CreateSenderTransport::route('/create'),
+            "index" => Pages\ListSenderTransports::route("/"),
+            "create" => Pages\CreateSenderTransport::route("/create"),
         ];
     }
 }

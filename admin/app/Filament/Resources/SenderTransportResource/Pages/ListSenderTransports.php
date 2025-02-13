@@ -19,7 +19,7 @@ use Filament\Resources\Pages\ListRecords;
  */
 class ListSenderTransports extends ListRecords
 {
-    const POSTMAP_COMMAND = 'postmap lmdb:%s';
+    const POSTMAP_COMMAND = "postmap lmdb:%s";
 
     protected static string $resource = SenderTransportResource::class;
 
@@ -27,7 +27,7 @@ class ListSenderTransports extends ListRecords
     {
         return [
             Actions\CreateAction::make()->label(__("New Sender Transport")),
-            Actions\Action::make('sync')
+            Actions\Action::make("sync")
                 ->requiresConfirmation()
                 ->action(static fn() => self::syncSenderTransports())
                 ->label(__("Sync To Mail Servers")),
@@ -42,7 +42,7 @@ class ListSenderTransports extends ListRecords
         }
 
         if (!empty($transports)) {
-        $remoteFile = config("emd.sender_transport");
+            $remoteFile = config("emd.sender_transport");
             foreach (MailServer::all() as $model) {
                 $remoteServer = new RemoteServer(
                     $model->ip_address,
@@ -51,7 +51,8 @@ class ListSenderTransports extends ListRecords
                     $model->ssh_private_key
                 );
                 $remoteServer->uploadContent(
-                    $remoteFile, implode(PHP_EOL, $transports)
+                    $remoteFile,
+                    implode(PHP_EOL, $transports)
                 );
                 $remoteServer->runCommand(
                     sprintf(self::POSTMAP_COMMAND, $remoteFile)

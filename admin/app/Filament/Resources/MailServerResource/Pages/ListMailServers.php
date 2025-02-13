@@ -19,8 +19,6 @@ class ListMailServers extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [
-            CreateAction::make()->label(__("New Mail Server")),
-        ];
+        return [CreateAction::make()->label(__("New Mail Server"))];
     }
 }

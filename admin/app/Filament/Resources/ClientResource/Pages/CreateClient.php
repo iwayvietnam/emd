@@ -28,35 +28,37 @@ class CreateClient extends CreateRecord
     public function form(Form $form): Form
     {
         return $form->schema([
-            Grid::make(3)
-                ->schema([
-                    Select::make("domain_id")
-                        ->options(Domain::all()->pluck("name", "id"))
-                        ->required()
-                        ->label(__("Domain")),
-                    TextInput::make("name")->required()->unique()->label(__("Name")),
-                    TextInput::make("sender_address")
-                        ->rules([
-                            static fn(Get $get) => static function (
-                                string $attribute,
-                                $value,
-                                \Closure $fail
-                            ) use ($get) {
-                                $domain = Domain::find($get("domain_id"));
-                                if (!Str::endsWith($value, $domain->name)) {
-                                    $fail(
-                                        __(
-                                            "The sender address must match the domain name."
-                                        )
-                                    );
-                                }
-                            },
-                        ])
-                        ->email()
-                        ->required()
-                        ->unique()
-                        ->label(__("Sender Address")),
-                ]),
+            Grid::make(3)->schema([
+                Select::make("domain_id")
+                    ->options(Domain::all()->pluck("name", "id"))
+                    ->required()
+                    ->label(__("Domain")),
+                TextInput::make("name")
+                    ->required()
+                    ->unique()
+                    ->label(__("Name")),
+                TextInput::make("sender_address")
+                    ->rules([
+                        static fn(Get $get) => static function (
+                            string $attribute,
+                            $value,
+                            \Closure $fail
+                        ) use ($get) {
+                            $domain = Domain::find($get("domain_id"));
+                            if (!Str::endsWith($value, $domain->name)) {
+                                $fail(
+                                    __(
+                                        "The sender address must match the domain name."
+                                    )
+                                );
+                            }
+                        },
+                    ])
+                    ->email()
+                    ->required()
+                    ->unique()
+                    ->label(__("Sender Address")),
+            ]),
             Textarea::make("description")
                 ->columnSpan(2)
                 ->label(__("Description")),
