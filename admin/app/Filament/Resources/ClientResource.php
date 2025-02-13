@@ -21,7 +21,7 @@ use Filament\Tables\Table;
 class ClientResource extends Resource
 {
     protected static ?string $model = Client::class;
-    protected static ?string $navigationGroup = "Domain";
+    protected static ?string $navigationGroup = "Access Control";
     protected static ?string $navigationIcon = "heroicon-m-computer-desktop";
     protected static ?string $slug = "client";
 
