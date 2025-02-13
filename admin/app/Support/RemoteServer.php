@@ -2,8 +2,8 @@
 
 namespace App\Support;
 
-use phpseclib3\Net\SFTP;
 use phpseclib3\Crypt\PublicKeyLoader;
+use phpseclib3\Net\SFTP;
 
 /**
  * Remote server class
@@ -17,10 +17,10 @@ class RemoteServer
     protected SFTP $ssh;
 
     public function __construct(
-        private readonly string $remoteHost,
-        private readonly int $remotePort,
-        private readonly string $remoteUser,
-        private readonly string $privateKey
+        private readonly string $remoteHost = "0.0.0.0",
+        private readonly int $remotePort = 22,
+        private readonly string $remoteUser = "root",
+        private readonly string $privateKey = ""
     )
     {
         if (!empty($this->privateKey)) {
@@ -44,7 +44,7 @@ class RemoteServer
             }
         } else {
             throw new \UnexpectedValueException(
-                "SSH private key is empty."
+                "The SSH private key is empty."
             );
         }
     }
