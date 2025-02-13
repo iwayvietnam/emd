@@ -26,7 +26,7 @@ cp /etc/postfix/main.cf{,.orig}
 cp /etc/postfix/master.cf{,.orig}
 ```
 
-#### Configure access control for Postfix
+#### Configure access control
 Type the following commands to edit the Postfix main configuration file:
 ```sh
 postconf -e "smtpd_recipient_restrictions=permit_mynetworks,check_policy_service inet:127.0.0.1:54321,reject"
@@ -35,15 +35,15 @@ postconf -e smtpd_relay_restrictions=permit
 ```
 Note: Replace `127.0.0.1:54321` with your policy service host and port.
 
-#### Configure sender tranport map for Postfix
-Type the following commands to edit the Postfix main configuration file:
+#### Configure sender tranport
+Type the following commands to configure tranport maps for sender:
 ```sh
 touch /etc/postfix/sender_transport
 postconf -e sender_dependent_default_transport_maps=lmdb:/etc/postfix/sender_transport
 postmap lmdb:/etc/postfix/sender_transport
 ```
 
-#### Configure out with rate control for Postfix
+#### Configure out with rate control
 
 * Type the following command to edit the Postfix master configuration file:
 ```sh
