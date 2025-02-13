@@ -27,7 +27,7 @@ class DomainResource extends Resource
     const RECORD_FORMAT = "%-10s %-56s\r\n";
 
     protected static ?string $model = Domain::class;
-    protected static ?string $navigationGroup = "Domain";
+    protected static ?string $navigationGroup = "System";
     protected static ?string $navigationIcon = "heroicon-s-cog";
     protected static ?string $slug = "domain";
 

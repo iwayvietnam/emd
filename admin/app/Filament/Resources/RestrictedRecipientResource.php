@@ -20,7 +20,7 @@ use Filament\Tables\Table;
 class RestrictedRecipientResource extends Resource
 {
     protected static ?string $model = RestrictedRecipient::class;
-    protected static ?string $navigationGroup = "Access Control";
+    protected static ?string $navigationGroup = "System";
     protected static ?string $navigationIcon = "heroicon-o-lock-closed";
     protected static ?string $slug = "restricted";
 
