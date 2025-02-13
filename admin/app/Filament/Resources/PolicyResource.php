@@ -53,6 +53,7 @@ class PolicyResource extends Resource
                 ->integer()
                 ->minValue(0)
                 ->default(0)
+                ->live()
                 ->label(__("Quota"))
                 ->helperText(
                     __(
@@ -69,6 +70,7 @@ class PolicyResource extends Resource
                 ->integer()
                 ->minValue(0)
                 ->default(0)
+                ->live()
                 ->label(__("Rate"))
                 ->helperText(
                     __(
