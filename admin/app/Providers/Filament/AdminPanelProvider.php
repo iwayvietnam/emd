@@ -55,7 +55,6 @@ class AdminPanelProvider extends PanelProvider
             )
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
             ])
             ->navigationItems([
                 NavigationItem::make(__("Edit Profile"))->url(
