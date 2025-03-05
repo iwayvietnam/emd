@@ -58,11 +58,11 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\FilamentInfoWidget::class,
             ])
             ->navigationItems([
-                NavigationItem::make(__('Edit Profile'))->url(
+                NavigationItem::make(__("Edit Profile"))->url(
                     static fn (): string => EditUserProfile::getUrl()
-                )->icon('heroicon-o-user')->isActiveWhen(
+                )->icon("heroicon-o-user")->isActiveWhen(
                     static fn () => request()->routeIs(EditUserProfile::getRouteName())
-                ),
+                )->group("System"),
             ])
             ->topNavigation()
             ->middleware([
