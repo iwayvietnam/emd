@@ -78,7 +78,7 @@ services:
             - POLICY_SERVER_WORKER=4
             - POLICY_DAEMONIZE=true
             - POLICY_LISTEN_HOST=0.0.0.0
-            - POLICY_LISTEN_PORT=54321
+            - POLICY_LISTEN_PORT=1403
             - MAIL_MAILER=mail.emd.org.vn
             - MAIL_HOST=smtp.emd.org.vn
             - MAIL_PORT=587

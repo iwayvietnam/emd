@@ -15,7 +15,7 @@ interface AdapterInterface
     const POLICY_WORKER = 4;
     const POLICY_DAEMONIZE = true;
     const LISTEN_HOST = "0.0.0.0";
-    const LISTEN_PORT = 54321;
+    const LISTEN_PORT = 1403;
 
     /**
      * Handle policy
