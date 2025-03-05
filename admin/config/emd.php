@@ -16,6 +16,6 @@ return [
         'daemonize' => env('POLICY_DAEMONIZE', false),
         'adapter' => env('POLICY_ADAPTER', App\Mail\Policy\Adapter\Workerman::class),
         'listen_host' => env('POLICY_LISTEN_HOST', '0.0.0.0'),
-        'listen_port' => env('POLICY_LISTEN_PORT', 54321),
+        'listen_port' => env('POLICY_LISTEN_PORT', 1403),
     ],
 ];
