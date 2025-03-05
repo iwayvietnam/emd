@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\EditUserProfile;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -34,6 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->id("admin")
             ->path("admin")
             ->login()
+            ->profile(EditUserProfile::class, isSimple: false)
             ->colors([
                 "primary" => Color::Amber,
             ])
@@ -53,6 +55,13 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+            ])
+            ->navigationItems([
+                NavigationItem::make(__('Edit Profile'))->url(
+                    static fn (): string => EditUserProfile::getUrl()
+                )->icon('heroicon-o-user')->isActiveWhen(
+                    static fn () => request()->routeIs(EditUserProfile::getRouteName())
+                ),
             ])
             ->middleware([
                 EncryptCookies::class,
