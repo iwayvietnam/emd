@@ -14,7 +14,7 @@ use Filament\Pages\Auth\EditProfile;
  */
 class EditUserProfile extends EditProfile
 {
-    protected static ?string $navigationGroup = 'System';
+    protected static ?string $navigationGroup = "System";
 
     protected function getEmailFormComponent(): Component
     {

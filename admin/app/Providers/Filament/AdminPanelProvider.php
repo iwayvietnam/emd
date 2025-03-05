@@ -64,6 +64,7 @@ class AdminPanelProvider extends PanelProvider
                     static fn () => request()->routeIs(EditUserProfile::getRouteName())
                 ),
             ])
+            ->topNavigation()
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
