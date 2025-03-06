@@ -58,7 +58,7 @@ class RestrictBounced extends Command
             $recipients = collect(
                 array_map(
                     static fn($record) => $record->recipient,
-                    RestrictedRecipient::all()
+                    RestrictedRecipient::all()->toArray()
                 )
             );
             $codes = collect(self::$restrictCodes);
