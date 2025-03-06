@@ -33,7 +33,7 @@ class SenderTransportResource extends Resource
         return $table
             ->columns([
                 TextColumn::make("client.name")->label(__("Client")),
-                TextColumn::make("sender")->label(__("Sender Address")),
+                TextColumn::make("sender")->searchable()->label(__("Sender Address")),
                 TextColumn::make("transport")->label(__("Transport")),
             ])
             ->actions([DeleteAction::make()]);
