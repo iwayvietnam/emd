@@ -157,7 +157,7 @@ systemctl start policy.service
 Create a new file in the “/etc/systemd/system/” directory with a .service extension,
 such as queue.service”.
 ```sh
-vi /lib/systemd/system/policy.service
+vi /lib/systemd/system/queue.service
 ```
 Add the following content to the file:
 ```
