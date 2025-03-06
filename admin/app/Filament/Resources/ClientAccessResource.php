@@ -38,7 +38,7 @@ class ClientAccessResource extends Resource
             ->columns([
                 TextColumn::make("policy.name")->label(__("Policy")),
                 TextColumn::make("client.name")->label(__("Client")),
-                TextColumn::make("sender")->label(__("Sender Address")),
+                TextColumn::make("sender")->searchable()->label(__("Sender Address")),
                 TextColumn::make("client_ip")->label(__("Client Ip")),
                 TextColumn::make("verdict")->label(__("Verdict")),
             ])
