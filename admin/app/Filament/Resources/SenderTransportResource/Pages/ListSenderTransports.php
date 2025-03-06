@@ -20,6 +20,7 @@ use Filament\Resources\Pages\ListRecords;
 class ListSenderTransports extends ListRecords
 {
     const POSTMAP_COMMAND = "sudo postmap lmdb:%s";
+    const COPY_COMMAND = "sudo cp -f %s %s";
 
     protected static string $resource = SenderTransportResource::class;
 
@@ -42,7 +43,8 @@ class ListSenderTransports extends ListRecords
         }
 
         if (!empty($transports)) {
-            $remoteFile = config("emd.sender_transport");
+            $transportFile = config("emd.sender_transport");
+            $tempFile = tempnam(sys_get_temp_dir(), 'emd');
             foreach (MailServer::all() as $model) {
                 $remoteServer = new RemoteServer(
                     $model->ip_address,
@@ -51,11 +53,14 @@ class ListSenderTransports extends ListRecords
                     $model->ssh_private_key
                 );
                 $remoteServer->uploadContent(
-                    $remoteFile,
+                    $tempFile,
                     implode(PHP_EOL, $transports)
                 );
                 $remoteServer->runCommand(
-                    sprintf(self::POSTMAP_COMMAND, $remoteFile)
+                    sprintf(self::COPY_COMMAND, $tempFile, $transportFile)
+                );
+                $remoteServer->runCommand(
+                    sprintf(self::POSTMAP_COMMAND, $transportFile)
                 );
             }
         }
