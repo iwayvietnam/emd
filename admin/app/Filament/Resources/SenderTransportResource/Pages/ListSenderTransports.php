@@ -19,7 +19,7 @@ use Filament\Resources\Pages\ListRecords;
  */
 class ListSenderTransports extends ListRecords
 {
-    const POSTMAP_COMMAND = "postmap lmdb:%s";
+    const POSTMAP_COMMAND = "sudo postmap lmdb:%s";
 
     protected static string $resource = SenderTransportResource::class;
 
