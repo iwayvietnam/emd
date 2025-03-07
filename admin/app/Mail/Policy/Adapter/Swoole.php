@@ -74,13 +74,12 @@ class Swoole extends Base
      */
     public function handle(PolicyListen $listen = PolicyListen::START): void
     {
-        $this->server->addListener(
-            config("emd.policy.listen_host", self::LISTEN_HOST),
-            (int) config("emd.policy.listen_port", self::LISTEN_PORT)
-        );
-
         switch ($listen) {
             case PolicyListen::START:
+                $this->server->addListener(
+                    config("emd.policy.listen_host", self::LISTEN_HOST),
+                    (int) config("emd.policy.listen_port", self::LISTEN_PORT)
+                );
                 $this->server->start();
                 break;
             case PolicyListen::STOP:
