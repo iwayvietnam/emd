@@ -3,13 +3,13 @@
 namespace App\Enum;
 
 /**
- * Policy service exec enum
+ * Policy listen enum
  *
  * @package  App
  * @category Enum
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
-enum PolicyServiceExec: string
+enum PolicyListen: string
 {
     case START = "start";
     case STOP = "stop";
