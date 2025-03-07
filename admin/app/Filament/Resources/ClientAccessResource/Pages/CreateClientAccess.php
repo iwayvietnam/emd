@@ -4,6 +4,7 @@ namespace App\Filament\Resources\ClientAccessResource\Pages;
 
 use App\Filament\Resources\ClientAccessResource;
 use App\Models\Client;
+use App\Models\ClientAccess;
 use App\Models\Policy;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
@@ -65,6 +66,7 @@ class CreateClientAccess extends CreateRecord
                     "verdict" => $data["verdict"],
                 ]);
             }
+            ClientAccess::clearCache();
             return $model;
         } else {
             throw new Halt("Error Create Client Accesses");
