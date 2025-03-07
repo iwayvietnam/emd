@@ -24,7 +24,7 @@ use Filament\Tables\Table;
 class TransportResource extends Resource
 {
     protected static ?string $model = Transport::class;
-    protected static ?string $navigationGroup = "Access Control";
+    protected static ?string $navigationGroup = "System";
     protected static ?string $navigationIcon = "heroicon-m-list-bullet";
     protected static ?string $slug = "transport";
 
