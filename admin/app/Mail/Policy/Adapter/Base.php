@@ -15,9 +15,19 @@ use App\Mail\Policy\PolicyRequest;
  */
 abstract class Base implements AdapterInterface
 {
-    protected function response(PolicyInterface $policy, string $data): string
+    /**
+     * Constructor
+     *
+     * @param PolicyInterface $policy
+     * @return self
+     */
+    protected function __construct(private readonly PolicyInterface $policy)
     {
-        return $policy->check(PolicyRequest::fromData($data))->getAction();
+    }
+
+    protected function response(string $data): string
+    {
+        return $this->policy->check(PolicyRequest::fromData($data))->getAction();
     }
 
     protected function onConnect(string $remoteIp, int $remotePort): void

@@ -2,6 +2,7 @@
 
 namespace App\Mail\Policy\Adapter;
 
+use App\Enum\PolicyListen;
 use App\Mail\Policy\Interface\PolicyInterface;
 use OpenSwoole\Server;
 
@@ -26,12 +27,15 @@ class OpenSwoole extends Base
      *
      * @return self
      */
-    public function __construct()
+    public function __construct(PolicyInterface $policy)
     {
+        parent::__construct($policy);
+
         $this->server = new Server(
             config("emd.policy.listen_host", self::LISTEN_HOST),
             (int) config("emd.policy.listen_port", self::LISTEN_PORT)
         );
+
         $this->server->set([
             "worker_num" => (int) config(
                 "emd.policy.server_worker", self::POLICY_WORKER
@@ -43,13 +47,7 @@ class OpenSwoole extends Base
             "log_level" => config("app.debug") ? 0 : 2,
             "pid_file" => storage_path() . "/openswoole.pid",
         ]);
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handle(PolicyInterface $policy): void
-    {
         $this->server->on("connect", function (Server $server, int $fd) {
             $info = $server->getClientInfo($fd);
             $this->onConnect($info["remote_ip"], $info["remote_port"]);
@@ -60,9 +58,9 @@ class OpenSwoole extends Base
             int $fd,
             int $reactorId,
             string $data
-        ) use ($policy) {
+        ) {
             $server->send(
-                $fd, $this->response($policy, $data) . PHP_EOL . PHP_EOL
+                $fd, $this->response($data) . PHP_EOL . PHP_EOL
             );
             $server->close($fd);
         };
@@ -71,7 +69,26 @@ class OpenSwoole extends Base
             $info = $server->getClientInfo($fd);
             $this->onClose($info["remote_ip"], $info["remote_port"]);
         });
+    }
 
-        $this->server->start();
+    /**
+     * {@inheritdoc}
+     */
+    public function handle(PolicyListen $listen = PolicyListen::START): void
+    {
+        switch ($listen) {
+            case PolicyListen::START:
+                $this->server->start();
+                break;
+            case PolicyListen::STOP:
+                $this->server->shutdown();
+                break;
+            case PolicyListen::STATUS:
+                $this->server->stats();
+                break;
+            case PolicyListen::RELOAD:
+                $this->server->reload();
+                break;
+        }
     }
 }

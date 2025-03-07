@@ -2,6 +2,7 @@
 
 namespace App\Mail\Policy\Adapter;
 
+use App\Enum\PolicyListen;
 use App\Mail\Policy\Interface\PolicyInterface;
 use Workerman\Worker;
 use Workerman\Connection\ConnectionInterface as Connection;
@@ -25,10 +26,13 @@ class Workerman extends Base
     /**
      * Constructor
      *
+     * @param PolicyInterface $policy
      * @return self
      */
-    public function __construct()
+    public function __construct(PolicyInterface $policy)
     {
+        parent::__construct($policy);
+
         $this->worker = new Worker(
             implode([
                 "tcp://",
@@ -52,13 +56,7 @@ class Workerman extends Base
         );
         Worker::$logFile = storage_path("logs") . "/workerman.log";
         Worker::$pidFile = storage_path() . "/workerman.pid";
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handle(PolicyInterface $policy): void
-    {
         $this->worker->onConnect = fn(
             Connection $connection
         ) => $this->onConnect(
@@ -70,14 +68,20 @@ class Workerman extends Base
             Connection $connection,
             string $data
         ) => $connection->close(
-            $this->response($policy, $data) . PHP_EOL . PHP_EOL
+            $this->response($data) . PHP_EOL . PHP_EOL
         );
 
         $this->worker->onClose = fn(Connection $connection) => $this->onClose(
             $connection->getRemoteAddress(),
             $connection->getRemotePort()
         );
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function handle(PolicyListen $listen = PolicyListen::START): void
+    {
         Worker::runAll();
     }
 }

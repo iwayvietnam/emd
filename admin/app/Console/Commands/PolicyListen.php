@@ -21,7 +21,7 @@ class PolicyListen extends Command
      *
      * @var string
      */
-    protected $signature = "policy:listen {argument=start}";
+    protected $signature = "policy:listen {listen=start}";
 
     /**
      * The console command description.
@@ -35,7 +35,7 @@ class PolicyListen extends Command
      */
     public function handle(): int
     {
-        Service::listen();
+        Service::handle($this->argument('listen'));
         return Command::SUCCESS;
     }
 }

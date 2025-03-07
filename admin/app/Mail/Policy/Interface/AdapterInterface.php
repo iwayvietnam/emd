@@ -2,6 +2,8 @@
 
 namespace App\Mail\Policy\Interface;
 
+use App\Enum\PolicyListen;
+
 /**
  * Policy server adapter interface
  *
@@ -14,14 +16,14 @@ interface AdapterInterface
     const POLICY_NAME = "Access Policy";
     const POLICY_WORKER = 4;
     const POLICY_DAEMONIZE = true;
-    const LISTEN_HOST = "0.0.0.0";
+    const LISTEN_HOST = "127.0.0.1";
     const LISTEN_PORT = 1403;
 
     /**
      * Handle policy
      *
-     * @param PolicyInterface $policy
+     * @param PolicyListen $listen
      * @return void
      */
-    function handle(PolicyInterface $policy): void;
+    function handle(PolicyListen $listen = PolicyListen::START): void;
 }
