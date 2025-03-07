@@ -32,10 +32,7 @@ class Swoole extends Base
     {
         parent::__construct($policy);
 
-        $this->server = new Server(
-            config("emd.policy.listen_host", self::LISTEN_HOST),
-            (int) config("emd.policy.listen_port", self::LISTEN_PORT)
-        );
+        $this->server = new Server();
 
         $this->server->set([
             "worker_num" => (int) config(
@@ -77,6 +74,11 @@ class Swoole extends Base
      */
     public function handle(PolicyListen $listen = PolicyListen::START): void
     {
+        $this->server->addListener(
+            config("emd.policy.listen_host", self::LISTEN_HOST),
+            (int) config("emd.policy.listen_port", self::LISTEN_PORT)
+        );
+
         switch ($listen) {
             case PolicyListen::START:
                 $this->server->start();
