@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\RestrictedRecipientResource\Pages;
 
 use App\Filament\Resources\RestrictedRecipientResource;
+use App\Models\RestrictedRecipient;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Form;
@@ -60,6 +61,7 @@ class CreateRestrictedRecipient extends CreateRecord
                     "verdict" => $verdict,
                 ]);
             }
+            RestrictedRecipient::clearCache();
             return $model;
         } else {
             throw new Halt("Error Create Restrict Recipients");
