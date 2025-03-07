@@ -45,7 +45,7 @@ class Swoole extends Base
                 "emd.policy.daemonize", self::POLICY_DAEMONIZE
             ),
             "log_file" => storage_path("logs") . "/swoole.log",
-            "log_level" => config("emd.app.debug") ? 0 : 2,
+            "log_level" => config("app.debug") ? 0 : 2,
             "pid_file" => storage_path() . "/swoole.pid",
         ]);
 
