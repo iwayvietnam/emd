@@ -3,6 +3,7 @@
 namespace App\Mail\Policy;
 
 use App\Mail\Policy\Interface\RequestInterface;
+use Illuminate\Support\Str;
 
 /**
  * Policy request class
@@ -36,8 +37,10 @@ class PolicyRequest implements RequestInterface
         $attributes = [];
         $lines = explode(self::EOL, $data);
         foreach ($lines as $line) {
-            [$key, $value] = explode("=", trim($line));
-            $attributes[$key] = $value;
+            if (strpos($line, "=")) {
+                [$key, $value] = explode("=", trim($line));
+                $attributes[$key] = $value;
+            }
         }
         return new self($attributes);
     }
