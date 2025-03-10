@@ -146,8 +146,6 @@ WantedBy=multi-user.target
 Set `User` & `Group` with your web server user & group.
 Set `WorkingDirectory` with your Laravel application directory.
 
-Open `.env` file and set `POLICY_DAEMONIZE=false`
-
 Enabling & starting the policy service
 ```sh
 systemctl daemon-reload

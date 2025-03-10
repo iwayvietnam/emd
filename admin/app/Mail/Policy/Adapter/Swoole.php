@@ -40,9 +40,6 @@ class Swoole extends Base
             "worker_num" => (int) config(
                 "emd.policy.server_worker", self::POLICY_WORKER
             ),
-            "daemonize" => (bool) config(
-                "emd.policy.daemonize", self::POLICY_DAEMONIZE
-            ),
             "log_file" => storage_path("logs") . "/swoole.log",
             "log_level" => config("app.debug") ? 0 : 2,
             "pid_file" => storage_path() . "/swoole.pid",

@@ -49,10 +49,6 @@ class Workerman extends Base
             "emd.policy.server_worker",
             self::POLICY_WORKER
         );
-        Worker::$daemonize = (bool) config(
-            "emd.policy.daemonize",
-            self::POLICY_DAEMONIZE
-        );
         Worker::$logFile = storage_path("logs") . "/workerman.log";
         Worker::$pidFile = storage_path() . "/workerman.pid";
     }
