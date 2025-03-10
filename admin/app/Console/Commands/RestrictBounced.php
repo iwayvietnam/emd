@@ -50,7 +50,7 @@ class RestrictBounced extends Command implements Isolatable
         return Command::SUCCESS;
     }
 
-    private function processMailLog()
+    private function processMailLog(): void
     {
         $logFile =
             $this->option("log-file") ?:
