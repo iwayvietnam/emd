@@ -17,7 +17,6 @@ usage ()
     echo -e "\t-d, --mysql-database=<MYSQL_DATABASE> set mysql database. Ex: --mysql-database=bar"
 }
 
-
 for arg in "$@"
 do
     case $arg in
@@ -37,6 +36,11 @@ do
             exit 1;;
     esac
 done
+
+if [[ -z "$@" ]]; then
+    usage
+    exit 1
+fi
 
 mysql -u $MYSQL_USER --password=$MYSQL_PASSWORD -h MYSQL_SERVER -D MYSQL_DATABASE -e $MYSQL_QUERY | tr '\t' ' ' > sender_transport.$$
 sed -i 1d sender_transport.$$
