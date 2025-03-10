@@ -71,7 +71,7 @@ class ClientAccessResource extends Resource
                         ->label("Reset Quota Counter"),
                     Actions\DeleteAction::make(),
                 ]),
-            ]);
+            ])->defaultSort('created_at', 'desc');
     }
 
     public static function getPages(): array
