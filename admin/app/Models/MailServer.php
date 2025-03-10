@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class MailServer extends Model
 {
+    const POSTMAP_COMMAND = "sudo postmap lmdb:%s";
+    const COPY_COMMAND = "sudo cp -f %s %s";
+
     /**
      * The table associated with the model.
      *

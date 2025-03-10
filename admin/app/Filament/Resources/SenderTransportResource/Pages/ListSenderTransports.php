@@ -19,9 +19,6 @@ use Filament\Resources\Pages\ListRecords;
  */
 class ListSenderTransports extends ListRecords
 {
-    const POSTMAP_COMMAND = "sudo postmap lmdb:%s";
-    const COPY_COMMAND = "sudo cp -f %s %s";
-
     protected static string $resource = SenderTransportResource::class;
 
     protected function getHeaderActions(): array
@@ -57,10 +54,10 @@ class ListSenderTransports extends ListRecords
                     implode(PHP_EOL, $transports)
                 );
                 $remoteServer->runCommand(
-                    sprintf(self::COPY_COMMAND, $tempFile, $transportFile)
+                    sprintf(MailServer::COPY_COMMAND, $tempFile, $transportFile)
                 );
                 $remoteServer->runCommand(
-                    sprintf(self::POSTMAP_COMMAND, $transportFile)
+                    sprintf(MailServer::POSTMAP_COMMAND, $transportFile)
                 );
             }
         }
