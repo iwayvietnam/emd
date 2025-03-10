@@ -2,7 +2,7 @@
 
 namespace App\Mail\Queue;
 
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\Process;
 
 /**
  * Local mail queue class
@@ -18,14 +18,12 @@ class LocalQueue implements QueueInterface
      */
     public function listQueue(): array
     {
-        $process = new Process([self::POSTQUEUE_CMD, "-j"]);
-        $process->run(static function ($type, $output) {
-            if ($type === Process::ERR) {
-                logger()->error($output);
-            }
-        });
+        $result = Process::run(self::POSTQUEUE_CMD . ' -j');
+        if ($result->failed()) {
+            logger()->error($result->errorOutput());
+        }
 
-        return json_decode($process->getOutput());
+        return json_decode($result->output());
     }
 
     /**
@@ -33,13 +31,11 @@ class LocalQueue implements QueueInterface
      */
     public function flushQueue(): bool
     {
-        $process = new Process([self::POSTQUEUE_CMD, "-f"]);
-        $process->run(static function ($type, $output) {
-            if ($type === Process::ERR) {
-                logger()->error($output);
-            }
-        });
-        return $process->isSuccessful();
+        $result = Process::run(self::POSTQUEUE_CMD . ' -f');
+        if ($result->failed()) {
+            logger()->error($result->errorOutput());
+        }
+        return $result->successful();
     }
 
     /**
@@ -47,13 +43,11 @@ class LocalQueue implements QueueInterface
      */
     public function reQueue(string $queueId): bool
     {
-        $process = new Process([self::POSTSUPER_CMD, "-r", $queueId]);
-        $process->run(static function ($type, $output) {
-            if ($type === Process::ERR) {
-                logger()->error($output);
-            }
-        });
-        return $process->isSuccessful();
+        $result = Process::run(self::POSTQUEUE_CMD . ' -r ' . $queueId);
+        if ($result->failed()) {
+            logger()->error($result->errorOutput());
+        }
+        return $result->successful();
     }
 
     /**
@@ -61,13 +55,11 @@ class LocalQueue implements QueueInterface
      */
     public function holdQueue(string $queueId): bool
     {
-        $process = new Process([self::POSTSUPER_CMD, "-h", $queueId]);
-        $process->run(static function ($type, $output) {
-            if ($type === Process::ERR) {
-                logger()->error($output);
-            }
-        });
-        return $process->isSuccessful();
+        $result = Process::run(self::POSTSUPER_CMD . ' -h ' . $queueId);
+        if ($result->failed()) {
+            logger()->error($result->errorOutput());
+        }
+        return $result->successful();
     }
 
     /**
@@ -75,13 +67,11 @@ class LocalQueue implements QueueInterface
      */
     public function unholdQueue(string $queueId): bool
     {
-        $process = new Process([self::POSTSUPER_CMD, "-H", $queueId]);
-        $process->run(static function ($type, $output) {
-            if ($type === Process::ERR) {
-                logger()->error($output);
-            }
-        });
-        return $process->isSuccessful();
+        $result = Process::run(self::POSTSUPER_CMD . ' -H ' . $queueId);
+        if ($result->failed()) {
+            logger()->error($result->errorOutput());
+        }
+        return $result->successful();
     }
 
     /**
@@ -89,13 +79,11 @@ class LocalQueue implements QueueInterface
      */
     public function deleteQueue(string $queueId): bool
     {
-        $process = new Process([self::POSTSUPER_CMD, "-d", $queueId]);
-        $process->run(static function ($type, $output) {
-            if ($type === Process::ERR) {
-                logger()->error($output);
-            }
-        });
-        return $process->isSuccessful();
+        $result = Process::run(self::POSTSUPER_CMD . ' -d ' . $queueId);
+        if ($result->failed()) {
+            logger()->error($result->errorOutput());
+        }
+        return $result->successful();
     }
 
     /**
@@ -103,15 +91,13 @@ class LocalQueue implements QueueInterface
      */
     public function queueDetails(string $queueId): array
     {
-        $process = new Process([self::POSTCAT_CMD, "-q", $queueId]);
-        $process->run(static function ($type, $output) {
-            if ($type === Process::ERR) {
-                logger()->error($output);
-            }
-        });
+        $result = Process::run(self::POSTCAT_CMD . ' -q ' . $queueId);
+        if ($result->failed()) {
+            logger()->error($result->errorOutput());
+        }
 
         $details = [];
-        if ($process->isSuccessful()) {
+        if ($result->successful()) {
             $pattern = implode([
                 "/",
                 self::START_OF_QUEUE_REGEX,
@@ -121,7 +107,7 @@ class LocalQueue implements QueueInterface
                 self::END_OF_MAIL_REGEX,
                 "/ms",
             ]);
-            if (preg_match($pattern, $process->getOutput(), $matches)) {
+            if (preg_match($pattern, $result->output(), $matches)) {
                 if (!empty($matches[1])) {
                     $details["info"] = trim($matches[1]);
                 }
