@@ -11,9 +11,9 @@ namespace App\Mail\Queue;
  */
 interface QueueInterface
 {
-    const POSTCAT_CMD = "postcat";
-    const POSTQUEUE_CMD = "postqueue";
-    const POSTSUPER_CMD = "postsuper";
+    const POSTCAT_CMD = "sudo postcat";
+    const POSTQUEUE_CMD = "sudo postqueue";
+    const POSTSUPER_CMD = "sudo postsuper";
 
     const QUEUE_REGEX = "/^([^\s\*\!]+)[\*\!]?\s*(\d+)\s+(\S+\s+\S+\s+\d+\s+\d+:\d+:\d+)\s+(.*)/";
     const START_OF_QUEUE_REGEX = "(?:\*\*\*\s+ENVELOPE\s+RECORDS.*\*\*\*)";
