@@ -35,7 +35,7 @@ class PolicyListen extends Command
      */
     public function handle(): int
     {
-        Service::handle($this->argument('listen'));
+        Service::handle();
         return Command::SUCCESS;
     }
 }

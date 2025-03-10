@@ -2,7 +2,6 @@
 
 namespace App\Mail\Policy\Adapter;
 
-use App\Enum\PolicyListen;
 use App\Mail\Policy\Interface\PolicyInterface;
 use Swoole\Server;
 
@@ -75,21 +74,8 @@ class Swoole extends Base
     /**
      * {@inheritdoc}
      */
-    public function handle(PolicyListen $listen = PolicyListen::START): void
+    public function handle(): void
     {
-        switch ($listen) {
-            case PolicyListen::START:
-                $this->server->start();
-                break;
-            case PolicyListen::STOP:
-                $this->server->shutdown();
-                break;
-            case PolicyListen::STATUS:
-                $this->server->stats();
-                break;
-            case PolicyListen::RELOAD:
-                $this->server->reload();
-                break;
-        }
+        $this->server->start();
     }
 }

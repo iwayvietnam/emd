@@ -2,7 +2,6 @@
 
 namespace App\Mail\Policy\Adapter;
 
-use App\Enum\PolicyListen;
 use App\Mail\Policy\Interface\PolicyInterface;
 use Workerman\Worker;
 use Workerman\Connection\ConnectionInterface as Connection;
@@ -80,7 +79,7 @@ class Workerman extends Base
     /**
      * {@inheritdoc}
      */
-    public function handle(PolicyListen $listen = PolicyListen::START): void
+    public function handle(): void
     {
         Worker::runAll();
     }

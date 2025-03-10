@@ -2,7 +2,6 @@
 
 namespace App\Mail\Policy;
 
-use App\Enum\PolicyListen;
 use App\Mail\Policy\Adapter\Workerman;
 
 /**
@@ -16,11 +15,9 @@ final class Service
 {
     const DEFAULT_ADAPTER = Workerman::class;
 
-    public static function handle(string $listen = 'start'): void
+    public static function handle(): void
     {
         $adapter = config("emd.policy.adapter", self::DEFAULT_ADAPTER);
-        (new $adapter(new Policy()))->handle(
-            PolicyListen::tryFrom($listen) ?? PolicyListen::START
-        );
+        (new $adapter(new Policy()))->handle();
     }
 }

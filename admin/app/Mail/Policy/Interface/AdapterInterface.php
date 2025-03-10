@@ -2,8 +2,6 @@
 
 namespace App\Mail\Policy\Interface;
 
-use App\Enum\PolicyListen;
-
 /**
  * Policy server adapter interface
  *
@@ -22,8 +20,7 @@ interface AdapterInterface
     /**
      * Handle policy
      *
-     * @param PolicyListen $listen
      * @return void
      */
-    function handle(PolicyListen $listen = PolicyListen::START): void;
+    function handle(): void;
 }
