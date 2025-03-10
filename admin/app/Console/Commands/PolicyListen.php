@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Mail\Policy\Service;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Console\Isolatable;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 /**
@@ -14,7 +15,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
 #[AsCommand(name: "policy:listen")]
-class PolicyListen extends Command
+class PolicyListen extends Command implements Isolatable
 {
     /**
      * The name and signature of the console command.

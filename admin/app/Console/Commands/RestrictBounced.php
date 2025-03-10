@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\RestrictedRecipient;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Console\Isolatable;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 /**
@@ -15,7 +16,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
 #[AsCommand(name: "restrict:bounced")]
-class RestrictBounced extends Command
+class RestrictBounced extends Command implements Isolatable
 {
     const BOUNCED_STATUS_REGEX = "/to=<([^>]*)>, (.*), dsn=([^,]+), status=bounced (.*)/";
     const MAIL_LOG_FILE = "/var/log/maillog";
