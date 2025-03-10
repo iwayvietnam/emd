@@ -37,4 +37,9 @@ class SenderTransport extends Model
     {
         return $this->belongsTo(Client::class, "client_id");
     }
+
+    public function transportModel(): BelongsTo
+    {
+        return $this->belongsTo(Transport::class, "transport_id");
+    }
 }
