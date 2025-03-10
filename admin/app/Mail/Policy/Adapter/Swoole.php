@@ -47,7 +47,13 @@ class Swoole extends Base
             "log_level" => config("app.debug") ? 0 : 2,
             "pid_file" => storage_path() . "/swoole.pid",
         ]);
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function handle(): void
+    {
         $this->server->on("connect", function (Server $server, int $fd) {
             $info = $server->getClientInfo($fd);
             $this->onConnect($info["remote_ip"], $info["remote_port"]);
@@ -69,13 +75,7 @@ class Swoole extends Base
             $info = $server->getClientInfo($fd);
             $this->onClose($info["remote_ip"], $info["remote_port"]);
         });
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handle(): void
-    {
         $this->server->start();
     }
 }

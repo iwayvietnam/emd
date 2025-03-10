@@ -55,7 +55,13 @@ class Workerman extends Base
         );
         Worker::$logFile = storage_path("logs") . "/workerman.log";
         Worker::$pidFile = storage_path() . "/workerman.pid";
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function handle(): void
+    {
         $this->worker->onConnect = fn(
             Connection $connection
         ) => $this->onConnect(
@@ -74,13 +80,7 @@ class Workerman extends Base
             $connection->getRemoteAddress(),
             $connection->getRemotePort()
         );
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handle(): void
-    {
         Worker::runAll();
     }
 }
