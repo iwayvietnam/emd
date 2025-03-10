@@ -42,10 +42,13 @@ class Policy implements PolicyInterface
                     );
                 }
                 if ($this->rateIsExceeded($request)) {
-                    logger()->error("Rate limit of client {sender}:{address} is exceeded", [
-                        "sender" => $request->getSender(),
-                        "address" => $request->getClientAddress(),
-                    ]);
+                    logger()->error(
+                        "Rate limit of client {sender}:{address} is exceeded",
+                        [
+                            "sender" => $request->getSender(),
+                            "address" => $request->getClientAddress(),
+                        ]
+                    );
                     return new PolicyResponse(
                         AccessVerdict::Reject,
                         "Rate limit is exceeded. Retry later!"
@@ -63,10 +66,13 @@ class Policy implements PolicyInterface
                 return new PolicyResponse(AccessVerdict::Ok);
             case ProtocolState::EndOfMessage:
                 if ($this->quotaIsExceeded($request)) {
-                    logger()->error("Quota limit of client {sender}:{address} is exceeded.", [
-                        "sender" => $request->getSender(),
-                        "address" => $request->getClientAddress(),
-                    ]);
+                    logger()->error(
+                        "Quota limit of client {sender}:{address} is exceeded.",
+                        [
+                            "sender" => $request->getSender(),
+                            "address" => $request->getClientAddress(),
+                        ]
+                    );
                     return new PolicyResponse(
                         AccessVerdict::Reject,
                         "Quota limit is exceeded. Retry later!"

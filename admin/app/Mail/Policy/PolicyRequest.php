@@ -22,9 +22,7 @@ class PolicyRequest implements RequestInterface
      * @param array $attributes
      * @return self
      */
-    protected function __construct(private readonly array $attributes = [])
-    {
-    }
+    protected function __construct(private readonly array $attributes = []) {}
 
     /**
      * Process policy request data

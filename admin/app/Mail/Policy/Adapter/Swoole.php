@@ -38,10 +38,15 @@ class Swoole extends Base
 
         $this->server->set([
             "worker_num" => (int) config(
-                "emd.policy.server_worker", self::POLICY_WORKER
+                "emd.policy.server_worker",
+                self::POLICY_WORKER
             ),
+            "debug_mode" => (bool) config("app.debug"),
             "log_file" => storage_path("logs") . "/swoole.log",
-            "log_level" => config("app.debug") ? 0 : 2,
+            "log_level" => (bool) config("app.debug")
+                ? SWOOLE_LOG_DEBUG
+                : SWOOLE_LOG_INFO,
+            "log_rotation" => SWOOLE_LOG_ROTATION_DAILY,
             "pid_file" => storage_path() . "/swoole.pid",
         ]);
     }
@@ -62,9 +67,7 @@ class Swoole extends Base
             int $reactorId,
             string $data
         ) {
-            $server->send(
-                $fd, $this->response($data) . PHP_EOL . PHP_EOL
-            );
+            $server->send($fd, $this->response($data) . PHP_EOL . PHP_EOL);
             $server->close($fd);
         });
 

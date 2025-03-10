@@ -4,6 +4,7 @@ namespace App\Mail\Policy\Adapter;
 
 use App\Mail\Policy\Interface\PolicyInterface;
 use OpenSwoole\Server;
+use OpenSwoole\Constant;
 
 /**
  * OpenSwoole adapter class
@@ -40,7 +41,10 @@ class OpenSwoole extends Base
                 "emd.policy.server_worker", self::POLICY_WORKER
             ),
             "log_file" => storage_path("logs") . "/openswoole.log",
-            "log_level" => config("app.debug") ? 0 : 2,
+            "log_level" => (bool) config("app.debug")
+                ? Constant::LOG_DEBUG
+                : Constant::LOG_INFO,
+            "log_rotation" => Constant::LOG_ROTATION_DAILY,
             "pid_file" => storage_path() . "/openswoole.pid",
         ]);
     }

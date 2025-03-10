@@ -21,13 +21,13 @@ abstract class Base implements AdapterInterface
      * @param PolicyInterface $policy
      * @return self
      */
-    protected function __construct(private readonly PolicyInterface $policy)
-    {
-    }
+    protected function __construct(private readonly PolicyInterface $policy) {}
 
     protected function response(string $data): string
     {
-        return $this->policy->check(PolicyRequest::fromData($data))->getAction();
+        return $this->policy
+            ->check(PolicyRequest::fromData($data))
+            ->getAction();
     }
 
     protected function onConnect(string $remoteIp, int $remotePort): void
