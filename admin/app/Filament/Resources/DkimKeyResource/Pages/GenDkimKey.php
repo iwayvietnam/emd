@@ -39,6 +39,7 @@ class GenDkimKey extends CreateRecord
                     ->options(Domain::all()->pluck("name", "id"))
                     ->required()
                     ->unique()
+                    ->searchable()
                     ->label(__("Domain")),
                 TextInput::make("selector")
                     ->rules([
