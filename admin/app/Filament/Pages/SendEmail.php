@@ -35,8 +35,8 @@ class SendEmail extends Page implements HasForms
     const UPLOAD_DIR = "attachments";
 
     protected static ?string $navigationGroup = "System";
-    protected static ?string $navigationIcon = 'heroicon-o-envelope';
-    protected static string $view = 'filament.pages.send-email';
+    protected static ?string $navigationIcon = "heroicon-o-envelope";
+    protected static string $view = "filament.pages.send-email";
 
     /**
      * @var array<string, mixed> | null
@@ -52,42 +52,31 @@ class SendEmail extends Page implements HasForms
     {
         return $form
             ->schema([
-                TextInput::make('sender')
-                    ->label(__('Sender'))
+                TextInput::make("sender")
+                    ->label(__("Sender"))
                     ->email()
                     ->required(),
-                Textarea::make('recipients')
-                    ->label(__('Recipients'))
+                Textarea::make("recipients")
+                    ->label(__("Recipients"))
                     ->required(),
-                TextInput::make('subject')
-                    ->label(__('Subject'))
-                    ->required(),
-                RichEditor::make('content')
-                    ->label(__('Content'))
+                TextInput::make("subject")->label(__("Subject"))->required(),
+                RichEditor::make("content")
+                    ->label(__("Content"))
                     ->required()
-                    ->disableToolbarButtons([
-                        'attachFiles',
-                    ]),
-                FileUpload::make('attachments')
-                    ->label(__('Attachments'))
+                    ->disableToolbarButtons(["attachFiles"]),
+                FileUpload::make("attachments")
+                    ->label(__("Attachments"))
                     ->multiple()
                     ->previewable(false)
-                    ->directory(
-                        config("emd.api_upload_dir", self::UPLOAD_DIR)
-                    ),
-                Toggle::make('should_queue')
-                    ->label(__('Should Queue')),
+                    ->directory(config("emd.api_upload_dir", self::UPLOAD_DIR)),
+                Toggle::make("should_queue")->label(__("Should Queue")),
             ])
-            ->statePath('data');
+            ->statePath("data");
     }
 
     protected function getFormActions(): array
     {
-        return [
-            Action::make('send')
-                ->label(__('Send'))
-                ->submit('send'),
-        ];
+        return [Action::make("send")->label(__("Send"))->submit("send")];
     }
 
     public function send(): void
@@ -96,18 +85,21 @@ class SendEmail extends Page implements HasForms
         $ipAddress = request()->ip();
 
         $data = $this->form->getState();
-        $shouldQueue = (bool) $data['should_queue'];
+        $shouldQueue = (bool) $data["should_queue"];
 
-        $recipients = Helper::explodeRecipients($data['recipients']);
+        $recipients = Helper::explodeRecipients($data["recipients"]);
         foreach ($recipients as $recipient) {
             $message = new Message([
                 "user_id" => $userId,
-                "from_name" => $data['sender'],
-                "from_email" => $data['sender'],
-                "reply_to" => $data['sender'],
-                "message_id" => Str::uuid() . '@' . config("emd.app_domain", "yourdomain.com"),
-                "subject" => $data['subject'],
-                "content" => $data['content'],
+                "from_name" => $data["sender"],
+                "from_email" => $data["sender"],
+                "reply_to" => $data["sender"],
+                "message_id" =>
+                    Str::uuid() .
+                    "@" .
+                    config("emd.app_domain", "yourdomain.com"),
+                "subject" => $data["subject"],
+                "content" => $data["content"],
                 "ip_address" => $ipAddress,
                 "recipient" => $recipient,
             ]);
@@ -121,14 +113,12 @@ class SendEmail extends Page implements HasForms
                     )
                 );
             } else {
-                Mail::to($message->recipient)->send(
-                    new SendMessage($message)
-                );
+                Mail::to($message->recipient)->send(new SendMessage($message));
             }
         }
-        Notification::make() 
+        Notification::make()
             ->success()
-            ->title(__('Message has been sent!'))
-            ->send(); 
+            ->title(__("Message has been sent!"))
+            ->send();
     }
 }
