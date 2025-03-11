@@ -54,15 +54,16 @@ class AdminPanelProvider extends PanelProvider
                 in: app_path("Filament/Widgets"),
                 for: "App\\Filament\\Widgets"
             )
-            ->widgets([
-                Widgets\AccountWidget::class,
-            ])
+            ->widgets([Widgets\AccountWidget::class])
             ->navigationItems([
-                NavigationItem::make(__("Edit Profile"))->url(
-                    static fn (): string => EditUserProfile::getUrl()
-                )->icon("heroicon-o-user")->isActiveWhen(
-                    static fn () => request()->routeIs(EditUserProfile::getRouteName())
-                ),
+                NavigationItem::make(__("Edit Profile"))
+                    ->url(static fn(): string => EditUserProfile::getUrl())
+                    ->icon("heroicon-o-user")
+                    ->isActiveWhen(
+                        static fn() => request()->routeIs(
+                            EditUserProfile::getRouteName()
+                        )
+                    ),
             ])
             ->middleware([
                 EncryptCookies::class,
