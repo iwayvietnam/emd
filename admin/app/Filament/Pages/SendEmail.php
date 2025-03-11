@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -39,6 +40,12 @@ class SendEmail extends Page
                 Textarea::make('recipients')
                     ->label(__('Recipients'))
                     ->required(),
+                TextInput::make('subject')
+                    ->label(__('Subject'))
+                    ->required()
+                    ->maxLength(255),
+                RichEditor::make('content')
+                    ->label(__('Content')),
             ])
             ->statePath('data')
             ->inlineLabel(true);
