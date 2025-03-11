@@ -18,19 +18,8 @@ class SendEmail extends Page
     use Concerns\HasTopbar;
     use Concerns\InteractsWithFormActions;
 
-    protected static bool $isDiscovered = false;
-
+    protected static ?string $navigationGroup = "System";
     protected static ?string $navigationIcon = 'heroicon-o-envelope';
-
+    protected static ?string $slug = "send-email";
     protected static string $view = 'filament.pages.send-email';
-
-    public static function getSlug(): string
-    {
-        return static::$slug ?? 'send-email';
-    }
-
-    public static function getRelativeRouteName(): string
-    {
-        return 'send-email';
-    }
 }
