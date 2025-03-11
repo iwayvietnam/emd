@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use Filament\Actions\Action;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -58,8 +59,16 @@ class SendEmail extends Page
                         'attachFiles',
                     ]),
             ])
-            ->statePath('data')
-            ->inlineLabel(true);
+            ->statePath('data');
+    }
+
+    protected function getFormActions(): array
+    {
+        return [
+            Action::make('send')
+                ->label(__('Send'))
+                ->submit('send'),
+        ];
     }
 
     public function send(): void
