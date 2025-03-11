@@ -33,6 +33,11 @@ class SendEmail extends Page
      */
     public ?array $data = [];
 
+    public function mount(): void
+    {
+        $this->form->fill();
+    }
+
     public function form(Form $form): Form
     {
         return $form
@@ -40,18 +45,15 @@ class SendEmail extends Page
                 TextInput::make('sender')
                     ->label(__('Sender'))
                     ->email()
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
                 Textarea::make('recipients')
                     ->label(__('Recipients'))
                     ->required(),
                 TextInput::make('subject')
                     ->label(__('Subject'))
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
                 RichEditor::make('content')
                     ->label(__('Content'))
-                    ->default('')
                     ->disableToolbarButtons([
                         'attachFiles',
                     ]),
