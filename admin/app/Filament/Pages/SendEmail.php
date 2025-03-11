@@ -16,7 +16,7 @@ use Filament\Pages\Concerns;
  * @category Filament
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
-class SendEmail extends Page implements HasForms
+class SendEmail extends Page
 {
     use Concerns\HasMaxWidth;
     use Concerns\HasTopbar;
