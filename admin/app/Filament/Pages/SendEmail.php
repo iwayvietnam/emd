@@ -120,7 +120,7 @@ class SendEmail extends Page implements HasForms
                 $message->sent_at = now();
                 $message->save();
             } catch (MailerException $e) {
-                logger()::error($e);
+                logger()->error($e);
                 MessageFailure::create([
                     "message_id" => $message->id,
                     "severity" => __("Send message failed1"),
