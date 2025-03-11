@@ -55,6 +55,7 @@ class SendEmail extends Page
                     ->required(),
                 RichEditor::make('content')
                     ->label(__('Content'))
+                    ->required()
                     ->disableToolbarButtons([
                         'attachFiles',
                     ]),
