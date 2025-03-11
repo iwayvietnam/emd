@@ -6,8 +6,8 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Pages\Page;
 use Filament\Pages\Concerns;
 
@@ -59,6 +59,8 @@ class SendEmail extends Page
                     ->disableToolbarButtons([
                         'attachFiles',
                     ]),
+                Toggle::make('should_queue')
+                    ->label(__('Should Queue')),
             ])
             ->statePath('data');
     }
