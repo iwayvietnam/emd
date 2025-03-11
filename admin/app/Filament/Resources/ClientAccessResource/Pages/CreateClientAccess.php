@@ -34,10 +34,12 @@ class CreateClientAccess extends CreateRecord
                 Select::make("client_id")
                     ->options(Client::all()->pluck("name", "id"))
                     ->required()
+                    ->searchable()
                     ->label(__("Client")),
                 Select::make("policy_id")
                     ->options(Policy::all()->pluck("name", "id"))
                     ->required()
+                    ->searchable()
                     ->label(__("Policy")),
             ]),
             Textarea::make("ip_addresses")

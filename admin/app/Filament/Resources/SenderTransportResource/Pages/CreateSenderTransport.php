@@ -29,11 +29,13 @@ class CreateSenderTransport extends CreateRecord
                 ->options(Client::all()->pluck("name", "id"))
                 ->required()
                 ->unique()
+                ->searchable()
                 ->label(__("Client")),
             Select::make("transport_id")
                 ->options(Transport::all()->pluck("name", "id"))
                 ->required()
                 ->label(__("Transport")),
+                ->searchable()
             Hidden::make("sender"),
             Hidden::make("transport"),
         ]);
