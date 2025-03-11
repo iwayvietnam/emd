@@ -29,36 +29,23 @@ class SendEmail extends Page
 
     public function form(Form $form): Form
     {
-        return $form;
+        return $form
+            ->schema([
+                TextInput::make('sender')
+                    ->label(__('Sender'))
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
+                Textarea::make('recipients')
+                    ->label(__('Recipients'))
+                    ->required(),
+            ])
+            ->statePath('data')
+            ->inlineLabel(true);
     }
 
     public function send(): void
     {
         $data = $this->form->getState();
-    }
-
-    /**
-     * @return array<int | string, string | Form>
-     */
-    protected function getForms(): array
-    {
-        return [
-            'form' => $this->form(
-                $this->makeForm()
-                    ->schema([
-                        TextInput::make('sender')
-                            ->label(__('Sender'))
-                            ->email()
-                            ->required()
-                            ->maxLength(255),
-                        Textarea::make('recipients')
-                            ->label(__('Recipients'))
-                            ->required(),
-                    ])
-                    ->operation('edit')
-                    ->statePath('data')
-                    ->inlineLabel(),
-            ),
-        ];
     }
 }
