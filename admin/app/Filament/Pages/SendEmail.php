@@ -110,7 +110,7 @@ class SendEmail extends Page implements HasForms
             $uploads = [];
             if (!empty($data['attachments'])) {
                 $uploads = array_map(
-                    static fn ($file) => "app/public/" . $file,
+                    static fn ($file) => public_path("public/$file"),
                     $data['attachments']
                 );
             }
