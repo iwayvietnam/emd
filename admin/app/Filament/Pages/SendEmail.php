@@ -28,4 +28,9 @@ class SendEmail extends Page
     {
         return static::$slug ?? 'send-email';
     }
+
+    public static function getRelativeRouteName(): string
+    {
+        return 'send-email';
+    }
 }
