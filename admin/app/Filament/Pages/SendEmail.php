@@ -123,7 +123,7 @@ class SendEmail extends Page implements HasForms
                 logger()->error($e);
                 MessageFailure::create([
                     "message_id" => $message->id,
-                    "severity" => __("Send message failed1"),
+                    "severity" => __("Send message failed!"),
                     "description" => $e->getMessage(),
                     "failed_at" => now(),
                 ]);
