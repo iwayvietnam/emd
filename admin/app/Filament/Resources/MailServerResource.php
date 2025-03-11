@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Enum\SSHKeyAlgorithm;
+use App\Enums\SSHKeyAlgorithm;
 use App\Filament\Resources\MailServerResource\Pages;
 use App\Models\MailServer;
 use Filament\Forms\Components\Actions\Action;

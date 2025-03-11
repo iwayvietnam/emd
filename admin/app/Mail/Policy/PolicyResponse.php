@@ -2,7 +2,7 @@
 
 namespace App\Mail\Policy;
 
-use App\Enum\AccessVerdict;
+use App\Enums\AccessVerdict;
 use App\Mail\Policy\Interface\ResponseInterface;
 
 /**

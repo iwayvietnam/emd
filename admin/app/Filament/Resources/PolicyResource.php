@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Enum\LimitPeriod;
+use App\Enums\LimitPeriod;
 use App\Filament\Resources\PolicyResource\Pages;
 use App\Models\ClientAccess;
 use App\Models\Policy;

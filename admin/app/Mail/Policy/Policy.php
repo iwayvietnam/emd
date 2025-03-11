@@ -2,8 +2,8 @@
 
 namespace App\Mail\Policy;
 
-use App\Enum\AccessVerdict;
-use App\Enum\ProtocolState;
+use App\Enums\AccessVerdict;
+use App\Enums\ProtocolState;
 use App\Mail\Policy\Interface\PolicyInterface;
 use App\Mail\Policy\Interface\RequestInterface;
 use App\Mail\Policy\Interface\ResponseInterface;

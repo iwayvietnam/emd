@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Enum;
+namespace App\Enums;
 
 use Filament\Support\Contracts\HasLabel;
 
@@ -8,7 +8,7 @@ use Filament\Support\Contracts\HasLabel;
  * SSH key algorithm enum
  *
  * @package  App
- * @category Enum
+ * @category Enums
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
 enum SSHKeyAlgorithm: int implements HasLabel

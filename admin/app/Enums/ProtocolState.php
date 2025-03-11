@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Enum;
+namespace App\Enums;
 
 /**
  * Policy protocol state enum
  *
  * @package  App
- * @category Enum
+ * @category Enums
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
 enum ProtocolState: string
