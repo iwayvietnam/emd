@@ -45,6 +45,7 @@ class SendEmail extends Page
                     ->required()
                     ->maxLength(255),
                 RichEditor::make('content')
+                    ->default('')
                     ->disableToolbarButtons([
                         'attachFiles',
                     ]),
