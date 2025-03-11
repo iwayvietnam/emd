@@ -42,7 +42,7 @@ if [[ -z "$@" ]]; then
     exit 1
 fi
 
-mysql -u $MYSQL_USER --password=$MYSQL_PASSWORD -h MYSQL_SERVER -D MYSQL_DATABASE -e $MYSQL_QUERY | tr '\t' ' ' > sender_transport.$$
+mysql -u $MYSQL_USER --password=$MYSQL_PASSWORD -h $MYSQL_SERVER -D $MYSQL_DATABASE -e $MYSQL_QUERY | tr '\t' ' ' > sender_transport.$$
 sed -i 1d sender_transport.$$
 cp -f sender_transport.$$ $SENDER_TRANSPORT
 postmap lmdb:$SENDER_TRANSPORT
