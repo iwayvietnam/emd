@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use Filament\Actions\Action;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -20,6 +21,8 @@ use Filament\Pages\Concerns;
  */
 class SendEmail extends Page
 {
+    const QUEUE_NAME = "default";
+
     use Concerns\HasMaxWidth;
     use Concerns\HasTopbar;
     use Concerns\InteractsWithFormActions;
@@ -59,6 +62,9 @@ class SendEmail extends Page
                     ->disableToolbarButtons([
                         'attachFiles',
                     ]),
+                FileUpload::make('attachments')
+                    ->label(__('Attachments'))
+                    ->multiple(),
                 Toggle::make('should_queue')
                     ->label(__('Should Queue')),
             ])
@@ -77,5 +83,9 @@ class SendEmail extends Page
     public function send(): void
     {
         $data = $this->form->getState();
+        $shouldQueue = (bool) $data['should_queue'];
+        if ($shouldQueue) {
+            // code...
+        }
     }
 }
