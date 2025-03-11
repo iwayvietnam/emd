@@ -4,6 +4,8 @@ namespace App\Filament\Pages;
 
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Pages\Page;
@@ -16,11 +18,12 @@ use Filament\Pages\Concerns;
  * @category Filament
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
-class SendEmail extends Page
+class SendEmail extends Page implements HasForms
 {
     use Concerns\HasMaxWidth;
     use Concerns\HasTopbar;
     use Concerns\InteractsWithFormActions;
+    use InteractsWithForms;
 
     protected static ?string $navigationGroup = "System";
     protected static ?string $navigationIcon = 'heroicon-o-envelope';
