@@ -30,6 +30,13 @@ class SendEmail extends Page implements HasForms
     protected static ?string $slug = "send-email";
     protected static string $view = 'filament.pages.send-email';
 
+    public ?array $data = [];
+
+    public function mount(): void
+    {
+        $this->form->fill();
+    }
+
     public function form(Form $form): Form
     {
         return $form;
