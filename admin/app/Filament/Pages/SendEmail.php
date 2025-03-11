@@ -9,6 +9,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Pages\Concerns;
 
@@ -87,5 +88,9 @@ class SendEmail extends Page
         if ($shouldQueue) {
             // code...
         }
+        Notification::make() 
+            ->success()
+            ->title(__('Message has been sent!'))
+            ->send(); 
     }
 }
