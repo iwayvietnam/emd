@@ -23,4 +23,9 @@ class SendEmail extends Page
     protected static ?string $navigationIcon = 'heroicon-o-envelope';
 
     protected static string $view = 'filament.pages.send-email';
+
+    public static function getSlug(): string
+    {
+        return static::$slug ?? 'send-email';
+    }
 }
