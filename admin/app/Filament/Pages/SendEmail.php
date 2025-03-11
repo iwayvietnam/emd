@@ -8,8 +8,6 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -22,18 +20,16 @@ use Filament\Pages\Concerns;
  * @category Filament
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
-class SendEmail extends Page implements HasForms
+class SendEmail extends Page
 {
     const QUEUE_NAME = "default";
 
     use Concerns\HasMaxWidth;
     use Concerns\HasTopbar;
     use Concerns\InteractsWithFormActions;
-    use InteractsWithForms;
 
     protected static ?string $navigationGroup = "System";
     protected static ?string $navigationIcon = 'heroicon-o-envelope';
-    protected static ?string $slug = "send-email";
     protected static string $view = 'filament.pages.send-email';
 
     /**
