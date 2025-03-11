@@ -82,7 +82,7 @@ class SendEmail extends Page implements HasForms
 
     public function send(): void
     {
-        $user = request()->user()->id;
+        $user = request()->user();
         $ipAddress = request()->ip();
 
         $data = $this->form->getState();
