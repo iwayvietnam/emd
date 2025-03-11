@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\EditUserProfile;
+use App\Filament\Pages\SendEmail;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -62,6 +63,11 @@ class AdminPanelProvider extends PanelProvider
                 )->icon("heroicon-o-user")->isActiveWhen(
                     static fn () => request()->routeIs(EditUserProfile::getRouteName())
                 ),
+                NavigationItem::make(__("Send Email"))->url(
+                    static fn (): string => SendEmail::getUrl()
+                )->icon("heroicon-o-envelope")->isActiveWhen(
+                    static fn () => request()->routeIs(SendEmail::getRouteName())
+                )->group('System'),
             ])
             ->middleware([
                 EncryptCookies::class,
