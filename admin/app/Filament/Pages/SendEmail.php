@@ -69,9 +69,9 @@ class SendEmail extends Page implements HasForms
                     ->label(__("Attachments"))
                     ->multiple()
                     ->previewable(false)
-                    ->visibility('private')
-                    ->storeFileNamesIn('attachment_files')
-                    ->directory(config("emd.api_upload_dir", self::UPLOAD_DIR)),
+                    ->directory(
+                        config("emd.api_upload_dir", self::UPLOAD_DIR) . "/" . request()->user()->email
+                    ),
                 Toggle::make("should_queue")->label(__("Should Queue")),
             ])
             ->statePath("data");
@@ -107,7 +107,14 @@ class SendEmail extends Page implements HasForms
                 "recipient" => $recipient,
             ]);
 
-            $message->uploads = $data['attachment_files'] ?? [];
+            $uploads = [];
+            if (!empty($data['attachments'])) {
+                $uploads = array_map(
+                    static fn ($file) => storage_path("app/public") . "/" . $file,
+                    $data['attachments']
+                );
+            }
+            $message->uploads = $uploads;
             $message->save();
 
             try {
