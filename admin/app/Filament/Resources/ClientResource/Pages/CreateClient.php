@@ -32,6 +32,7 @@ class CreateClient extends CreateRecord
                 Select::make("domain_id")
                     ->options(Domain::all()->pluck("name", "id"))
                     ->required()
+                    ->searchable()
                     ->label(__("Domain")),
                 TextInput::make("name")
                     ->required()
