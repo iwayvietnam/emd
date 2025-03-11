@@ -2,6 +2,9 @@
 
 namespace App\Filament\Pages;
 
+use App\Mail\SendMessage;
+use App\Models\Message;
+use App\Models\MessageFailure;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -13,6 +16,7 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Illuminate\Support\Str;
 
 /**
  * Send email test page class
@@ -26,6 +30,7 @@ class SendEmail extends Page implements HasForms
     use InteractsWithForms;
 
     const QUEUE_NAME = "default";
+    const UPLOAD_DIR = "attachments";
 
     protected static ?string $navigationGroup = "System";
     protected static ?string $navigationIcon = 'heroicon-o-envelope';
@@ -63,7 +68,10 @@ class SendEmail extends Page implements HasForms
                     ]),
                 FileUpload::make('attachments')
                     ->label(__('Attachments'))
-                    ->multiple(),
+                    ->multiple()
+                    ->directory(
+                        config("emd.api_upload_dir", self::UPLOAD_DIR)
+                    ),
                 Toggle::make('should_queue')
                     ->label(__('Should Queue')),
             ])
@@ -81,8 +89,22 @@ class SendEmail extends Page implements HasForms
 
     public function send(): void
     {
+        $request = request();
         $data = $this->form->getState();
         $shouldQueue = (bool) $data['should_queue'];
+        $recipients = $data['recipients'];
+
+        $message = new Message([
+            "user_id" => $request->user()->id,
+            "from_name" => $data['sender'],
+            "from_email" => $data['sender'],
+            "reply_to" => $data['sender'],
+            "message_id" => Str::uuid() . '@' . config("emd.app_domain", "yourdomain.com"),
+            "subject" => $data['subject'],
+            "content" => $data['content'],
+            "ip_address" => $request->ip(),
+            "recipient" => $data['recipient'],
+        ]);
         if ($shouldQueue) {
             // code...
         }

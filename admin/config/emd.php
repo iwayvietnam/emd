@@ -5,6 +5,7 @@ return [
     'https' => (bool) env('FORCE_HTTPS', false),
     'sender_transport' => env('SENDER_TRANSPORT', '/etc/postfix/sender_transport'),
     'api_rate' => (int) env('API_REQUEST_RATE', 600),
+    'api_upload_dir' => env('API_UPLOAD_DIR', 'attachments'),
     'mail' => [
         'should_queue' => (bool) env('MAIL_SHOULD_QUEUE', true),
         'queue_name' => env('MAIL_QUEUE_NAME', 'default'),
