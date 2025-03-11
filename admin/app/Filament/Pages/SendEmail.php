@@ -71,6 +71,7 @@ class SendEmail extends Page implements HasForms
                 FileUpload::make('attachments')
                     ->label(__('Attachments'))
                     ->multiple()
+                    ->previewable(false)
                     ->directory(
                         config("emd.api_upload_dir", self::UPLOAD_DIR)
                     ),
@@ -110,6 +111,9 @@ class SendEmail extends Page implements HasForms
                 "ip_address" => $ipAddress,
                 "recipient" => $recipient,
             ]);
+            $message->uploads = [];
+            // $message->save();
+
             if ($shouldQueue) {
                 Mail::to($message->recipient)->queue(
                     (new SendMessage($message))->onQueue(
