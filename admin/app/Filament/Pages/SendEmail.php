@@ -4,8 +4,6 @@ namespace App\Filament\Pages;
 
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Pages\Page;
@@ -23,19 +21,11 @@ class SendEmail extends Page implements HasForms
     use Concerns\HasMaxWidth;
     use Concerns\HasTopbar;
     use Concerns\InteractsWithFormActions;
-    use InteractsWithForms;
 
     protected static ?string $navigationGroup = "System";
     protected static ?string $navigationIcon = 'heroicon-o-envelope';
     protected static ?string $slug = "send-email";
     protected static string $view = 'filament.pages.send-email';
-
-    public ?array $data = [];
-
-    public function mount(): void
-    {
-        $this->form->fill();
-    }
 
     public function form(Form $form): Form
     {
