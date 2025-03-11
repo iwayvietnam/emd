@@ -62,7 +62,7 @@ class AdminPanelProvider extends PanelProvider
                     static fn (): string => EditUserProfile::getUrl()
                 )->icon("heroicon-o-user")->isActiveWhen(
                     static fn () => request()->routeIs(EditUserProfile::getRouteName())
-                )->group('System'),
+                ),
                 NavigationItem::make(__("Send Email"))->url(
                     static fn (): string => SendEmail::getUrl()
                 )->icon("heroicon-o-envelope")->isActiveWhen(

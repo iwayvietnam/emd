@@ -18,6 +18,8 @@ class SendEmail extends Page
     use Concerns\HasTopbar;
     use Concerns\InteractsWithFormActions;
 
+    protected static bool $isDiscovered = false;
+
     protected static ?string $navigationIcon = 'heroicon-o-envelope';
 
     protected static string $view = 'filament.pages.send-email';
