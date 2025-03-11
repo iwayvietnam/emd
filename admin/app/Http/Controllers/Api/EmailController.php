@@ -9,7 +9,6 @@ use App\Models\MessageFailure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\Mailer\Exception\ExceptionInterface as MailerException;
@@ -145,7 +144,7 @@ class EmailController extends Controller
             $message->sent_at = now();
             $message->save();
         } catch (MailerException $e) {
-            Log::error($e);
+            logger()::error($e);
             $failed = $e;
         }
 

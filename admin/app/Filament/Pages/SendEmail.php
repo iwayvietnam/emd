@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Mail\SendMessage;
 use App\Models\Message;
 use App\Models\MessageFailure;
+use App\Support\Helper;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -16,6 +17,7 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 /**
@@ -89,53 +91,40 @@ class SendEmail extends Page implements HasForms
 
     public function send(): void
     {
-        $request = request();
+        $userId = request()->user()->id;
+        $ipAddress = request()->ip();
+
         $data = $this->form->getState();
         $shouldQueue = (bool) $data['should_queue'];
-        $recipients = $data['recipients'];
 
-        $message = new Message([
-            "user_id" => $request->user()->id,
-            "from_name" => $data['sender'],
-            "from_email" => $data['sender'],
-            "reply_to" => $data['sender'],
-            "message_id" => Str::uuid() . '@' . config("emd.app_domain", "yourdomain.com"),
-            "subject" => $data['subject'],
-            "content" => $data['content'],
-            "ip_address" => $request->ip(),
-            "recipient" => $data['recipient'],
-        ]);
-        if ($shouldQueue) {
-            // code...
+        $recipients = Helper::explodeRecipients($data['recipients']);
+        foreach ($recipients as $recipient) {
+            $message = new Message([
+                "user_id" => $userId,
+                "from_name" => $data['sender'],
+                "from_email" => $data['sender'],
+                "reply_to" => $data['sender'],
+                "message_id" => Str::uuid() . '@' . config("emd.app_domain", "yourdomain.com"),
+                "subject" => $data['subject'],
+                "content" => $data['content'],
+                "ip_address" => $ipAddress,
+                "recipient" => $recipient,
+            ]);
+            if ($shouldQueue) {
+                Mail::to($message->recipient)->queue(
+                    (new SendMessage($message))->onQueue(
+                        config("emd.mail.queue_name", self::QUEUE_NAME)
+                    )
+                );
+            } else {
+                Mail::to($message->recipient)->send(
+                    new SendMessage($message)
+                );
+            }
         }
         Notification::make() 
             ->success()
             ->title(__('Message has been sent!'))
             ->send(); 
-    }
-
-    public static function explodeRecipients(string $recipients): array
-    {
-        $addresses = [];
-        $lines = array_map(
-            static fn($line) => strtolower(trim($line)),
-            explode(PHP_EOL, trim($recipients))
-        );
-        foreach ($lines as $line) {
-            if (filter_var($line, FILTER_VALIDATE_EMAIL)) {
-                $addresses[] = $line;
-            } else {
-                $parts = array_map(
-                    static fn($part) => trim($part),
-                    explode(",", $line)
-                );
-                foreach ($parts as $part) {
-                    if (filter_var($part, FILTER_VALIDATE_EMAIL)) {
-                        $addresses[] = $part;
-                    }
-                }
-            }
-        }
-        return $addresses;
     }
 }
