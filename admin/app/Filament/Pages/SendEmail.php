@@ -19,6 +19,7 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Symfony\Component\Mailer\Exception\ExceptionInterface as MailerException;
 
 /**
  * Send email test page class
@@ -81,7 +82,7 @@ class SendEmail extends Page implements HasForms
 
     public function send(): void
     {
-        $userId = request()->user()->id;
+        $user = request()->user()->id;
         $ipAddress = request()->ip();
 
         $data = $this->form->getState();
@@ -90,8 +91,8 @@ class SendEmail extends Page implements HasForms
         $recipients = Helper::explodeRecipients($data["recipients"]);
         foreach ($recipients as $recipient) {
             $message = new Message([
-                "user_id" => $userId,
-                "from_name" => $data["sender"],
+                "user_id" => $user->id,
+                "from_name" => $user->name,
                 "from_email" => $data["sender"],
                 "reply_to" => $data["sender"],
                 "message_id" =>
@@ -103,19 +104,38 @@ class SendEmail extends Page implements HasForms
                 "ip_address" => $ipAddress,
                 "recipient" => $recipient,
             ]);
-            $message->uploads = [];
-            // $message->save();
+            $message->uploads = $data["attachments"] ?? [];
+            $message->save();
 
-            if ($shouldQueue) {
-                Mail::to($message->recipient)->queue(
-                    (new SendMessage($message))->onQueue(
-                        config("emd.mail.queue_name", self::QUEUE_NAME)
-                    )
-                );
-            } else {
-                Mail::to($message->recipient)->send(new SendMessage($message));
+            try {
+                if ($shouldQueue) {
+                    Mail::to($message->recipient)->queue(
+                        (new SendMessage($message))->onQueue(
+                            config("emd.mail.queue_name", self::QUEUE_NAME)
+                        )
+                    );
+                } else {
+                    Mail::to($message->recipient)->send(new SendMessage($message));
+                }
+                $message->sent_at = now();
+                $message->save();
+            } catch (MailerException $e) {
+                logger()::error($e);
+                MessageFailure::create([
+                    "message_id" => $message->id,
+                    "severity" => __("Send message failed1"),
+                    "description" => $e->getMessage(),
+                    "failed_at" => now(),
+                ]);
+                Notification::make()
+                    ->danger()
+                    ->title(__("Send message failed!"))
+                    ->body($e->getMessage())
+                    ->send();
+                return;
             }
         }
+
         Notification::make()
             ->success()
             ->title(__("Message has been sent!"))
