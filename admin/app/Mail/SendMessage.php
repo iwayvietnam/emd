@@ -51,7 +51,7 @@ class SendMessage extends Mailable
                 $this->message->from_email,
                 $this->message->from_name
             ),
-            to: $this->message->recipients,
+            to: $this->message->recipient,
             replyTo: [$this->message->reply_to],
             subject: $this->message->subject
         );
