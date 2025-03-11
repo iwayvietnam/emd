@@ -34,8 +34,8 @@ class CreateSenderTransport extends CreateRecord
             Select::make("transport_id")
                 ->options(Transport::all()->pluck("name", "id"))
                 ->required()
-                ->label(__("Transport")),
                 ->searchable()
+                ->label(__("Transport")),
             Hidden::make("sender"),
             Hidden::make("transport"),
         ]);
