@@ -28,6 +28,11 @@ class SendEmail extends Page
     protected static ?string $slug = "send-email";
     protected static string $view = 'filament.pages.send-email';
 
+    /**
+     * @var array<string, mixed> | null
+     */
+    public ?array $data = [];
+
     public function form(Form $form): Form
     {
         return $form
@@ -45,6 +50,7 @@ class SendEmail extends Page
                     ->required()
                     ->maxLength(255),
                 RichEditor::make('content')
+                    ->label(__('Content'))
                     ->default('')
                     ->disableToolbarButtons([
                         'attachFiles',
