@@ -140,9 +140,9 @@ class EmailController extends Controller
                 Mail::to($message->recipient)->send(
                     new SendMessage($message, $trackClick)
                 );
+                $message->sent_at = now();
+                $message->save();
             }
-            $message->sent_at = now();
-            $message->save();
         } catch (MailerException $e) {
             logger()::error($e);
             $failed = $e;
