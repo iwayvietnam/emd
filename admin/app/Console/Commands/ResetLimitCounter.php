@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\ClientAccess;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
+use Illuminate\Support\Facades\RateLimiter;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 /**
