@@ -38,7 +38,8 @@ class GenDkimKey extends CreateRecord
                 Select::make("domain_id")
                     ->options(
                         Domain::whereNotIn(
-                            "id", DkimKey::all()->pluck("domain_id")
+                            "id",
+                            DkimKey::all()->pluck("domain_id")
                         )->pluck("name", "id")
                     )
                     ->required()

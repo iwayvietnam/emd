@@ -4,6 +4,7 @@ namespace App\Filament\Resources\SenderTransportResource\Pages;
 
 use App\Filament\Resources\SenderTransportResource;
 use App\Models\Client;
+use App\Models\SenderTransport;
 use App\Models\Transport;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -26,7 +27,12 @@ class CreateSenderTransport extends CreateRecord
     {
         return $form->schema([
             Select::make("client_id")
-                ->options(Client::all()->pluck("name", "id"))
+                ->options(
+                    Client::whereNotIn(
+                        "id",
+                        SenderTransport::all()->pluck("client_id")
+                    )->pluck("name", "id")
+                )
                 ->required()
                 ->unique()
                 ->searchable()
