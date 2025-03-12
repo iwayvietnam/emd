@@ -36,7 +36,11 @@ class GenDkimKey extends CreateRecord
         return $form->schema([
             Grid::make(3)->schema([
                 Select::make("domain_id")
-                    ->options(Domain::all()->pluck("name", "id"))
+                    ->options(
+                        Domain::whereNotIn(
+                            "id", DkimKey::all()->pluck("domain_id", "domain_id")
+                        )->pluck("name", "id")
+                    )
                     ->required()
                     ->unique()
                     ->searchable()
