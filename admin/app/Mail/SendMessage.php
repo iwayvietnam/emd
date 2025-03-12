@@ -124,7 +124,7 @@ class SendMessage extends Mailable
     public function failed(\Throwable $e): void
     {
         MessageFailure::create([
-            "message_id" => $this->message-->id,
+            "message_id" => $this->message->id,
             "severity" => __("Send message failed"),
             "description" => $e->getMessage(),
             "failed_at" => now(),
