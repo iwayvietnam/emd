@@ -107,12 +107,12 @@ class Policy implements PolicyInterface
         $address = $request->getClientAddress();
         $sender = $request->getSender();
         if (isset($this->clientAccesses[$sender][$address]["policy"])) {
-            $counterKey = self::counterKey(
-                $request,
-                ClientAccess::RATE_LIMIT_SUFFIX
-            );
             $policy = $this->clientAccesses[$sender][$address]["policy"];
             if (!empty($policy) && !empty($policy["rate_limit"])) {
+                $counterKey = self::counterKey(
+                    $request,
+                    ClientAccess::RATE_LIMIT_SUFFIX
+                );
                 if (
                     RateLimiter::tooManyAttempts(
                         $counterKey,
@@ -132,12 +132,12 @@ class Policy implements PolicyInterface
         $address = $request->getClientAddress();
         $sender = $request->getSender();
         if (isset($this->clientAccesses[$sender][$address]["policy"])) {
-            $counterKey = self::counterKey(
-                $request,
-                ClientAccess::QUOTA_LIMIT_SUFFIX
-            );
             $policy = $this->clientAccesses[$sender][$address]["policy"];
             if (!empty($policy) && !empty($policy["quota_limit"])) {
+                $counterKey = self::counterKey(
+                    $request,
+                    ClientAccess::QUOTA_LIMIT_SUFFIX
+                );
                 if (
                     RateLimiter::tooManyAttempts(
                         $counterKey,
