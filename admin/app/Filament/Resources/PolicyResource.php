@@ -106,7 +106,7 @@ class PolicyResource extends Resource
                     ->state(
                         static fn(Policy $policy) => implode([
                             $policy->rate_limit,
-                            " Message(s) ",
+                            " Message ",
                             LimitPeriod::tryFrom(
                                 $policy->rate_period
                             )?->getLabel(),
