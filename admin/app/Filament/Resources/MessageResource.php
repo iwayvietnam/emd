@@ -48,7 +48,7 @@ class MessageResource extends Resource
                     ->label(__("User")),
             ])
             ->actions([ViewAction::make(), DeleteAction::make()])
-            ->defaultSort("sent_at", "desc");
+            ->defaultSort("created_at", "desc");
     }
 
     public static function getRelations(): array
