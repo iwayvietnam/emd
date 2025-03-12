@@ -61,7 +61,7 @@ class ClientAccess extends Model
     public function resetQuotaCounter(): self
     {
         RateLimiter::resetAttempts(
-            $record->limitCounterKey(ClientAccess::QUOTA_LIMIT_SUFFIX)
+            $this->limitCounterKey(ClientAccess::QUOTA_LIMIT_SUFFIX)
         );
         return $this;
     }
