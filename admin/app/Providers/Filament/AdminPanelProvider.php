@@ -3,12 +3,10 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\EditUserProfile;
-use App\Filament\Pages\SendEmail;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -55,16 +53,6 @@ class AdminPanelProvider extends PanelProvider
                 for: "App\\Filament\\Widgets"
             )
             ->widgets([Widgets\AccountWidget::class])
-            ->navigationItems([
-                NavigationItem::make(__("Edit Profile"))
-                    ->url(static fn(): string => EditUserProfile::getUrl())
-                    ->icon("heroicon-o-user")
-                    ->isActiveWhen(
-                        static fn() => request()->routeIs(
-                            EditUserProfile::getRouteName()
-                        )
-                    ),
-            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
