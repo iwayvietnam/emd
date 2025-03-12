@@ -16,6 +16,7 @@ use Filament\Resources\Resource;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Number;
 
 /**
  * Policy resource class
@@ -93,8 +94,8 @@ class PolicyResource extends Resource
                 TextColumn::make("quota_limit")
                     ->state(
                         static fn(Policy $policy) => implode([
-                            intval($policy->quota_limit / self::MB),
-                            " MB(s) ",
+                            Number::fileSize($policy->quota_limit),
+                            " ",
                             LimitPeriod::tryFrom(
                                 $policy->quota_period
                             )?->getLabel(),
