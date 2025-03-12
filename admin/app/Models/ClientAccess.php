@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\RateLimiter;
 
 /**
  * Client access model class
@@ -49,9 +50,20 @@ class ClientAccess extends Model
         return $this->belongsTo(Policy::class, "policy_id");
     }
 
-    public function limitCounterKey(string $suffix): string
+    public function resetRateCounter(): self
     {
-        return sha1($this->sender . "|" . $this->client_ip . "|" . $suffix);
+        RateLimiter::resetAttempts(
+            $this->limitCounterKey(ClientAccess::RATE_LIMIT_SUFFIX)
+        );
+        return $this;
+    }
+
+    public function resetQuotaCounter(): self
+    {
+        RateLimiter::resetAttempts(
+            $record->limitCounterKey(ClientAccess::QUOTA_LIMIT_SUFFIX)
+        );
+        return $this;
     }
 
     public static function cachedAccesses(): array
@@ -80,6 +92,11 @@ class ClientAccess extends Model
     public static function clearCache(): void
     {
         Cache::forget(self::cacheKey());
+    }
+
+    private function limitCounterKey(string $suffix): string
+    {
+        return sha1($this->sender . "|" . $this->client_ip . "|" . $suffix);
     }
 
     private static function cacheKey(): string

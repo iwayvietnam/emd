@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Models\ClientAccess;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
-use Illuminate\Support\Facades\RateLimiter;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 /**
@@ -48,12 +47,7 @@ class ResetLimitCounter extends Command implements Isolatable
     private function resetLimitCounter(): void
     {
         foreach (ClientAccess::all() as $record) {
-            RateLimiter::resetAttempts(
-                $record->limitCounterKey(ClientAccess::RATE_LIMIT_SUFFIX)
-            );
-            RateLimiter::resetAttempts(
-                $record->limitCounterKey(ClientAccess::QUOTA_LIMIT_SUFFIX)
-            );
+            $record->resetRateCounter()->resetQuotaCounter();
         }
     }
 }

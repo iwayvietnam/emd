@@ -11,7 +11,6 @@ use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\RateLimiter;
 
 /**
  * Client access resource class
@@ -84,9 +83,7 @@ class ClientAccessResource extends Resource
 
     private static function resetRateCounter(ClientAccess $record): void
     {
-        RateLimiter::resetAttempts(
-            $record->limitCounterKey(ClientAccess::RATE_LIMIT_SUFFIX)
-        );
+        $record->resetRateCounter();
         Notification::make()
             ->title(__("Rate counter have been reset from the cache!"))
             ->success()
@@ -95,9 +92,7 @@ class ClientAccessResource extends Resource
 
     private static function resetQuotaCounter(ClientAccess $record): void
     {
-        RateLimiter::resetAttempts(
-            $record->limitCounterKey(ClientAccess::QUOTA_LIMIT_SUFFIX)
-        );
+        $record->resetQuotaCounter();
         Notification::make()
             ->title(__("Quota counter have been reset from the cache!"))
             ->success()
