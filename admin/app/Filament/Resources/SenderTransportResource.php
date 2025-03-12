@@ -37,7 +37,8 @@ class SenderTransportResource extends Resource
                 TextColumn::make("sender")->searchable()->label(__("Sender Address")),
                 TextColumn::make("transport")->label(__("Transport")),
             ])
-            ->actions([DeleteAction::make()]);
+            ->actions([DeleteAction::make()])
+            ->defaultSort("created_at", "desc");
     }
 
     public static function getPages(): array
