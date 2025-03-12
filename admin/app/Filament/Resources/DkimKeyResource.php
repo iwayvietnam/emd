@@ -84,7 +84,8 @@ class DkimKeyResource extends Resource
                         ->action(fn($record) => self::exportDnsRecord($record)),
                     DeleteAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort("created_at", "desc");
     }
 
     public static function getPages(): array

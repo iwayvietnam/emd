@@ -50,7 +50,8 @@ class ClientResource extends Resource
             ->actions([
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
-            ]);
+            ])
+            ->defaultSort("created_at", "desc");
     }
 
     public static function getPages(): array

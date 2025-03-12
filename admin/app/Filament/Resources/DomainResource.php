@@ -106,7 +106,8 @@ class DomainResource extends Resource
                         ->icon("heroicon-m-eye")
                         ->label(__("Query Dmarc Record")),
                 ]),
-            ]);
+            ])
+            ->defaultSort("created_at", "desc");
     }
 
     public static function getPages(): array
