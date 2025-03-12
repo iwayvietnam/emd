@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Message;
+use App\Models\MessageFailure;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Events\MessageSent;
@@ -112,6 +113,22 @@ class SendMessage extends Mailable
     {
         $this->message->sent_at = now();
         $this->message->save();
+    }
+
+    /**
+     * Handle failed event.
+     *
+     * @param  Throwable $e
+     * @return void
+     */
+    public function failed(\Throwable $e): void
+    {
+        MessageFailure::create([
+            "message_id" => $this->message-->id,
+            "severity" => __("Send message failed"),
+            "description" => $e->getMessage(),
+            "failed_at" => now(),
+        ]);
     }
 
     private function trackingClick(string $content)
