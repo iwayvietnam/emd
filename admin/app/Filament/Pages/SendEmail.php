@@ -72,8 +72,8 @@ class SendEmail extends Page implements HasForms
                     ->moveFiles()
                     ->directory(
                         config("emd.api_upload_dir", self::UPLOAD_DIR) .
-                            "/" .
-                            request()->user()->email
+                        "/" .
+                        request()->user()->email
                     ),
                 Toggle::make("should_queue")->label(__("Should Queue")),
             ])
