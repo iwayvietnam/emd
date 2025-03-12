@@ -49,6 +49,11 @@ class ClientAccess extends Model
         return $this->belongsTo(Policy::class, "policy_id");
     }
 
+    public function limitCounterKey(string $suffix): string
+    {
+        return sha1($this->sender . "|" . $this->client_ip . "|" . $suffix);
+    }
+
     public static function cachedAccesses(): array
     {
         $cacheKey = self::cacheKey();

@@ -85,7 +85,7 @@ class ClientAccessResource extends Resource
     private static function resetRateCounter(ClientAccess $record): void
     {
         RateLimiter::resetAttempts(
-            self::counterKey($record, ClientAccess::RATE_LIMIT_SUFFIX)
+            $record->limitCounterKey(ClientAccess::RATE_LIMIT_SUFFIX)
         );
         Notification::make()
             ->title(__("Rate counter have been reset from the cache!"))
@@ -96,18 +96,11 @@ class ClientAccessResource extends Resource
     private static function resetQuotaCounter(ClientAccess $record): void
     {
         RateLimiter::resetAttempts(
-            self::counterKey($record, ClientAccess::QUOTA_LIMIT_SUFFIX)
+            $record->limitCounterKey(ClientAccess::QUOTA_LIMIT_SUFFIX)
         );
         Notification::make()
             ->title(__("Quota counter have been reset from the cache!"))
             ->success()
             ->send();
-    }
-
-    private static function counterKey(
-        ClientAccess $record,
-        string $suffix
-    ): string {
-        return sha1($record->sender . "|" . $record->client_ip . "|" . $suffix);
     }
 }
