@@ -44,7 +44,7 @@ class ResetLimitCounter extends Command implements Isolatable
         return Command::SUCCESS;
     }
 
-    private function resetLimitCounter(string $server): void
+    private function resetLimitCounter(): void
     {
         foreach (ClientAccess::all() as $record) {
             RateLimiter::resetAttempts(
