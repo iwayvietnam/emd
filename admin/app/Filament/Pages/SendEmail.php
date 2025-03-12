@@ -70,6 +70,7 @@ class SendEmail extends Page implements HasForms
                     ->multiple()
                     ->previewable(false)
                     ->moveFiles()
+                    ->disk('local')
                     ->directory(
                         config("emd.api_upload_dir", self::UPLOAD_DIR) .
                         "/" .
@@ -110,14 +111,7 @@ class SendEmail extends Page implements HasForms
                 "recipient" => $recipient,
             ]);
 
-            $uploads = [];
-            if (!empty($data["attachments"])) {
-                $uploads = array_map(
-                    static fn($file) => "app/public/$file",
-                    $data["attachments"]
-                );
-            }
-            $message->uploads = $uploads;
+            $message->uploads = $data["attachments"] ?? [];
             $message->save();
 
             try {
