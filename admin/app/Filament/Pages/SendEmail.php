@@ -115,6 +115,7 @@ class SendEmail extends Page implements HasForms
             $message->save();
 
             try {
+                $this->form->fill();
                 if ($shouldQueue) {
                     Mail::to($message->recipient)->queue(
                         (new SendMessage($message))->onQueue(
@@ -144,8 +145,6 @@ class SendEmail extends Page implements HasForms
                 return;
             }
         }
-
-        $this->form->fill();
 
         Notification::make()
             ->success()
