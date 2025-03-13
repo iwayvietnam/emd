@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\RemoteServer;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -50,5 +51,37 @@ class MailServer extends Model
             "ssh_private_key" => "encrypted",
             "sudo_password" => "encrypted",
         ];
+    }
+
+    public function syncSenderTransports(array $transports): void
+    {
+        if (!empty($transports)) {
+            $transportFile = config("emd.sender_transport");
+            $tempFile = tempnam(sys_get_temp_dir(), "emd");
+            $remoteServer = new RemoteServer(
+                $this->ip_address,
+                $this->ssh_port,
+                $this->ssh_user,
+                $this->ssh_private_key
+            );
+            $remoteServer->uploadContent(
+                $tempFile,
+                implode(PHP_EOL, $transports)
+            );
+            $remoteServer->runCommand(
+                implode([
+                    sprintf(self::ECHO_COMMAND, $this->sudo_password),
+                    " | ",
+                    sprintf(self::COPY_COMMAND, $tempFile, $transportFile),
+                ])
+            );
+            $remoteServer->runCommand(
+                implode([
+                    sprintf(self::ECHO_COMMAND, $this->sudo_password),
+                    " | ",
+                    sprintf(self::POSTMAP_COMMAND, $transportFile),
+                ])
+            );
+        }
     }
 }

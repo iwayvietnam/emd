@@ -34,39 +34,11 @@ class ListSenderTransports extends ListRecords
 
     private static function syncSenderTransports(): void
     {
-        $transports = [];
-        foreach (SenderTransport::all() as $model) {
-            $transports[] = $model->sender . " " . $model->transport;
-        }
+        $transports = SenderTransport::transports();
 
         if (!empty($transports)) {
-            $transportFile = config("emd.sender_transport");
-            $tempFile = tempnam(sys_get_temp_dir(), "emd");
-            foreach (MailServer::all() as $model) {
-                $remoteServer = new RemoteServer(
-                    $model->ip_address,
-                    $model->ssh_port,
-                    $model->ssh_user,
-                    $model->ssh_private_key
-                );
-                $remoteServer->uploadContent(
-                    $tempFile,
-                    implode(PHP_EOL, $transports)
-                );
-                $remoteServer->runCommand(
-                    implode([
-                        sprintf(MailServer::ECHO_COMMAND, $model->sudo_password),
-                        " | ",
-                        sprintf(MailServer::COPY_COMMAND, $tempFile, $transportFile),
-                    ])
-                );
-                $remoteServer->runCommand(
-                    implode([
-                        sprintf(MailServer::ECHO_COMMAND, $model->sudo_password),
-                        " | ",
-                        sprintf(MailServer::POSTMAP_COMMAND, $transportFile),
-                    ])
-                );
+            foreach (MailServer::all() as $server) {
+                $server->syncSenderTransports($transports);
             }
         }
 

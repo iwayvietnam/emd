@@ -49,36 +49,15 @@ class SyncSenderTransport extends Command implements Isolatable
     private function syncSenderTransport(string $server): void
     {
         if (filter_var($server, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-            $mailServer = MailServer::firstWhere('ip_address', $server);
+            $server = MailServer::firstWhere('ip_address', $server);
         }
         else {
-            $mailServer = MailServer::firstWhere('name', $server);
+            $server = MailServer::firstWhere('name', $server);
         }
-        if ($mailServer->id) {
-            $transports = [];
-            foreach (SenderTransport::all() as $model) {
-                $transports[] = $model->sender . " " . $model->transport;
-            }
+        if ($server->id) {
+            $transports = SenderTransport::transports();
             if (!empty($transports)) {
-                $transportFile = config("emd.sender_transport");
-                $tempFile = tempnam(sys_get_temp_dir(), 'emd');
-
-                $remoteServer = new RemoteServer(
-                    $mailServer->ip_address,
-                    $mailServer->ssh_port,
-                    $mailServer->ssh_user,
-                    $mailServer->ssh_private_key
-                );
-                $remoteServer->uploadContent(
-                    $tempFile,
-                    implode(PHP_EOL, $transports)
-                );
-                $remoteServer->runCommand(
-                    sprintf(MailServer::COPY_COMMAND, $tempFile, $transportFile)
-                );
-                $remoteServer->runCommand(
-                    sprintf(MailServer::POSTMAP_COMMAND, $transportFile)
-                );
+                $server->syncSenderTransport($transports);
             }
         }
     }

@@ -38,8 +38,15 @@ class SenderTransport extends Model
         return $this->belongsTo(Client::class, "client_id");
     }
 
-    public function transportModel(): BelongsTo
+    public function belongTransport(): BelongsTo
     {
         return $this->belongsTo(Transport::class, "transport_id");
+    }
+
+    public static function transports(): array
+    {
+        return static::all()->map(
+            static fn ($item) =>  $item->sender . " " . $item->transport
+        )->toArray();
     }
 }
