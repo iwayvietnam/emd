@@ -104,7 +104,7 @@ class RemoteServer
             $sftp->login(
                 $this->remoteUser,
                 PublicKeyLoader::load($this->privateKey)
-            )
+            );
 
             if (!$sftp->file_exists($remoteDir)) {
                 $sftp->mkdir($remoteDir, 0755, true);
