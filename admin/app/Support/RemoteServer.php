@@ -79,6 +79,7 @@ class RemoteServer
                 );
             }
         } catch (\Throwable $th) {
+            logger()->error($th);
             throw new \RuntimeException(
                 strtr(
                     "Error running command {command} on server {remoteHost}: {message}",
