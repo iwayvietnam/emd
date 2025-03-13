@@ -104,18 +104,6 @@ class SendMessage extends Mailable
     }
 
     /**
-     * Handle the event.
-     *
-     * @param  MessageSent $event
-     * @return void
-     */
-    public function handle(MessageSent $event): void
-    {
-        $this->message->sent_at = now();
-        $this->message->save();
-    }
-
-    /**
      * Handle failed event.
      *
      * @param  Throwable $e
