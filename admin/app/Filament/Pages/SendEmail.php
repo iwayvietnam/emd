@@ -125,9 +125,9 @@ class SendEmail extends Page implements HasForms
                     Mail::to($message->recipient)->send(
                         new SendMessage($message)
                     );
-                    $message->sent_at = now();
-                    $message->save();
                 }
+                $message->sent_at = now();
+                $message->save();
             } catch (MailerException $e) {
                 logger()->error($e);
                 MessageFailure::create([
