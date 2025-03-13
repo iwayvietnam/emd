@@ -145,6 +145,8 @@ class SendEmail extends Page implements HasForms
             }
         }
 
+        $this->form->fill();
+
         Notification::make()
             ->success()
             ->title(__("Message has been sent!"))
