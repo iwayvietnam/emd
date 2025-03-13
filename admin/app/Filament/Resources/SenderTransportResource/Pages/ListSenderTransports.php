@@ -56,17 +56,15 @@ class ListSenderTransports extends ListRecords
                 $remoteServer->runCommand(
                     implode([
                         sprintf(MailServer::ECHO_COMMAND, $model->sudo_password),
-                        ' | ',
+                        '|',
                         sprintf(MailServer::COPY_COMMAND, $tempFile, $transportFile),
-                        '\n',
                     ])
                 );
                 $remoteServer->runCommand(
                     implode([
                         sprintf(MailServer::ECHO_COMMAND, $model->sudo_password),
-                        ' | ',
+                        '|',
                         sprintf(MailServer::POSTMAP_COMMAND, $transportFile),
-                        '\n',
                     ])
                 );
             }
