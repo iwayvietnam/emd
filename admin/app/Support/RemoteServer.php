@@ -67,19 +67,9 @@ class RemoteServer
             }
 
             if (!empty($this->ssh->getStdError())) {
-                throw new \RuntimeException(
-                    strtr(
-                        "Error running command {command} on server {remoteHost}: {message}",
-                        [
-                            "{command}" => $command,
-                            "{remoteHost}" => $this->remoteHost,
-                            "{message}" => $this->ssh->getStdError(),
-                        ]
-                    )
-                );
+                logger()->error($this->ssh->getStdError());
             }
         } catch (\Throwable $th) {
-            logger()->error($th);
             throw new \RuntimeException(
                 strtr(
                     "Error running command {command} on server {remoteHost}: {message}",
