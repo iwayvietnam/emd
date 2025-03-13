@@ -36,9 +36,18 @@ class SendMessage extends Mailable
      * @return void
      */
     public function __construct(
-        private Message $message,
-        private bool $trackClick = false
-    ) {}
+        private readonly Message $message,
+        private readonly bool $trackClick = false
+    )
+    {
+        if ($message->uploads) {
+            foreach ($message->uploads as $upload) {
+                $this->attachments[] = Attachment::fromPath(
+                    Storage::path($upload)
+                )->withMime(Storage::mimeType($upload));
+            }
+        }
+    }
 
     /**
      * Get the message envelope.
@@ -83,24 +92,6 @@ class SendMessage extends Mailable
                 $this->trackingClick($this->message->content)
             )
         );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return Attachment[]
-     */
-    public function attachments(): array
-    {
-        $attachments = [];
-        if ($this->message->uploads) {
-            foreach ($this->message->uploads as $upload) {
-                $attachments[] = Attachment::fromPath(
-                    Storage::path($upload)
-                )->withMime(Storage::mimeType($upload));
-            }
-        }
-        return $attachments;
     }
 
     /**
