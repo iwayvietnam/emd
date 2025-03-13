@@ -17,7 +17,8 @@ class RemoteServer
 {
     const SSH_CONNECT_TIMEOUT = 1000;
 
-    protected SSH2 $ssh;
+    private SSH2 $ssh;
+    private SFTP $sftp;
 
     public function __construct(
         private readonly string $remoteHost = "0.0.0.0",
@@ -97,15 +98,7 @@ class RemoteServer
     {
         try {
             $remoteDir = str_replace(basename($remoteFile), "", $remoteFile);
-
-            $sftp = new SFTP(
-                $this->remoteHost, $this->remotePort, self::SSH_CONNECT_TIMEOUT
-            );
-            $sftp->login(
-                $this->remoteUser,
-                PublicKeyLoader::load($this->privateKey)
-            );
-
+            $sftp = $this->sftp();
             if (!$sftp->file_exists($remoteDir)) {
                 $sftp->mkdir($remoteDir, 0755, true);
             }
@@ -127,8 +120,9 @@ class RemoteServer
     public function deleteFile(string $remoteFile)
     {
         try {
-            if ($this->ssh->file_exists($remoteFile)) {
-                $this->ssh->delete($remoteFile);
+            $sftp = $this->sftp();
+            if ($sftp->file_exists($remoteFile)) {
+                $sftp->delete($remoteFile);
             }
         } catch (\Throwable $th) {
             throw new \RuntimeException(
@@ -142,5 +136,19 @@ class RemoteServer
                 )
             );
         }
+    }
+
+    private function sftp(): SFTP
+    {
+        if (!($this->sftp instanceof SFTP)) {
+            $this->sftp = new SFTP(
+                $this->remoteHost, $this->remotePort, self::SSH_CONNECT_TIMEOUT
+            );
+            $this->sftp->login(
+                $this->remoteUser,
+                PublicKeyLoader::load($this->privateKey)
+            );
+        }
+        return $this->sftp;
     }
 }
