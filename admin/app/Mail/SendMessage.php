@@ -28,6 +28,8 @@ class SendMessage extends Mailable
 
     const TRACKING_IMG = '<img height="1" width="1" src="{tracking_pixel}" alt="" />';
 
+    private readonly array $messageUploads;
+
     /**
      * Create a new message instance.
      *
@@ -36,9 +38,12 @@ class SendMessage extends Mailable
      * @return void
      */
     public function __construct(
-        private Message $message,
-        private bool $trackClick = false
-    ) {}
+        private readonly Message $message,
+        private readonly bool $trackClick = false
+    )
+    {
+        $this->messageUploads = $this->message->uploads;
+    }
 
     /**
      * Get the message envelope.
@@ -93,12 +98,10 @@ class SendMessage extends Mailable
     public function attachments(): array
     {
         $attachments = [];
-        if ($this->message->uploads) {
-            foreach ($this->message->uploads as $upload) {
-                $attachments[] = Attachment::fromPath(
-                    Storage::path($upload)
-                )->withMime(Storage::mimeType($upload));
-            }
+        foreach ($this->messageUploads as $upload) {
+            $attachments[] = Attachment::fromPath(
+                Storage::path($upload)
+            )->withMime(Storage::mimeType($upload));
         }
         return $attachments;
     }
