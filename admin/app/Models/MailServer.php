@@ -15,7 +15,7 @@ class MailServer extends Model
 {
     const POSTMAP_COMMAND = "sudo -S postmap lmdb:%s";
     const COPY_COMMAND = "sudo -S cp -f %s %s";
-    const ECHO_COMMAND = "echo %s";
+    const ECHO_COMMAND = "echo '%s'";
 
     /**
      * The table associated with the model.
