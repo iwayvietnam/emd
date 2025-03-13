@@ -98,24 +98,6 @@ class SendMessage extends Mailable
     }
 
     /**
-     * Get the attachments for the message.
-     *
-     * @return Attachment[]
-     */
-    // public function attachments(): array
-    // {
-    //     $attachments = [];
-    //     if ($this->message->uploads) {
-    //         foreach ($this->message->uploads as $upload) {
-    //             $attachments[] = Attachment::fromPath(
-    //                 Storage::path($upload)
-    //             )->withMime(Storage::mimeType($upload));
-    //         }
-    //     }
-    //     return $attachments;
-    // }
-
-    /**
      * Handle failed event.
      *
      * @param  Throwable $e
