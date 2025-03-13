@@ -13,8 +13,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class MailServer extends Model
 {
-    const POSTMAP_COMMAND = "sudo postmap lmdb:%s";
-    const COPY_COMMAND = "sudo cp -f %s %s";
+    const POSTMAP_COMMAND = "sudo -S postmap lmdb:%s";
+    const COPY_COMMAND = "sudo -S cp -f %s %s";
+    const ECHO_COMMAND = "echo '%s'";
 
     /**
      * The table associated with the model.
@@ -35,6 +36,7 @@ class MailServer extends Model
         "ssh_port",
         "ssh_private_key",
         "ssh_public_key",
+        "sudo_password",
     ];
 
     /**
@@ -46,6 +48,7 @@ class MailServer extends Model
     {
         return [
             "ssh_private_key" => "encrypted",
+            "sudo_password" => "encrypted",
         ];
     }
 }

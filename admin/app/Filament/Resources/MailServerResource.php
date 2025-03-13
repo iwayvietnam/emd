@@ -7,6 +7,7 @@ use App\Filament\Resources\MailServerResource\Pages;
 use App\Models\MailServer;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -52,13 +53,19 @@ class MailServerResource extends Resource
                 ->unique(ignoreRecord: true)
                 ->ipv4()
                 ->label(__("Ip Address")),
-            TextInput::make("ssh_user")->required()->label(__("SSH User")),
-            TextInput::make("ssh_port")
-                ->required()
-                ->integer()
-                ->minValue(0)
-                ->default(22)
-                ->label(__("SSH Port")),
+            Grid::make(3)->schema([
+                TextInput::make("ssh_user")->required()->label(__("SSH User")),
+                TextInput::make("ssh_port")
+                    ->required()
+                    ->integer()
+                    ->minValue(0)
+                    ->default(22)
+                    ->label(__("SSH Port")),
+                TextInput::make("sudo_password")
+                    ->password()
+                    ->revealable()
+                    ->label(__("Sudo Password")),
+            ]),
             Textarea::make("ssh_private_key")
                 ->columnSpan(2)
                 ->required()

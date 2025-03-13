@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('ssh_port');
             $table->text('ssh_private_key')->nullable();
             $table->text('ssh_public_key')->nullable();
+            $table->string('sudo_password', 1024)->nullable();
             $table->timestamps();
         });
     }
