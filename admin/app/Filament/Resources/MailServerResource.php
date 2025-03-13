@@ -62,8 +62,8 @@ class MailServerResource extends Resource
                     ->default(22)
                     ->label(__("SSH Port")),
                 TextInput::make("sudo_password")
+                    ->required()
                     ->password()
-                    ->revealable()
                     ->label(__("Sudo Password")),
             ]),
             Textarea::make("ssh_private_key")
