@@ -40,15 +40,13 @@ class SendMessage extends Mailable
         private readonly bool $trackClick = false
     )
     {
-        if ($message->uploads) {
-            foreach ($message->uploads as $upload) {
-                $this->attachments[] = [
-                    'file' => Storage::path($upload),
-                    'options' => [
-                        'mime' => Storage::mimeType($upload),
-                    ],
-                ];
-            }
+        foreach ($message->uploads as $upload) {
+            $this->attachments[] = [
+                'file' => Storage::path($upload),
+                'options' => [
+                    'mime' => Storage::mimeType($upload),
+                ],
+            ];
         }
     }
 
