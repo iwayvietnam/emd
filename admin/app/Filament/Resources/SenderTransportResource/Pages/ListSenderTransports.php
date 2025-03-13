@@ -41,7 +41,7 @@ class ListSenderTransports extends ListRecords
 
         if (!empty($transports)) {
             $transportFile = config("emd.sender_transport");
-            $tempFile = tempnam(sys_get_temp_dir(), 'emd');
+            $tempFile = tempnam(sys_get_temp_dir(), "emd");
             foreach (MailServer::all() as $model) {
                 $remoteServer = new RemoteServer(
                     $model->ip_address,
@@ -56,14 +56,14 @@ class ListSenderTransports extends ListRecords
                 $remoteServer->runCommand(
                     implode([
                         sprintf(MailServer::ECHO_COMMAND, $model->sudo_password),
-                        '|',
+                        " | ",
                         sprintf(MailServer::COPY_COMMAND, $tempFile, $transportFile),
                     ])
                 );
                 $remoteServer->runCommand(
                     implode([
                         sprintf(MailServer::ECHO_COMMAND, $model->sudo_password),
-                        '|',
+                        " | ",
                         sprintf(MailServer::POSTMAP_COMMAND, $transportFile),
                     ])
                 );
