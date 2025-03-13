@@ -14,6 +14,8 @@ use phpseclib3\Net\SFTP;
  */
 class RemoteServer
 {
+    const SSH_CONNECT_TIMEOUT = 1000;
+
     protected SFTP $ssh;
 
     public function __construct(
@@ -23,7 +25,9 @@ class RemoteServer
         private readonly string $privateKey = ""
     ) {
         if (!empty($this->privateKey)) {
-            $this->ssh = new SFTP($this->remoteHost, $this->remotePort);
+            $this->ssh = new SFTP(
+                $this->remoteHost, $this->remotePort, self::SSH_CONNECT_TIMEOUT
+            );
             if (
                 !$this->ssh->login(
                     $this->remoteUser,
