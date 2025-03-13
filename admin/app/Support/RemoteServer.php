@@ -18,7 +18,7 @@ class RemoteServer
     const SSH_CONNECT_TIMEOUT = 1000;
 
     private SSH2 $ssh;
-    private SFTP $sftp;
+    private ?SFTP $sftp = null;
 
     public function __construct(
         private readonly string $remoteHost = "0.0.0.0",
