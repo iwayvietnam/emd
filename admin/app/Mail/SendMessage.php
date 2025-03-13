@@ -42,9 +42,12 @@ class SendMessage extends Mailable
     {
         if ($message->uploads) {
             foreach ($message->uploads as $upload) {
-                $this->attachments[] = Attachment::fromPath(
-                    Storage::path($upload)
-                )->withMime(Storage::mimeType($upload));
+                $this->attachments[] = [
+                    'file' => Storage::path($upload),
+                    'options' => [
+                        'mime' => Storage::mimeType($upload),
+                    ],
+                ];
             }
         }
     }
@@ -93,6 +96,24 @@ class SendMessage extends Mailable
             )
         );
     }
+
+    /**
+     * Get the attachments for the message.
+     *
+     * @return Attachment[]
+     */
+    // public function attachments(): array
+    // {
+    //     $attachments = [];
+    //     if ($this->message->uploads) {
+    //         foreach ($this->message->uploads as $upload) {
+    //             $attachments[] = Attachment::fromPath(
+    //                 Storage::path($upload)
+    //             )->withMime(Storage::mimeType($upload));
+    //         }
+    //     }
+    //     return $attachments;
+    // }
 
     /**
      * Handle failed event.
