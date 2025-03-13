@@ -17,7 +17,7 @@ class RemoteServer
 {
     const SSH_CONNECT_TIMEOUT = 1000;
 
-    private SSH2 $ssh;
+    private readonly SSH2 $ssh;
     private ?SFTP $sftp = null;
 
     public function __construct(
