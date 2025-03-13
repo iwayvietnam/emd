@@ -53,7 +53,7 @@ final class Parser
             return false;
         }
         foreach ($xml->xpath(self::EMPTY_NODE_XPATH) as $remove) {
-            unset($remove[0]);
+            unset($remove);
         }
         try {
             $report = json_decode(json_encode($xml));
