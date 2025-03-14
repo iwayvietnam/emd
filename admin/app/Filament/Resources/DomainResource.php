@@ -33,7 +33,7 @@ class DomainResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __("Domain Manager");
+        return __("Domains");
     }
 
     public static function table(Table $table): Table
