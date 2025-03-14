@@ -55,9 +55,14 @@ class Policy implements PolicyInterface
                     );
                 }
                 if ($this->recipientIsRestricted($request)) {
-                    logger()->error("Recipient {recipient} is restricted.", [
-                        "recipient" => $request->getRecipient(),
-                    ]);
+                    logger()->error(
+                        "Recipient {recipient} of client {sender}:{address} is restricted.",
+                        [
+                            "recipient" => $request->getRecipient(),
+                            "sender" => $request->getSender(),
+                            "address" => $request->getClientAddress(),
+                        ]
+                    );
                     return new PolicyResponse(
                         AccessVerdict::Reject,
                         "Recipient address is restricted!"
