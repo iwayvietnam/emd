@@ -30,7 +30,7 @@ class TransportResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __("Transport Manager");
+        return __("Mail Transports");
     }
 
     public static function form(Form $form): Form
