@@ -38,7 +38,7 @@ class SenderTransport extends Model
         return $this->belongsTo(Client::class, "client_id");
     }
 
-    public function belongTransport(): BelongsTo
+    public function mailTransport(): BelongsTo
     {
         return $this->belongsTo(Transport::class, "transport_id");
     }
