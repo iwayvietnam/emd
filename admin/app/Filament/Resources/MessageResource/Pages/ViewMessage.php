@@ -29,8 +29,11 @@ class ViewMessage extends ViewRecord
             TextEntry::make("reply_to")->label(__("Reply To")),
             TextEntry::make("recipient")->label(__("Recipient")),
             TextEntry::make("ip_address")->label(__("IP Address")),
-            TextEntry::make("subject")->label(__("Subject"))->columnSpan(2),
-            TextEntry::make("content")->label(__("Content"))->columnSpan(2),
+            TextEntry::make("subject")->columnSpan(2)->label(__("Subject")),
+            TextEntry::make("content")
+                ->html()
+                ->columnSpan(2)
+                ->label(__("Content")),
             TextEntry::make("last_opened")->label(__("Last Opened")),
             TextEntry::make("hash")->label(__("Tracking Hash")),
         ]);
