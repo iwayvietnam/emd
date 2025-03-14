@@ -25,7 +25,7 @@ class SenderTransportResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __("Sender Transport");
+        return __("Sender Transports");
     }
 
     public static function table(Table $table): Table

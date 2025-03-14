@@ -27,7 +27,7 @@ class ClientResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __("Client Manager");
+        return __("Clients");
     }
 
     public static function table(Table $table): Table

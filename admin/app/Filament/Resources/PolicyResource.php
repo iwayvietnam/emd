@@ -36,7 +36,7 @@ class PolicyResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __("Policy Manager");
+        return __("Policies");
     }
 
     public static function form(Form $form): Form
