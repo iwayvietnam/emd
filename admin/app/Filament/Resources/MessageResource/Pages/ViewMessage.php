@@ -28,9 +28,7 @@ class ViewMessage extends ViewRecord
             TextEntry::make("from_email")->label(__("From Email")),
             TextEntry::make("reply_to")->label(__("Reply To")),
             TextEntry::make("ip_address")->label(__("IP Address")),
-            TextEntry::make("recipients")
-                ->label(__("Recipients"))
-                ->columnSpan(2),
+            TextEntry::make("recipient")->label(__("Recipient")),
             TextEntry::make("subject")->label(__("Subject"))->columnSpan(2),
             TextEntry::make("content")->label(__("Content"))->columnSpan(2),
             TextEntry::make("last_opened")->label(__("Last Opened")),
