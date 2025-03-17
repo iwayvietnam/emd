@@ -85,7 +85,7 @@ class RemoteServer
                         $throwError = true;
                     }
                 }
-                elsee {
+                else {
                     $throwError = true;
                 }
                 if ($throwError) {
