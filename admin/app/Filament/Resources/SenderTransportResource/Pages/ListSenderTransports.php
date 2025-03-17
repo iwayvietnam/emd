@@ -34,7 +34,7 @@ class ListSenderTransports extends ListRecords
                 ])
                 ->action(
                     static fn(array $data) => self::syncSenderTransports(
-                        $data["mail_server"]
+                        (int) $data["mail_server"]
                     )
                 )
                 ->label(__("Sync To Mail Server")),
