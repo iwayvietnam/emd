@@ -52,15 +52,11 @@ final class Parser
         if (empty($xml)) {
             return false;
         }
-        foreach ($xml->xpath(self::EMPTY_NODE_XPATH) as $remove) {
-            if (isset($remove[0])) {
+        try {
+            foreach ($xml->xpath(self::EMPTY_NODE_XPATH) as $remove) {
                 unset($remove[0]);
             }
-            else {
-                unset($remove);
-            }
-        }
-        try {
+
             $report = json_decode(json_encode($xml));
             unset($xml);
 
