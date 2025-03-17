@@ -37,12 +37,18 @@ class SendEmail extends Page implements HasForms
 
     protected static ?string $navigationGroup = "System";
     protected static ?string $navigationIcon = "heroicon-o-envelope";
+    protected static ?string $slug = 'send-email';
     protected static string $view = "filament.pages.send-email";
 
     /**
      * @var array<string, mixed> | null
      */
     public ?array $data = [];
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Send Email');
+    }
 
     public function mount(): void
     {
