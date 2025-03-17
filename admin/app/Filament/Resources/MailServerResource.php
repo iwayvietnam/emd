@@ -50,7 +50,6 @@ class MailServerResource extends Resource
                 ->label(__("Name")),
             TextInput::make("ip_address")
                 ->required()
-                ->unique(ignoreRecord: true)
                 ->ipv4()
                 ->label(__("Ip Address")),
             Grid::make(3)->schema([
