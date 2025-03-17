@@ -15,9 +15,9 @@ use phpseclib3\Net\SFTP;
 class RemoteServer
 {
     const SSH_CONNECT_TIMEOUT = 1000;
-    const SUDO_ASK_PASSWORD = '[sudo] password for';
-    const SUDO_NO_PASSWORD = 'no password was provided';
-    const SUDO_INCORRECT_PASSWORD = 'incorrect password attempt';
+    const SUDO_ASK_PASSWORD = "[sudo] password for";
+    const SUDO_NO_PASSWORD = "no password was provided";
+    const SUDO_INCORRECT_PASSWORD = "incorrect password attempt";
 
     private readonly SFTP $ssh;
 
@@ -29,7 +29,9 @@ class RemoteServer
     ) {
         if (!empty($this->privateKey)) {
             $this->ssh = new SFTP(
-                $this->remoteHost, $this->remotePort, self::SSH_CONNECT_TIMEOUT
+                $this->remoteHost,
+                $this->remotePort,
+                self::SSH_CONNECT_TIMEOUT
             );
             if (
                 !$this->ssh->login(
@@ -79,13 +81,12 @@ class RemoteServer
                 $throwError = false;
                 if (strpos($error, self::SUDO_ASK_PASSWORD) !== false) {
                     if (
-                        (strpos($error, self::SUDO_NO_PASSWORD) !== false) ||
+                        strpos($error, self::SUDO_NO_PASSWORD) !== false ||
                         strpos($error, self::SUDO_INCORRECT_PASSWORD) !== false
                     ) {
                         $throwError = true;
                     }
-                }
-                else {
+                } else {
                     $throwError = true;
                 }
                 if ($throwError) {
