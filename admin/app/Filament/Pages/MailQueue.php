@@ -38,6 +38,11 @@ class MailQueue extends Page implements HasForms
         return __('Mail Queue');
     }
 
+    public function mount(): void
+    {
+        $this->form->fill();
+    }
+
     public function form(Form $form): Form
     {
         return $form
