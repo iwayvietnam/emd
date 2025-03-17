@@ -7,6 +7,7 @@ use App\Models\MailServer;
 use App\Models\SenderTransport;
 use App\Support\RemoteServer;
 use Filament\Actions;
+use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 
@@ -26,13 +27,18 @@ class ListSenderTransports extends ListRecords
         return [
             Actions\CreateAction::make()->label(__("New Sender Transport")),
             Actions\Action::make("sync")
-                ->requiresConfirmation()
-                ->action(static fn() => self::syncSenderTransports())
+                ->form([
+                    Select::make("mail_server")
+                        ->options(MailServer::all()->pluck("name", "id"))
+                        ->required()
+                        ->label(__("Mail Server")),
+                ])
+                ->action(static fn(array $data) => self::syncSenderTransports($data['mail_server']))
                 ->label(__("Sync To Mail Servers")),
         ];
     }
 
-    private static function syncSenderTransports(): void
+    private static function syncSenderTransports(int $id): void
     {
         $transports = SenderTransport::transports();
 
