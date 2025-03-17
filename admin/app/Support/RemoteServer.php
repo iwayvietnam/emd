@@ -4,7 +4,6 @@ namespace App\Support;
 
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Net\SFTP;
-use phpseclib3\Net\SSH2;
 
 /**
  * Remote server class
@@ -17,8 +16,7 @@ class RemoteServer
 {
     const SSH_CONNECT_TIMEOUT = 1000;
 
-    private readonly SSH2 $ssh;
-    private ?SFTP $sftp = null;
+    private readonly SFTP $ssh;
 
     public function __construct(
         private readonly string $remoteHost = "0.0.0.0",
@@ -27,7 +25,7 @@ class RemoteServer
         private readonly string $privateKey = ""
     ) {
         if (!empty($this->privateKey)) {
-            $this->ssh = new SSH2(
+            $this->ssh = new SFTP(
                 $this->remoteHost, $this->remotePort, self::SSH_CONNECT_TIMEOUT
             );
             if (
@@ -98,11 +96,10 @@ class RemoteServer
     {
         try {
             $remoteDir = str_replace(basename($remoteFile), "", $remoteFile);
-            $sftp = $this->sftp();
-            if (!$sftp->file_exists($remoteDir)) {
-                $sftp->mkdir($remoteDir, 0755, true);
+            if (!$this->ssh->file_exists($remoteDir)) {
+                $this->ssh->mkdir($remoteDir, 0755, true);
             }
-            $sftp->put($remoteFile, $content, SFTP::SOURCE_STRING);
+            $this->ssh->put($remoteFile, $content, SFTP::SOURCE_STRING);
         } catch (\Throwable $th) {
             throw new \RuntimeException(
                 strtr(
@@ -120,9 +117,8 @@ class RemoteServer
     public function deleteFile(string $remoteFile)
     {
         try {
-            $sftp = $this->sftp();
-            if ($sftp->file_exists($remoteFile)) {
-                $sftp->delete($remoteFile);
+            if ($this->ssh->file_exists($remoteFile)) {
+                $this->ssh->delete($remoteFile);
             }
         } catch (\Throwable $th) {
             throw new \RuntimeException(
@@ -136,19 +132,5 @@ class RemoteServer
                 )
             );
         }
-    }
-
-    private function sftp(): SFTP
-    {
-        if (!($this->sftp instanceof SFTP)) {
-            $this->sftp = new SFTP(
-                $this->remoteHost, $this->remotePort, self::SSH_CONNECT_TIMEOUT
-            );
-            $this->sftp->login(
-                $this->remoteUser,
-                PublicKeyLoader::load($this->privateKey)
-            );
-        }
-        return $this->sftp;
     }
 }
