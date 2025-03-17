@@ -38,7 +38,12 @@ class ListSenderTransports extends ListRecords
 
         if (!empty($transports)) {
             foreach (MailServer::all() as $server) {
-                $server->syncSenderTransports($transports);
+                try {
+                    $server->syncSenderTransports($transports);
+                }
+                catch (\Throwable $th) {
+                    logger()->error($th);
+                }
             }
         }
 

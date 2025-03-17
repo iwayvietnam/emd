@@ -43,11 +43,15 @@ class DmarcReport extends Model
     ];
 
     protected $casts = [
-        'is_forensic' => 'boolean',
+        "is_forensic" => "boolean",
     ];
 
     public function records(): HasMany
     {
-        return $this->hasMany(DmarcReportRecord::class, 'report_id', 'report_id');
+        return $this->hasMany(
+            DmarcReportRecord::class,
+            "report_id",
+            "report_id"
+        );
     }
 }
