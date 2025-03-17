@@ -46,12 +46,24 @@ class ListSenderTransports extends ListRecords
         $transports = SenderTransport::transports();
 
         if (!empty($transports)) {
-            MailServer::find($id)->syncSenderTransports($transports);
+            try {
+                MailServer::find($id)->syncSenderTransports($transports);
+            }
+            catch (\Throwable $th) {
+                logger()->error($th);
+                Notification::make()
+                    ->title(
+                        __("Failed to synchronize sender transports!")
+                    )
+                    ->danger()
+                    ->send();
+                return;
+            }
         }
 
         Notification::make()
             ->title(
-                __("Sender transports have been synchronized to mail servers!")
+                __("Sender transports have been synchronized!")
             )
             ->success()
             ->send();
