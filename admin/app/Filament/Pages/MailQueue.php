@@ -4,7 +4,9 @@ namespace App\Filament\Pages;
 
 use App\Models\MailServer;
 use Filament\Actions\Action;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
@@ -44,6 +46,14 @@ class MailQueue extends Page implements HasForms
                     ->options(MailServer::all()->pluck("name", "id"))
                     ->required()
                     ->label(__("Mail Server")),
+                Grid::make(2)->schema([
+                    TextInput::make("sender")
+                        ->label(__("Sender"))
+                        ->email(),
+                    TextInput::make("recipient")
+                        ->label(__("Recipient"))
+                        ->email(),
+                ]),
             ])
             ->statePath("data");
     }
