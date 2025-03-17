@@ -5,7 +5,6 @@ namespace App\Filament\Resources\SenderTransportResource\Pages;
 use App\Filament\Resources\SenderTransportResource;
 use App\Models\MailServer;
 use App\Models\SenderTransport;
-use App\Support\RemoteServer;
 use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
@@ -33,8 +32,12 @@ class ListSenderTransports extends ListRecords
                         ->required()
                         ->label(__("Mail Server")),
                 ])
-                ->action(static fn(array $data) => self::syncSenderTransports($data['mail_server']))
-                ->label(__("Sync To Mail Servers")),
+                ->action(
+                    static fn(array $data) => self::syncSenderTransports(
+                        $data["mail_server"]
+                    )
+                )
+                ->label(__("Sync To Mail Server")),
         ];
     }
 
@@ -43,14 +46,7 @@ class ListSenderTransports extends ListRecords
         $transports = SenderTransport::transports();
 
         if (!empty($transports)) {
-            foreach (MailServer::all() as $server) {
-                try {
-                    $server->syncSenderTransports($transports);
-                }
-                catch (\Throwable $th) {
-                    logger()->error($th);
-                }
-            }
+            MailServer::find($id)->syncSenderTransports($transports);
         }
 
         Notification::make()
