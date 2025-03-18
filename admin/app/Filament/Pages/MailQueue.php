@@ -11,6 +11,10 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Table;
 
 /**
  * Mail queue page class
@@ -19,9 +23,10 @@ use Filament\Pages\Page;
  * @category Filament
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
-class MailQueue extends Page implements HasForms
+class MailQueue extends Page implements HasForms, HasTable
 {
     use InteractsWithForms;
+    use InteractsWithTable;
 
     protected static ?string $navigationGroup = "System";
     protected static ?string $navigationIcon = "heroicon-o-envelope";
@@ -70,5 +75,17 @@ class MailQueue extends Page implements HasForms
 
     public function listMailQueue(): void
     {
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('queue_name')->label(__('Queue Name')),
+                TextColumn::make('queue_id')->label(__('Queue Id')),
+                TextColumn::make('sender')->label(__('Sender')),
+                TextColumn::make('recipients')->label(__('Recipients')),
+                TextColumn::make('message_size')->label(__('Message Size')),
+            ]);
     }
 }
