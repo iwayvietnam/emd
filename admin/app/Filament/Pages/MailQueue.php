@@ -70,7 +70,7 @@ class MailQueue extends Page implements HasForms, HasTable
 
     protected function getFormActions(): array
     {
-        return [Action::make("list")->label(__("List Mail Queue"))->submit("listMailQueue")];
+        return [Action::make("list")->label(__("List Mail Queue"))->submit("listMailQueue")->after(fn () => $this->dispatch('refresh'))];
     }
 
     public function listMailQueue(): void
@@ -79,8 +79,7 @@ class MailQueue extends Page implements HasForms, HasTable
             MailServerQueue::class,
             $this->form->getState()
         );
-        $this->dispatch('refresh');
-        // $this->resetTable();
+        $this->resetTable();
     }
 
     public function table(Table $table): Table
