@@ -33,7 +33,7 @@ class RemoteQueue implements QueueInterface
         return json_decode($this->runCommand(implode([
             self::POSTQUEUE_CMD,
             " -j",
-        ])));
+        ]))) ?? [];
     }
 
     /**
