@@ -116,6 +116,6 @@ class RemoteQueue implements QueueInterface
      */
     private function runCommand(string $command): string
     {
-        return $remoteServer->runCommand($command);
+        return $this->remoteServer->runCommand($command);
     }
 }
