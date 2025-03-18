@@ -21,7 +21,7 @@ class MailServerQueue extends Model
 	{
         $formState = Cache::store('array')->get(MailServerQueue::class);
         $server = MailServer::find($formState['mail_server'] ?? 0);
-        if ($server->id) {
+        if ($server) {
 			return $server->listQueue();
         }
         return [];
