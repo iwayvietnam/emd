@@ -79,7 +79,6 @@ class RemoteServer
 
         $errorStr = str($this->ssh->getStdError())->trim();
         if ($errorStr->isNotEmpty()) {
-            logger()->error($errorStr);
             $throwError = true;
             if ($errorStr->contains(self::SUDO_ASK_PASSWORD)) {
                 $throwError = $errorStr->contains([
@@ -98,6 +97,9 @@ class RemoteServer
                         ]
                     )
                 );
+            }
+            else {
+                logger()->error($errorStr);
             }
         }
         return $output;
