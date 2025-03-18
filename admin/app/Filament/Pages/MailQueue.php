@@ -70,7 +70,12 @@ class MailQueue extends Page implements HasForms, HasTable
 
     protected function getFormActions(): array
     {
-        return [Action::make("list")->label(__("List Mail Queue"))->submit("listMailQueue")];
+        return [
+            Action::make("list")
+                ->label(__("List Mail Queue"))
+                ->submit("listMailQueue")
+                ->action(fn ($data, $livewire) => $livewire->resetTable()),
+        ];
     }
 
     public function listMailQueue(): void
@@ -80,7 +85,6 @@ class MailQueue extends Page implements HasForms, HasTable
             $this->form->getState()
         );
         $this->resetTable();
-        $this->refreshFormData();
     }
 
     public function table(Table $table): Table
