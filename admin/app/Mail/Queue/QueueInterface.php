@@ -11,9 +11,12 @@ namespace App\Mail\Queue;
  */
 interface QueueInterface
 {
-    const POSTCAT_CMD = "sudo postcat";
-    const POSTQUEUE_CMD = "sudo postqueue";
-    const POSTSUPER_CMD = "sudo postsuper";
+    const POSTCAT_CMD = "postcat";
+    const POSTQUEUE_CMD = "postqueue";
+    const POSTSUPER_CMD = "postsuper";
+
+    const ECHO_CMD = "echo '%s'";
+    const SUDO_CMD = "sudo -S";
 
     const QUEUE_REGEX = "/^([^\s\*\!]+)[\*\!]?\s*(\d+)\s+(\S+\s+\S+\s+\d+\s+\d+:\d+:\d+)\s+(.*)/";
     const START_OF_QUEUE_REGEX = "(?:\*\*\*\s+ENVELOPE\s+RECORDS.*\*\*\*)";
@@ -28,11 +31,12 @@ interface QueueInterface
     function listQueue(): array;
 
     /**
-     * Flush all queues
+     * Flush queue
      *
+     * @param  string $queueId
      * @return bool
      */
-    function flushQueue(): bool;
+    function flushQueue(string? $queueId = null): bool;
 
     /**
      * Re queue a message by id

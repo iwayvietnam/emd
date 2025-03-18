@@ -15,9 +15,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class MailServer extends Model
 {
-    const POSTMAP_COMMAND = "sudo -S postmap lmdb:%s";
-    const COPY_COMMAND = "sudo -S cp -f %s %s";
-    const ECHO_COMMAND = "echo '%s'";
+    const POSTMAP_CMD = "sudo -S postmap lmdb:%s";
+    const COPY_CMD = "sudo -S cp -f %s %s";
+    const ECHO_CMD = "echo '%s'";
 
     /**
      * The table associated with the model.
@@ -82,16 +82,16 @@ class MailServer extends Model
             );
             $remoteServer->runCommand(
                 implode([
-                    sprintf(self::ECHO_COMMAND, $this->sudo_password),
+                    sprintf(self::ECHO_CMD, $this->sudo_password),
                     " | ",
-                    sprintf(self::COPY_COMMAND, $tempFile, $transportFile),
+                    sprintf(self::COPY_CMD, $tempFile, $transportFile),
                 ])
             );
             $remoteServer->runCommand(
                 implode([
-                    sprintf(self::ECHO_COMMAND, $this->sudo_password),
+                    sprintf(self::ECHO_CMD, $this->sudo_password),
                     " | ",
-                    sprintf(self::POSTMAP_COMMAND, $transportFile),
+                    sprintf(self::POSTMAP_CMD, $transportFile),
                 ])
             );
         }

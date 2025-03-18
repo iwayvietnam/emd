@@ -29,9 +29,14 @@ class LocalQueue implements QueueInterface
     /**
      * {@inheritdoc}
      */
-    public function flushQueue(): bool
+    public function flushQueue(string? $queueId = null): bool
     {
-        $result = Process::run(self::POSTQUEUE_CMD . ' -f');
+        if (empty($queueId)) {
+            $result = Process::run(self::POSTQUEUE_CMD . " -f");
+        }
+        else {
+            $result = Process::run(self::POSTQUEUE_CMD . " -i $queueId");
+        }
         if ($result->failed()) {
             logger()->error($result->errorOutput());
         }
@@ -43,7 +48,7 @@ class LocalQueue implements QueueInterface
      */
     public function reQueue(string $queueId): bool
     {
-        $result = Process::run(self::POSTQUEUE_CMD . ' -r ' . $queueId);
+        $result = Process::run(self::POSTQUEUE_CMD . " -r $queueId");
         if ($result->failed()) {
             logger()->error($result->errorOutput());
         }
@@ -55,7 +60,7 @@ class LocalQueue implements QueueInterface
      */
     public function holdQueue(string $queueId): bool
     {
-        $result = Process::run(self::POSTSUPER_CMD . ' -h ' . $queueId);
+        $result = Process::run(self::POSTSUPER_CMD . " -h $queueId");
         if ($result->failed()) {
             logger()->error($result->errorOutput());
         }
@@ -67,7 +72,7 @@ class LocalQueue implements QueueInterface
      */
     public function unholdQueue(string $queueId): bool
     {
-        $result = Process::run(self::POSTSUPER_CMD . ' -H ' . $queueId);
+        $result = Process::run(self::POSTSUPER_CMD . " -H $queueId");
         if ($result->failed()) {
             logger()->error($result->errorOutput());
         }
@@ -79,7 +84,7 @@ class LocalQueue implements QueueInterface
      */
     public function deleteQueue(string $queueId): bool
     {
-        $result = Process::run(self::POSTSUPER_CMD . ' -d ' . $queueId);
+        $result = Process::run(self::POSTSUPER_CMD . " -d $queueId");
         if ($result->failed()) {
             logger()->error($result->errorOutput());
         }
@@ -91,7 +96,7 @@ class LocalQueue implements QueueInterface
      */
     public function queueDetails(string $queueId): array
     {
-        $result = Process::run(self::POSTCAT_CMD . ' -q ' . $queueId);
+        $result = Process::run(self::POSTCAT_CMD . " -q $queueId");
         if ($result->failed()) {
             logger()->error($result->errorOutput());
         }
