@@ -36,7 +36,7 @@ interface QueueInterface
      * @param  string $queueId
      * @return bool
      */
-    function flushQueue(string? $queueId = null): bool;
+    function flushQueue(?string $queueId = null): bool;
 
     /**
      * Re queue a message by id

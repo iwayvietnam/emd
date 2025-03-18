@@ -43,7 +43,7 @@ class RemoteQueue implements QueueInterface
     /**
      * {@inheritdoc}
      */
-    public function flushQueue(string? $queueId = null): bool
+    public function flushQueue(?string $queueId = null): bool
     {
         if (empty($queueId)) {
             return !empty($this->runCommand(implode([

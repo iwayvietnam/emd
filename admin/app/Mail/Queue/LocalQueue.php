@@ -29,7 +29,7 @@ class LocalQueue implements QueueInterface
     /**
      * {@inheritdoc}
      */
-    public function flushQueue(string? $queueId = null): bool
+    public function flushQueue(?string $queueId = null): bool
     {
         if (empty($queueId)) {
             $result = Process::run(self::POSTQUEUE_CMD . " -f");
