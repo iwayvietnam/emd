@@ -50,11 +50,10 @@ class RemoteServer
             ) {
                 throw new \RuntimeException(
                     strtr(
-                        "SSH login error with server: {remoteUser}@{remoteHost}:{remotePort}",
+                        "SSH login error with server: {user}@{host}",
                         [
-                            "{remoteUser}" => $this->remoteUser,
-                            "{remoteHost}" => $this->remoteHost,
-                            "{remotePort}" => $this->remotePort,
+                            "{user}" => $this->remoteUser,
+                            "{host}" => $this->remoteHost,
                         ]
                     )
                 );
@@ -70,62 +69,38 @@ class RemoteServer
      * Run remote command
      *
      * @param string $command
-     * @return self
+     * @return string
      */
-    public function runCommand(string $command): self
+    public function runCommand(string $command): string
     {
-        try {
-            $this->ssh->enableQuietMode();
-            $output = $this->ssh->exec($command);
-            $this->ssh->disableQuietMode();
+        $this->ssh->enableQuietMode();
+        $output = $this->ssh->exec($command);
+        $this->ssh->disableQuietMode();
 
-            if (!empty($output)) {
-                logger()->debug(
-                    "Result of running command {command} on server {host}: {output}",
-                    [
-                        "command" => $command,
-                        "remoteHost" => $this->remoteHost,
-                        "output" => $output,
-                    ]
+        $errorStr = str($this->ssh->getStdError())->trim();
+        if ($errorStr->isNotEmpty()) {
+            logger()->error($errorStr);
+            $throwError = true;
+            if ($errorStr->contains(self::SUDO_ASK_PASSWORD)) {
+                $throwError = $errorStr->contains([
+                    self::SUDO_NO_PASSWORD,
+                    self::SUDO_INCORRECT_PASSWORD,
+                ]);
+            }
+            if ($throwError) {
+                throw new \RuntimeException(
+                    strtr(
+                        "Error running command {command} on server {host}: {message}",
+                        [
+                            "{command}" => $command,
+                            "{host}" => $this->remoteHost,
+                            "{message}" => $errorStr,
+                        ]
+                    )
                 );
             }
-
-            $errorStr = str($this->ssh->getStdError())->trim();
-            if ($errorStr->isNotEmpty()) {
-                logger()->error($errorStr);
-                $throwError = true;
-                if ($errorStr->contains(self::SUDO_ASK_PASSWORD)) {
-                    $throwError = $errorStr->contains([
-                        self::SUDO_NO_PASSWORD,
-                        self::SUDO_INCORRECT_PASSWORD,
-                    ]);
-                }
-                if ($throwError) {
-                    throw new \RuntimeException(
-                        strtr(
-                            "Error running command {command} on server {remoteHost}: {message}",
-                            [
-                                "{command}" => $command,
-                                "{remoteHost}" => $this->remoteHost,
-                                "{message}" => $errorStr,
-                            ]
-                        )
-                    );
-                }
-            }
-        } catch (\Throwable $th) {
-            throw new \RuntimeException(
-                strtr(
-                    "Error running command {command} on server {remoteHost}: {message}",
-                    [
-                        "{command}" => $command,
-                        "{remoteHost}" => $this->remoteHost,
-                        "{message}" => $th->getMessage(),
-                    ]
-                )
-            );
         }
-        return $this;
+        return $output;
     }
 
     /**
@@ -158,10 +133,10 @@ class RemoteServer
         } catch (\Throwable $th) {
             throw new \RuntimeException(
                 strtr(
-                    "There was an error uploading content to {remoteFile} on server {remoteHost}: {message}",
+                    "Error uploading content to {file} on server {host}: {message}",
                     [
-                        "{remoteFile}" => $remoteFile,
-                        "{remoteHost}" => $this->remoteHost,
+                        "{file}" => $remoteFile,
+                        "{host}" => $this->remoteHost,
                         "{message}" => $th->getMessage(),
                     ]
                 )
@@ -185,10 +160,10 @@ class RemoteServer
         } catch (\Throwable $th) {
             throw new \RuntimeException(
                 strtr(
-                    "There was an error deleting {remoteFile} on server {remoteHost}: {message}",
+                    "Error deleting {file} on server {host}: {message}",
                     [
-                        "{remoteFile}" => $remoteFile,
-                        "{remoteHost}" => $this->remoteHost,
+                        "{file}" => $remoteFile,
+                        "{host}" => $this->remoteHost,
                         "{message}" => $th->getMessage(),
                     ]
                 )
