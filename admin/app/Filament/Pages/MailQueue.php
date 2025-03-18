@@ -96,7 +96,6 @@ class MailQueue extends Page implements HasForms, HasTable
                 TextColumn::make('sender')->label(__('Sender')),
                 TextColumn::make('recipients')->label(__('Recipients')),
                 TextColumn::make('message_size')->label(__('Message Size')),
-            ])
-            ->deferLoading();
+            ]);
     }
 }
