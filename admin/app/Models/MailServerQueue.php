@@ -19,7 +19,7 @@ class MailServerQueue extends Model
 
     public function getRows(): array
     {
-        $formState = Cache::store('array')->get(MailServerQueue::class);
+        $formState = Cache::get(MailServerQueue::class);
         $server = MailServer::find($formState['mail_server'] ?? 0);
         return $server?->listQueue() ?? [];
     }
