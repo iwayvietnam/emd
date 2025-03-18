@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Models\MailServer;
+use App\Models\MailServerQueue;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
@@ -76,14 +77,16 @@ class MailQueue extends Page implements HasForms, HasTable
 
     public function listMailQueue(): void
     {
-        $cacheKey = static::class;
-        Cache::store('array')->put($cacheKey, $this->form->getState());
+        Cache::store('array')->put(
+            MailServerQueue::class,
+            $this->form->getState()
+        );
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->query(null)
+            ->query(MailServerQueue::query())
             ->columns([
                 TextColumn::make('queue_name')->label(__('Queue Name')),
                 TextColumn::make('queue_id')->label(__('Queue Id')),

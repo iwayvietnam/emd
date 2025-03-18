@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "amphp/dns": "^2.3",
+        "calebporzio/sushi": "^2.5",
         "elasticsearch/elasticsearch": "^8.17",
         "filament/filament": "^3.3",
         "laravel/framework": "^12.0",
