@@ -85,6 +85,9 @@ class RemoteServer
                     self::SUDO_NO_PASSWORD,
                     self::SUDO_INCORRECT_PASSWORD,
                 ]);
+                if (empty($output)) {
+                    $output = $errorStr->toString();
+                }
             }
             if ($throwError) {
                 throw new \RuntimeException(
@@ -102,7 +105,7 @@ class RemoteServer
                 logger()->error($errorStr);
             }
         }
-        return empty($output) ? $errorStr->toString() : $output;
+        return $output;
     }
 
     /**
