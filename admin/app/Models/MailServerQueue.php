@@ -19,6 +19,8 @@ class MailServerQueue extends Model
     public function getRows(): array
     {
         $formState = session()->get(MailServerQueue::class);
+        logger()->info('Get list mail queue form state');
+        logger()->info($formState);
         $server = MailServer::find($formState['mail_server'] ?? 0);
         return $server?->listQueue() ?? [];
     }
