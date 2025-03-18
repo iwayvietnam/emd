@@ -43,7 +43,7 @@ class RemoteQueue implements QueueInterface
             $queue = json_decode($line, true);
             $recipients = [];
             foreach ($queue['recipients'] as $recipient) {
-                $recipients = $recipient['address'];
+                $recipients[] = $recipient['address'];
             }
             $queue['recipients'] = implode(', ', $recipients);
             $result[] = $queue;
