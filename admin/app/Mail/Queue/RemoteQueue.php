@@ -30,16 +30,19 @@ class RemoteQueue implements QueueInterface
      */
     public function listQueue(): array
     {
-        $output = $this->runCommand(implode([
+        $result = [];
+        $lines = explode(PHP_EOLL, $this->runCommand(implode([
             sprintf(self::ECHO_CMD, $this->sudoPassword),
             " | ",
             self::SUDO_CMD,
             " ",
             self::POSTQUEUE_CMD,
             " -j",
-        ]));
-        logger()->info($output);
-        return json_decode($output) ?? [];
+        ])));
+        foreach ($lines as $line) {
+            $result[] = json_decode($line);
+        }
+        return $result;
     }
 
     /**
