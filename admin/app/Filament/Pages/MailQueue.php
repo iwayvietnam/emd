@@ -65,16 +65,18 @@ class MailQueue extends Page implements HasForms, HasTable
                         ->email(),
                 ]),
             ])
+            ->actions([
+                Action::make("list")
+                    ->label(__("List Mail Queue"))
+                    ->action(fn () => $this->listMailQueue())
+                    ->after(fn () => $this->dispatch('refresh')),
+            ])
             ->statePath("data");
     }
 
     protected function getFormActions(): array
     {
         return [
-            Action::make("list")
-                ->label(__("List Mail Queue"))
-                ->action(fn () => $this->listMailQueue())
-                ->after(fn () => $this->dispatch('refresh'))
         ];
     }
 
