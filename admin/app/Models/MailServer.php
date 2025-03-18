@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Mail\Queue\RemoteQueue;
 use App\Support\RemoteServer;
 use Illuminate\Database\Eloquent\Model;
 
@@ -51,6 +52,17 @@ class MailServer extends Model
             "ssh_private_key" => "encrypted",
             "sudo_password" => "encrypted",
         ];
+    }
+
+    public function listQueue(): array
+    {
+        $remoteQueue = new RemoteQueue(new RemoteServer(
+            $this->ip_address,
+            $this->ssh_port,
+            $this->ssh_user,
+            $this->ssh_private_key
+        ));
+        return $remoteQueue->listQueue();
     }
 
     public function syncSenderTransports(array $transports): void
