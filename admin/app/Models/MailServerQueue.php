@@ -23,4 +23,9 @@ class MailServerQueue extends Model
         $server = MailServer::find($formState['mail_server'] ?? 0);
         return $server?->listQueue() ?? [];
     }
+
+    protected function sushiShouldCache()
+    {
+        return false;
+    }
 }
