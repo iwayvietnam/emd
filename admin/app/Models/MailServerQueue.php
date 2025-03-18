@@ -19,21 +19,21 @@ class MailServerQueue extends Model
     public function getRows(): array
     {
         $formState = session()->get(MailServerQueue::class);
-        $server = MailServer::find($formState['mail_server'] ?? 0);
+        $server = MailServer::find($formState["mail_server"] ?? 0);
         $queues = collect($server?->listQueue() ?? []);
 
-        $sender = $formState['sender'] ?? '';
+        $sender = $formState["sender"] ?? "";
         if (!empty($sender)) {
-            $queues = $queues->filter(function ($queue) use ($sender) {
-                return str($queue['sender'])->contains($sender);
-            });
+            $queues = $queues->filter(
+                fn($queue) => str($queue["sender"])->contains($sender)
+            );
         }
 
-        $recipient = $formState['recipient'] ?? '';
+        $recipient = $formState["recipient"] ?? "";
         if (!empty($recipient)) {
-            $queues = $queues->filter(function ($queue) use ($sender, $recipient) {
-                return str($queue['recipients'])->contains($recipient);
-            });
+            $queues = $queues->filter(
+                fn($queue) => str($queue["recipients"])->contains($recipient)
+            );
         }
 
         return array_values($queues->toArray());

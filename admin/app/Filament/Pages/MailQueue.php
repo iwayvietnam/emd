@@ -31,7 +31,7 @@ class MailQueue extends Page implements HasForms, HasTable
 
     protected static ?string $navigationGroup = "System";
     protected static ?string $navigationIcon = "heroicon-o-envelope";
-    protected static ?string $slug = 'mail queue';
+    protected static ?string $slug = "mail queue";
     protected static string $view = "filament.pages.mail-queue";
 
     /**
@@ -41,7 +41,7 @@ class MailQueue extends Page implements HasForms, HasTable
 
     public static function getNavigationLabel(): string
     {
-        return __('Mail Queue');
+        return __("Mail Queue");
     }
 
     public function mount(): void
@@ -57,9 +57,7 @@ class MailQueue extends Page implements HasForms, HasTable
                     ->options(MailServer::all()->pluck("name", "id"))
                     ->label(__("Mail Server")),
                 Grid::make(2)->schema([
-                    TextInput::make("sender")
-                        ->label(__("Sender"))
-                        ->email(),
+                    TextInput::make("sender")->label(__("Sender"))->email(),
                     TextInput::make("recipient")
                         ->label(__("Recipient"))
                         ->email(),
@@ -79,10 +77,7 @@ class MailQueue extends Page implements HasForms, HasTable
 
     public function listMailQueue(): void
     {
-        session()->put(
-            MailServerQueue::class,
-            $this->form->getState()
-        );
+        session()->put(MailServerQueue::class, $this->form->getState());
         $this->redirect($this->getUrl());
     }
 
@@ -91,11 +86,11 @@ class MailQueue extends Page implements HasForms, HasTable
         return $table
             ->query(MailServerQueue::query())
             ->columns([
-                TextColumn::make('queue_name')->label(__('Queue Name')),
-                TextColumn::make('queue_id')->label(__('Queue Id')),
-                TextColumn::make('sender')->label(__('Sender')),
-                TextColumn::make('recipients')->label(__('Recipients')),
-                TextColumn::make('message_size')->label(__('Message Size')),
+                TextColumn::make("queue_name")->label(__("Queue Name")),
+                TextColumn::make("queue_id")->label(__("Queue Id")),
+                TextColumn::make("sender")->label(__("Sender")),
+                TextColumn::make("recipients")->label(__("Recipients")),
+                TextColumn::make("message_size")->label(__("Message Size")),
             ]);
     }
 }

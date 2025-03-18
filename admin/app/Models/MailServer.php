@@ -56,12 +56,15 @@ class MailServer extends Model
 
     public function listQueue(): array
     {
-        $remoteQueue = new RemoteQueue(new RemoteServer(
-            $this->ip_address,
-            $this->ssh_port,
-            $this->ssh_user,
-            $this->ssh_private_key
-        ), $this->sudo_password);
+        $remoteQueue = new RemoteQueue(
+            new RemoteServer(
+                $this->ip_address,
+                $this->ssh_port,
+                $this->ssh_user,
+                $this->ssh_private_key
+            ),
+            $this->sudo_password
+        );
         return $remoteQueue->listQueue();
     }
 

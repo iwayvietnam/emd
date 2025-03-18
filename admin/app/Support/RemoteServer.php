@@ -49,13 +49,10 @@ class RemoteServer
                 )
             ) {
                 throw new \RuntimeException(
-                    strtr(
-                        "SSH login error with server: {user}@{host}",
-                        [
-                            "{user}" => $this->remoteUser,
-                            "{host}" => $this->remoteHost,
-                        ]
-                    )
+                    strtr("SSH login error with server: {user}@{host}", [
+                        "{user}" => $this->remoteUser,
+                        "{host}" => $this->remoteHost,
+                    ])
                 );
             }
         } else {
@@ -100,8 +97,7 @@ class RemoteServer
                         ]
                     )
                 );
-            }
-            else {
+            } else {
                 logger()->error($errorStr);
             }
         }
@@ -164,14 +160,11 @@ class RemoteServer
             }
         } catch (\Throwable $th) {
             throw new \RuntimeException(
-                strtr(
-                    "Error deleting {file} on server {host}: {message}",
-                    [
-                        "{file}" => $remoteFile,
-                        "{host}" => $this->remoteHost,
-                        "{message}" => $th->getMessage(),
-                    ]
-                )
+                strtr("Error deleting {file} on server {host}: {message}", [
+                    "{file}" => $remoteFile,
+                    "{host}" => $this->remoteHost,
+                    "{message}" => $th->getMessage(),
+                ])
             );
         }
         return $this;
