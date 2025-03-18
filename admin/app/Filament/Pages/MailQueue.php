@@ -56,7 +56,6 @@ class MailQueue extends Page implements HasForms, HasTable
             ->schema([
                 Select::make("mail_server")
                     ->options(MailServer::all()->pluck("name", "id"))
-                    ->required()
                     ->label(__("Mail Server")),
                 Grid::make(2)->schema([
                     TextInput::make("sender")
