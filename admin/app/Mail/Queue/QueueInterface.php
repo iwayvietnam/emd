@@ -11,9 +11,9 @@ namespace App\Mail\Queue;
  */
 interface QueueInterface
 {
-    const POSTCAT_CMD = "/usr/bin/postcat";
-    const POSTQUEUE_CMD = "/usr/bin/postqueue";
-    const POSTSUPER_CMD = "/usr/bin/postsuper";
+    const POSTCAT_CMD = "/usr/sbin/postcat";
+    const POSTQUEUE_CMD = "/usr/sbin/postqueue";
+    const POSTSUPER_CMD = "/usr/sbin/postsuper";
 
     const ECHO_CMD = "echo '%s'";
     const SUDO_CMD = "sudo -S";
