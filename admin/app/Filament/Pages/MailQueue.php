@@ -4,7 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\MailServer;
 use App\Models\MailServerQueue;
-use Filament\Forms\Components\Actions\Action;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -65,18 +65,16 @@ class MailQueue extends Page implements HasForms, HasTable
                         ->email(),
                 ]),
             ])
-            ->actions([
-                Action::make("list")
-                    ->label(__("List Mail Queue"))
-                    ->action(fn () => $this->listMailQueue())
-                    ->after(fn () => $this->dispatch('refresh')),
-            ])
             ->statePath("data");
     }
 
     protected function getFormActions(): array
     {
         return [
+            Action::make("list")
+                ->label(__("List Mail Queue"))
+                ->action(fn () => $this->listMailQueue())
+                ->after(fn () => $this->dispatch('refresh')),
         ];
     }
 
