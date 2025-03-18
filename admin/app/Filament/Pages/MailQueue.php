@@ -47,7 +47,7 @@ class MailQueue extends Page implements HasForms, HasTable
 
     public function mount(): void
     {
-        $this->form->fill();
+        $this->form->fill(Cache::get(MailServerQueue::class));
     }
 
     public function form(Form $form): Form
@@ -77,7 +77,7 @@ class MailQueue extends Page implements HasForms, HasTable
 
     public function listMailQueue(): void
     {
-        Cache::store('array')->put(
+        Cache::put(
             MailServerQueue::class,
             $this->form->getState()
         );
