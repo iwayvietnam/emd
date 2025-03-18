@@ -30,10 +30,12 @@ class RemoteQueue implements QueueInterface
      */
     public function listQueue(): array
     {
-        return json_decode($this->runCommand(implode([
+        $output = $this->runCommand(implode([
             self::POSTQUEUE_CMD,
             " -j",
-        ]))) ?? [];
+        ]));
+        logger()->info($output);
+        return json_decode($output) ?? [];
     }
 
     /**
