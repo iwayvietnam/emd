@@ -102,7 +102,7 @@ class RemoteServer
                 logger()->error($errorStr);
             }
         }
-        return $output;
+        return empty($output) ? $errorStr->toString() : $output;
     }
 
     /**
