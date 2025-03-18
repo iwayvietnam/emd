@@ -80,7 +80,7 @@ class MailQueue extends Page implements HasForms, HasTable
             $this->form->getState()
         );
         $this->resetTable();
-        $this->dispatch('refresh');
+        $this->refreshFormData();
     }
 
     public function table(Table $table): Table
