@@ -21,6 +21,15 @@ class RemoteServer
 
     private readonly SFTP $ssh;
 
+    /**
+     * Constructor
+     *
+     * @param string $remoteHost
+     * @param int $remotePort
+     * @param string $remoteUser
+     * @param string $privateKey
+     * @return self
+     */
     public function __construct(
         private readonly string $remoteHost = "0.0.0.0",
         private readonly int $remotePort = 22,
@@ -57,7 +66,13 @@ class RemoteServer
         }
     }
 
-    public function runCommand(string $command)
+    /**
+     * Run remote command
+     *
+     * @param string $command
+     * @return self
+     */
+    public function runCommand(string $command): self
     {
         try {
             $this->ssh->enableQuietMode();
@@ -75,19 +90,15 @@ class RemoteServer
                 );
             }
 
-            $error = $this->ssh->getStdError();
-            if (!empty($error)) {
-                logger()->error($error);
-                $throwError = false;
-                if (strpos($error, self::SUDO_ASK_PASSWORD) !== false) {
-                    if (
-                        strpos($error, self::SUDO_NO_PASSWORD) !== false ||
-                        strpos($error, self::SUDO_INCORRECT_PASSWORD) !== false
-                    ) {
-                        $throwError = true;
-                    }
-                } else {
-                    $throwError = true;
+            $errorStr = str($this->ssh->getStdError())->trim();
+            if ($errorStr->isNotEmpty()) {
+                logger()->error($errorStr);
+                $throwError = true;
+                if ($errorStr->contains(self::SUDO_ASK_PASSWORD)) {
+                    $throwError = $errorStr->contains([
+                        self::SUDO_NO_PASSWORD,
+                        self::SUDO_INCORRECT_PASSWORD,
+                    ]);
                 }
                 if ($throwError) {
                     throw new \RuntimeException(
@@ -96,7 +107,7 @@ class RemoteServer
                             [
                                 "{command}" => $command,
                                 "{remoteHost}" => $this->remoteHost,
-                                "{message}" => $error,
+                                "{message}" => $errorStr,
                             ]
                         )
                     );
@@ -114,14 +125,29 @@ class RemoteServer
                 )
             );
         }
+        return $this;
     }
 
-    public function uploadFile(string $remoteFile, string $localFile)
+    /**
+     * Upload file to remote server
+     *
+     * @param string $remoteFile
+     * @param string $localFile
+     * @return self
+     */
+    public function uploadFile(string $remoteFile, string $localFile): self
     {
         return $this->uploadContent($remoteFile, file_get_contents($localFile));
     }
 
-    public function uploadContent(string $remoteFile, string $content)
+    /**
+     * Upload content to remote server
+     *
+     * @param string $remoteFile
+     * @param string $content
+     * @return self
+     */
+    public function uploadContent(string $remoteFile, string $content): self
     {
         try {
             $remoteDir = str_replace(basename($remoteFile), "", $remoteFile);
@@ -141,9 +167,16 @@ class RemoteServer
                 )
             );
         }
+        return $this;
     }
 
-    public function deleteFile(string $remoteFile)
+    /**
+     * Delete file on  remote server
+     *
+     * @param string $remoteFile
+     * @return self
+     */
+    public function deleteFile(string $remoteFile): self
     {
         try {
             if ($this->ssh->file_exists($remoteFile)) {
@@ -161,5 +194,6 @@ class RemoteServer
                 )
             );
         }
+        return $this;
     }
 }
