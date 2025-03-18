@@ -83,7 +83,7 @@ class MailQueue extends Page implements HasForms, HasTable
             MailServerQueue::class,
             $this->form->getState()
         );
-        $this->resetTable();
+        $this->redirect($this->getUrl());
     }
 
     public function table(Table $table): Table
