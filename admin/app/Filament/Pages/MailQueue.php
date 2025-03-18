@@ -73,19 +73,17 @@ class MailQueue extends Page implements HasForms, HasTable
         return [
             Action::make("list")
                 ->label(__("List Mail Queue"))
-                ->submit("listMailQueue")
-                ->after(fn ($data, $livewire) => $livewire->resetTable()),
+                ->submit("listMailQueue"),
         ];
     }
 
     public function listMailQueue(): void
     {
-        logger()->info('Put list mail queue form state');
-        logger()->info($this->form->getState());
         session()->put(
             MailServerQueue::class,
             $this->form->getState()
         );
+        $this->resetTable();
     }
 
     public function table(Table $table): Table
@@ -98,6 +96,7 @@ class MailQueue extends Page implements HasForms, HasTable
                 TextColumn::make('sender')->label(__('Sender')),
                 TextColumn::make('recipients')->label(__('Recipients')),
                 TextColumn::make('message_size')->label(__('Message Size')),
-            ]);
+            ])
+            ->deferLoading();
     }
 }
