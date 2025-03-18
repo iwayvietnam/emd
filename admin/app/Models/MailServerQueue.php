@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
 use Sushi\Sushi;
 
 /**
@@ -19,7 +18,7 @@ class MailServerQueue extends Model
 
     public function getRows(): array
     {
-        $formState = Cache::get(MailServerQueue::class);
+        $formState = session()->get(MailServerQueue::class);
         $server = MailServer::find($formState['mail_server'] ?? 0);
         return $server?->listQueue() ?? [];
     }

@@ -16,7 +16,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Cache;
 
 /**
  * Mail queue page class
@@ -47,7 +46,7 @@ class MailQueue extends Page implements HasForms, HasTable
 
     public function mount(): void
     {
-        $this->form->fill(Cache::get(MailServerQueue::class));
+        $this->form->fill(session()->get(MailServerQueue::class));
     }
 
     public function form(Form $form): Form
@@ -76,8 +75,8 @@ class MailQueue extends Page implements HasForms, HasTable
 
     public function listMailQueue(): void
     {
-        Cache::put(
-            MailServerQueue::class,
+        session()->put(
+            $MailServerQueue::class,
             $this->form->getState()
         );
         $this->resetTable();
