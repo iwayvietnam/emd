@@ -28,7 +28,7 @@ class MailServerQueue extends Model
                 return str($queue['sender'])->contains([$sender, $recipient]);
             });
         }
-        return $queues;
+        return $queues->toArray();
     }
 
     protected function sushiShouldCache()
