@@ -31,7 +31,7 @@ class RemoteQueue implements QueueInterface
     public function listQueue(): array
     {
         $result = [];
-        $lines = explode(PHP_EOLL, $this->runCommand(implode([
+        $lines = explode(PHP_EOL, $this->runCommand(implode([
             sprintf(self::ECHO_CMD, $this->sudoPassword),
             " | ",
             self::SUDO_CMD,
