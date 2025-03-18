@@ -15,12 +15,12 @@ use Sushi\Sushi;
  */
 class MailServerQueue extends Model
 {
-	use Sushi;
+    use Sushi;
 
-	public function getRows(): array
-	{
+    public function getRows(): array
+    {
         $formState = Cache::store('array')->get(MailServerQueue::class);
         $server = MailServer::find($formState['mail_server'] ?? 0);
-		return $server?->listQueue() ?? [];
-	}
+        return $server?->listQueue() ?? [];
+    }
 }
