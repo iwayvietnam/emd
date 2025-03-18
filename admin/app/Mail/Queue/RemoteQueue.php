@@ -40,7 +40,7 @@ class RemoteQueue implements QueueInterface
             " -j",
         ])));
         foreach ($lines as $line) {
-            $result[] = json_decode($line);
+            $result[] = json_decode($line, true);
         }
         return $result;
     }
