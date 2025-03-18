@@ -21,14 +21,22 @@ class MailServerQueue extends Model
         $formState = session()->get(MailServerQueue::class);
         $server = MailServer::find($formState['mail_server'] ?? 0);
         $queues = collect($server?->listQueue() ?? []);
+
         $sender = $formState['sender'] ?? '';
-        $recipient = $formState['recipient'] ?? '';
-        if (!empty($sender) || !empty($recipient)) {
-            $queues = $queues->filter(function ($queue) use ($sender, $recipient) {
-                return str($queue['sender'])->contains([$sender, $recipient]);
+        if (!empty($sender)) {
+            $queues = $queues->filter(function ($queue) use ($sender) {
+                return str($queue['sender'])->contains($sender);
             });
         }
-        return $queues->toArray();
+
+        $recipient = $formState['recipient'] ?? '';
+        if (!empty($recipient)) {
+            $queues = $queues->filter(function ($queue) use ($sender, $recipient) {
+                return str($queue['recipients'])->contains($recipient);
+            });
+        }
+
+        return array_values($queues->toArray());
     }
 
     protected function sushiShouldCache()
