@@ -34,7 +34,7 @@ class RemoteQueue implements QueueInterface
             self::POSTQUEUE_CMD,
             " -j",
         ]));
-        logger()->info($output);
+        logger()->info(json_decode($output));
         return json_decode($output) ?? [];
     }
 
