@@ -81,6 +81,7 @@ class OAuthClientsRelationManager extends RelationManager
                 Columns\IconColumn::make("revoked")
                     ->boolean()
                     ->trueColor("danger")
+                    ->falseColor('success')
                     ->label(__("Is Revoked")),
             ])
             ->filters([TernaryFilter::make("revoked")->label(__("Is Revoked"))])
