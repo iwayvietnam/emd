@@ -40,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
             )->by($request->user()?->id ?: $request->ip())
         );
 
-        if ((bool) config("emd.api.password_grant", false)) {
+        if ((bool) config("emd.api.password_grant")) {
             Passport::enablePasswordGrant();
         }
         Passport::tokensCan([
