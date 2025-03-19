@@ -2,12 +2,6 @@
 
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
-use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Set;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -15,7 +9,6 @@ use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
-use Illuminate\Support\Str;
 use Laravel\Passport\Token;
 
 /**
@@ -46,7 +39,9 @@ class OAuthTokensRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute("name")
             ->columns([
-                Columns\TextColumn::make("client.name")->label(__("Client Name")),
+                Columns\TextColumn::make("client.name")->label(
+                    __("Client Name")
+                ),
                 Columns\TextColumn::make("name")->label(__("Token Name")),
                 Columns\TextColumn::make("expires_at")->label(__("Expires At")),
                 Columns\IconColumn::make("revoked")
@@ -60,7 +55,7 @@ class OAuthTokensRelationManager extends RelationManager
                 Actions\ViewAction::make(),
                 Actions\Action::make("revoke")
                     ->action(
-                        static fn(Client $token) => self::revokeClient($token)
+                        static fn(Token $token) => self::revokeClient($token)
                     )
                     ->label(__("Revoke")),
             ]);
