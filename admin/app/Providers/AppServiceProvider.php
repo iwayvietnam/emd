@@ -40,12 +40,12 @@ class AppServiceProvider extends ServiceProvider
             )->by($request->user()?->id ?: $request->ip())
         );
 
+        Passport::enablePasswordGrant();
         Passport::tokensCan([
             'access-emails' => 'Access emails',
             'send-emails' => 'Send emails',
             'upload-files' => 'Upload files',
         ]);
-
         Passport::setDefaultScope([
             'access-emails',
         ]);

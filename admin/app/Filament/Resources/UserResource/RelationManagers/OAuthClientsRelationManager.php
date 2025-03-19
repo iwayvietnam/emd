@@ -52,9 +52,6 @@ class OAuthClientsRelationManager extends RelationManager
                 ->required()
                 ->url()
                 ->label(__("Redirect URL")),
-            Select::make("provider")
-                ->options(array_keys(config("auth.providers")))
-                ->label(__("Auth Provider")),
             Hidden::make("personal_access_client")->default(false),
             Hidden::make("password_client")->default(false),
             Hidden::make("revoked")->default(false),
