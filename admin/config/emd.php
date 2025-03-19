@@ -23,7 +23,7 @@ return [
             "POLICY_ADAPTER",
             App\Mail\Policy\Adapter\Workerman::class
         ),
-        "listen_host" => env("POLICY_LISTEN_HOST", "0.0.0.0"),
+        "listen_host" => env("POLICY_LISTEN_HOST", "127.0.0.1"),
         "listen_port" => env("POLICY_LISTEN_PORT", 1403),
         "server_name" => env("POLICY_SERVER_NAME", "Access Policy Delegation"),
         "server_worker" => env("POLICY_SERVER_WORKER", 4),
