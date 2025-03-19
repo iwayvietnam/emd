@@ -51,6 +51,7 @@ class OAuthClientsRelationManager extends RelationManager
             TextInput::make("redirect")
                 ->required()
                 ->url()
+                ->columnSpan(2)
                 ->label(__("Redirect URL")),
             Hidden::make("personal_access_client")->default(false),
             Hidden::make("password_client")->default(false),
