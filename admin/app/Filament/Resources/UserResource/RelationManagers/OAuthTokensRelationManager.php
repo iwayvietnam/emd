@@ -34,6 +34,7 @@ class OAuthTokensRelationManager extends RelationManager
     {
         return $infolist->schema([
             TextEntry::make("client.name")->label(__("Client Name")),
+            TextEntry::make("name")->label(__("Token Name")),
             TextEntry::make("id")->label(__("Token Id")),
             TextEntry::make("expires_at")->label(__("Expires At")),
             TextEntry::make("scopes")->label(__("Scopes")),
@@ -46,6 +47,7 @@ class OAuthTokensRelationManager extends RelationManager
             ->recordTitleAttribute("name")
             ->columns([
                 Columns\TextColumn::make("client.name")->label(__("Client Name")),
+                Columns\TextColumn::make("name")->label(__("Token Name")),
                 Columns\TextColumn::make("expires_at")->label(__("Expires At")),
                 Columns\IconColumn::make("revoked")
                     ->boolean()
