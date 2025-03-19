@@ -85,6 +85,7 @@ class OAuthClientsRelationManager extends RelationManager
                 Actions\CreateAction::make()->createAnother(false),
             ])
             ->actions([
+                Actions\ViewAction::make(),
                 Actions\Action::make("revoke")
                     ->action(
                         static fn(Client $client) => self::revokeClient($client)
