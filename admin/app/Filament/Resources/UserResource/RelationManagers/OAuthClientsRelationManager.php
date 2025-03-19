@@ -64,6 +64,7 @@ class OAuthClientsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute("name")
             ->columns([
+                Columns\TextColumn::make("id")->label(__("Client Id")),
                 Columns\TextColumn::make("name")->label(__("Client Name")),
                 Columns\TextColumn::make("secret")->label(__("Client Secret")),
                 Columns\TextColumn::make("redirect")->label(__("Redirect URL")),
