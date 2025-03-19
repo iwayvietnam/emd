@@ -78,7 +78,10 @@ class OAuthClientsRelationManager extends RelationManager
             ->columns([
                 Columns\TextColumn::make("name")->label(__("Client Name")),
                 Columns\TextColumn::make("id")->label(__("Client Id")),
-                Columns\IconColumn::make("revoked")->label(__("Is Revoked")),
+                Columns\IconColumn::make("revoked")
+                    ->boolean()
+                    ->trueColor("danger")
+                    ->label(__("Is Revoked")),
             ])
             ->filters([TernaryFilter::make("revoked")->label(__("Is Revoked"))])
             ->headerActions([
