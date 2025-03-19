@@ -13,10 +13,14 @@ Route::middleware('auth:api')->controller(
     Route::get('/email', 'index');
     Route::get('/email/{id}', 'show');
     Route::get('/email/{id}/devices', 'devices');
-    Route::post('/send', 'send');
 });
 
-Route::middleware('auth:api')->post(
+Route::middleware(['auth:api', 'scope:send-emails'])->post(
+    '/send',
+    [EmailController::class, 'send']
+);
+
+Route::middleware(['auth:api', 'scope:upload-files'])->post(
     '/upload',
     [UploadController::class, 'upload']
 );

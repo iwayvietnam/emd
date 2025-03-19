@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
 
 /**
  * App service provider class
@@ -38,5 +39,15 @@ class AppServiceProvider extends ServiceProvider
                 (int) config("emd.api_rate", 600)
             )->by($request->user()?->id ?: $request->ip())
         );
+
+        Passport::tokensCan([
+            'access-emails' => 'Access emails',
+            'send-emails' => 'Send emails',
+            'upload-files' => 'Upload files',
+        ]);
+
+        Passport::setDefaultScope([
+            'access-emails',
+        ]);
     }
 }
