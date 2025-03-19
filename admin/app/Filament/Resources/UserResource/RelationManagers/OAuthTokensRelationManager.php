@@ -35,9 +35,9 @@ class OAuthTokensRelationManager extends RelationManager
         return $infolist->schema([
             TextEntry::make("client.name")->label(__("Client Name")),
             TextEntry::make("name")->label(__("Token Name")),
-            TextEntry::make("id")->label(__("Token Id")),
             TextEntry::make("expires_at")->label(__("Expires At")),
             TextEntry::make("scopes")->label(__("Scopes")),
+            TextEntry::make("id")->label(__("Token Id")),
         ]);
     }
 
