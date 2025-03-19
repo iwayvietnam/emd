@@ -3,24 +3,24 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');
+Route::get(
+    "/user",
+    static fn (Request $request) => $request->user()
+)->middleware("auth:api");
 
-Route::middleware('auth:api')->controller(
-    EmailController::class
-)->group(function () {
-    Route::get('/email', 'index');
-    Route::get('/email/{id}', 'show');
-    Route::get('/email/{id}/devices', 'devices');
-});
+Route::controller(EmailController::class)
+    ->group(static function () {
+        Route::get("/email", "index");
+        Route::get("/email/{id}", "show");
+        Route::get("/email/{id}/devices", "devices");
+    })->middleware("auth:api");
 
-Route::middleware(['auth:api', 'scope:send-emails'])->post(
-    '/send',
-    [EmailController::class, 'send']
-);
+Route::post("/send", [
+    EmailController::class,
+    "send",
+])->middleware(["auth:api", "scope:send-emails"]);
 
-Route::middleware(['auth:api', 'scope:upload-files'])->post(
-    '/upload',
-    [UploadController::class, 'upload']
-);
+Route::post("/upload", [
+    UploadController::class,
+    "upload",
+])->middleware(["auth:api", "scope:upload-files"]);
