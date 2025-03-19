@@ -33,10 +33,10 @@ class OAuthTokensRelationManager extends RelationManager
     public function infolist(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            TextEntry::make("name")->label(__("Client Name")),
-            TextEntry::make("id")->label(__("Client Id")),
-            TextEntry::make("secret")->label(__("Client Secret")),
-            TextEntry::make("redirect")->label(__("Redirect URL")),
+            TextEntry::make("client.name")->label(__("Client Name")),
+            TextEntry::make("id")->label(__("Token Id")),
+            TextEntry::make("expires_at")->label(__("Expires At")),
+            TextEntry::make("scopes")->label(__("Scopes")),
         ]);
     }
 
