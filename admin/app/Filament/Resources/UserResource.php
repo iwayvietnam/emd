@@ -23,7 +23,10 @@ class UserResource extends Resource
 
     public static function getRelations(): array
     {
-        return [RelationManagers\OAuthClientsRelationManager::class];
+        return [
+            RelationManagers\OAuthClientsRelationManager::class,
+            RelationManagers\OAuthTokensRelationManager::class,
+        ];
     }
 
     public static function getPages(): array
