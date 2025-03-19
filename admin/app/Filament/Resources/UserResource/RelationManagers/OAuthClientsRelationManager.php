@@ -8,6 +8,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
+use Filament\Infolists\Infolist;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns;
@@ -59,6 +61,16 @@ class OAuthClientsRelationManager extends RelationManager
         ]);
     }
 
+    public function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist->schema([
+            TextEntry::make("name")->label(__("Client Name")),
+            TextEntry::make("id")->label(__("Client Id")),
+            TextEntry::make("secret")->label(__("Client Secret")),
+            TextEntry::make("redirect")->label(__("Redirect URL")),
+        ]);
+    }
+
     public function table(Table $table): Table
     {
         return $table
@@ -66,8 +78,6 @@ class OAuthClientsRelationManager extends RelationManager
             ->columns([
                 Columns\TextColumn::make("name")->label(__("Client Name")),
                 Columns\TextColumn::make("id")->label(__("Client Id")),
-                Columns\TextColumn::make("secret")->label(__("Client Secret")),
-                Columns\TextColumn::make("redirect")->label(__("Redirect URL")),
                 Columns\IconColumn::make("revoked")->label(__("Is Revoked")),
             ])
             ->filters([TernaryFilter::make("revoked")->label(__("Is Revoked"))])
