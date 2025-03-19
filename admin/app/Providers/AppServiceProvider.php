@@ -36,11 +36,13 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for(
             "api",
             static fn(Request $request) => Limit::perMinute(
-                (int) config("emd.api_rate", 600)
+                (int) config("emd.api.request_rate", 600)
             )->by($request->user()?->id ?: $request->ip())
         );
 
-        Passport::enablePasswordGrant();
+        if ((bool) config("emd.api.password_grant", false)) {
+            Passport::enablePasswordGrant();
+        }
         Passport::tokensCan([
             'access-emails' => 'Access emails',
             'send-emails' => 'Send emails',

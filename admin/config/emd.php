@@ -8,8 +8,11 @@ return [
         "SENDER_TRANSPORT",
         "/etc/postfix/sender_transport"
     ),
-    "api_rate" => (int) env("API_REQUEST_RATE", 600),
-    "api_upload_dir" => env("API_UPLOAD_DIR", "attachments"),
+    "api" => [
+        "request_rate" => (int) env("API_REQUEST_RATE", 600),
+        "upload_dir" => env("API_UPLOAD_DIR", "attachments"),
+        "password_grant" => env("API_PASSWORD_GRANT", false),
+    ],
     "mail" => [
         "should_queue" => (bool) env("MAIL_SHOULD_QUEUE", true),
         "queue_name" => env("MAIL_QUEUE_NAME", "default"),

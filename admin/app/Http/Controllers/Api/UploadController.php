@@ -27,7 +27,7 @@ class UploadController extends Controller
      */
     public function upload(Request $request): JsonResource
     {
-        $uploadDir = config("emd.api_upload_dir", self::UPLOAD_DIR);
+        $uploadDir = config("emd.api.upload_dir", self::UPLOAD_DIR);
         $storeDir = $uploadDir . "/" . $request->user()->email;
         $files = [];
         foreach ($request->allFiles() as $file) {

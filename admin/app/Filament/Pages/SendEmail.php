@@ -78,7 +78,7 @@ class SendEmail extends Page implements HasForms
                     ->moveFiles()
                     ->disk('local')
                     ->directory(
-                        config("emd.api_upload_dir", self::UPLOAD_DIR) .
+                        config("emd.api.upload_dir", self::UPLOAD_DIR) .
                         "/" .
                         request()->user()->email
                     ),
