@@ -2,6 +2,7 @@
 
 return [
     "app_domain" => env("APP_DOMAIN", "yourdomain.com"),
+    "panel_id" => env("PANEL_ID", "admin"),
     "panel_path" => env("PANEL_PATH", "admin"),
     "https" => (bool) env("FORCE_HTTPS", false),
     "sender_transport" => env(

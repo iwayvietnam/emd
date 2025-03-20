@@ -28,12 +28,14 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
  */
 class AdminPanelProvider extends PanelProvider
 {
+    const NAME = "admin";
+
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->default()
-            ->id("admin")
-            ->path(config("emd.panel_path"))
+            ->id(config("emd.panel_id", self::NAME))
+            ->path(config("emd.panel_path", self::NAME))
             ->login()
             ->profile(EditUserProfile::class, isSimple: false)
             ->colors([
