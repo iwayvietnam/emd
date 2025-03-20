@@ -16,6 +16,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
+use Illuminate\Support\Number;
 
 /**
  * Mail queue page class
@@ -90,7 +91,13 @@ class MailQueue extends Page implements HasForms, HasTable
                 TextColumn::make("queue_id")->label(__("Queue Id")),
                 TextColumn::make("sender")->label(__("Sender")),
                 TextColumn::make("recipients")->label(__("Recipients")),
-                TextColumn::make("message_size")->label(__("Message Size")),
+                TextColumn::make("message_size")
+                    ->state(
+                        static fn(MailServerQueue $queue) => Number::fileSize(
+                            $queue->message_size
+                        )
+                    )
+                    ->label(__("Message Size")),
             ]);
     }
 }
