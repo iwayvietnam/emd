@@ -55,13 +55,13 @@ class AccessTokensRelationManager extends RelationManager
                 Actions\ViewAction::make(),
                 Actions\Action::make("revoke")
                     ->action(
-                        static fn(Token $token) => self::revokeClient($token)
+                        static fn(Token $token) => self::revokeToken($token)
                     )
                     ->label(__("Revoke")),
             ]);
     }
 
-    private static function revokeClient(Token $token): void
+    private static function revokeToken(Token $token): void
     {
         $token->revoke();
     }
