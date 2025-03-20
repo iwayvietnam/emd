@@ -41,17 +41,24 @@ class AppServiceProvider extends ServiceProvider
             )->by($request->user()?->id ?: $request->ip())
         );
 
+        Passport::useClientModel(PassportClient::class);
         if ((bool) config("emd.api.password_grant")) {
             Passport::enablePasswordGrant();
         }
-        Passport::useClientModel(PassportClient::class);
+ 
+        Passport::tokensExpireIn(
+            now()->addDays((int) config("emd.api.acccess_tokens_expiry"))
+        );
+        Passport::refreshTokensExpireIn(
+            now()->addDays((int) config("emd.api.refresh_tokens_expiry"))
+        );
+        Passport::personalAccessTokensExpireIn(
+            now()->addDays((int) config("emd.api.personal_tokens_expiry"))
+        );
+ 
         Passport::tokensCan([
-            'access-emails' => 'Access emails',
             'send-emails' => 'Send emails',
             'upload-files' => 'Upload files',
-        ]);
-        Passport::setDefaultScope([
-            'access-emails',
         ]);
     }
 }
