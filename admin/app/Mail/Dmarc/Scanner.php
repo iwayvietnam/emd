@@ -145,7 +145,7 @@ final class Scanner
                         } else {
                             try {
                                 $message->copy($archiveFolder);
-                            } catch (\Exception $e) {
+                            } catch (\Throwable $e) {
                                 logger()->error($e);
                             }
                             $message->delete();
