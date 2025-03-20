@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\PassportClient;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -43,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
         if ((bool) config("emd.api.password_grant")) {
             Passport::enablePasswordGrant();
         }
+        Passport::useClientModel(PassportClient::class);
         Passport::tokensCan([
             'access-emails' => 'Access emails',
             'send-emails' => 'Send emails',

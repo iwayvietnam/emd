@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
+use App\Models\PassportClient;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -16,19 +17,18 @@ use Filament\Tables\Columns;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
-use Laravel\Passport\Client;
 
 /**
- * User OAuth clients relation manager class
+ * User passport clients relation manager class
  *
  * @package  App
  * @category Filament
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
-class OAuthClientsRelationManager extends RelationManager
+class PassportClientsRelationManager extends RelationManager
 {
     protected static string $relationship = "clients";
-    protected static ?string $title = "OAuth Clients";
+    protected static ?string $title = "Passport Clients";
 
     public function form(Form $form): Form
     {
@@ -90,15 +90,14 @@ class OAuthClientsRelationManager extends RelationManager
                 Actions\ViewAction::make(),
                 Actions\Action::make("revoke")
                     ->action(
-                        static fn(Client $client) => self::revokeClient($client)
+                        static fn(PassportClient $client) => self::revokeClient($client)
                     )
                     ->label(__("Revoke")),
             ]);
     }
 
-    private static function revokeClient(Client $client): void
+    private static function revokeClient(PassportClient $client): void
     {
-        $client->revoked = true;
-        $client->save();
+        $client->revoke();
     }
 }

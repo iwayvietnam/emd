@@ -24,8 +24,8 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\OAuthClientsRelationManager::class,
-            RelationManagers\OAuthTokensRelationManager::class,
+            RelationManagers\PassportClientsRelationManager::class,
+            RelationManagers\AccessTokensRelationManager::class,
         ];
     }
 

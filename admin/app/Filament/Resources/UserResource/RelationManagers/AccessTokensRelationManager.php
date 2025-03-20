@@ -12,16 +12,16 @@ use Filament\Tables\Table;
 use Laravel\Passport\Token;
 
 /**
- * User OAuth token relation manager class
+ * User passport access token relation manager class
  *
  * @package  App
  * @category Filament
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
-class OAuthTokensRelationManager extends RelationManager
+class AccessTokensRelationManager extends RelationManager
 {
     protected static string $relationship = "tokens";
-    protected static ?string $title = "OAuth Tokens";
+    protected static ?string $title = "Passport Access Tokens";
 
     public function infolist(Infolist $infolist): Infolist
     {

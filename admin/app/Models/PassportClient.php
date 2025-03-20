@@ -25,4 +25,14 @@ class PassportClient extends Client
             "secret" => "encrypted",
         ];
     }
+
+    /**
+     * Revoke the client instance.
+     *
+     * @return bool
+     */
+    public function revoke(): bool
+    {
+        return $this->forceFill(['revoked' => true])->save();
+    }
 }
