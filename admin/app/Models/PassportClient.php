@@ -21,7 +21,7 @@ class PassportClient extends Client
     protected function casts(): array
     {
         return [
-            ..$this->casts,
+            ...$this->casts,
             "secret" => "encrypted",
         ];
     }
