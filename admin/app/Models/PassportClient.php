@@ -5,13 +5,13 @@ namespace App\Models;
 use Laravel\Passport\Client;
 
 /**
- * Oauth client model class
+ * Passport client model class
  *
  * @package  App
  * @category Models
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
-class OauthClient extends Client
+class PassportClient extends Client
 {
     /**
      * Get the attributes that should be cast.
