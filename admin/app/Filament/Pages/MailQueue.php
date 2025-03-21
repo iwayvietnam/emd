@@ -4,7 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\MailServer;
 use App\Models\MailServerQueue;
-use Filament\Actions\Action;
+use Filament\Actions\Action as FormAction;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -12,6 +12,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
+use Filament\Tables\Actions\Action as TableAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -70,7 +71,7 @@ class MailQueue extends Page implements HasForms, HasTable
     protected function getFormActions(): array
     {
         return [
-            Action::make("list")
+            FormAction::make("list")
                 ->label(__("List Mail Queue"))
                 ->submit("listMailQueue"),
         ];
@@ -98,6 +99,11 @@ class MailQueue extends Page implements HasForms, HasTable
                         )
                     )
                     ->label(__("Message Size")),
+            ])
+            ->actions([
+                TableAction::make("detail")->label(__("Detail")),
+                TableAction::make("flush")->label(__("Flush")),
+                TableAction::make("delete")->label(__("Delete")),
             ]);
     }
 }
