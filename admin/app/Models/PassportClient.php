@@ -24,6 +24,16 @@ class PassportClient extends Client
     }
 
     /**
+     * Determine if the client should skip the authorization prompt.
+     *
+     * @return bool
+     */
+    public function skipsAuthorization()
+    {
+        return $this->firstParty();
+    }
+
+    /**
      * Revoke the client instance.
      *
      * @return bool
