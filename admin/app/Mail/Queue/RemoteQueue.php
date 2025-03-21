@@ -132,17 +132,19 @@ class RemoteQueue implements QueueInterface
     /**
      * {@inheritdoc}
      */
-    public function deleteQueue(string $queueId): bool
+    public function deleteQueue(array $queueIds = []): void
     {
-        return !empty($this->runCommand(implode([
-            sprintf(self::ECHO_CMD, $this->sudoPassword),
-            " | ",
-            self::SUDO_CMD,
-            " ",
-            self::POSTSUPER_CMD,
-            " -d ",
-            $queueId,
-        ])));
+        if ($!empty($queueIds)) {
+            $this->runCommand(implode([
+                sprintf(self::ECHO_CMD, $this->sudoPassword),
+                " | ",
+                self::SUDO_CMD,
+                " ",
+                self::POSTSUPER_CMD,
+                " -d ",
+                implode(' -d ', $queueIds)
+            ]));
+        }
     }
 
     /**

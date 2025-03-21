@@ -65,10 +65,10 @@ interface QueueInterface
     /**
      * Delete a message by id in queue
      *
-     * @param  string $queueId
-     * @return bool
+     * @param  array $queueIds
+     * @return void
      */
-    function deleteQueue(string $queueId): bool;
+    function deleteQueue(array $queueIds = []): void;
 
     /**
      * Get message details by id in queue

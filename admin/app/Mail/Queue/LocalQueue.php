@@ -82,13 +82,14 @@ class LocalQueue implements QueueInterface
     /**
      * {@inheritdoc}
      */
-    public function deleteQueue(string $queueId): bool
+    public function deleteQueue(array $queueIds = []): void
     {
-        $result = Process::run(self::POSTSUPER_CMD . " -d $queueId");
+        $result = Process::run(
+            self::POSTSUPER_CMD . " -d " . implode(" -d ", $queueIds)
+        );
         if ($result->failed()) {
             logger()->error($result->errorOutput());
         }
-        return $result->successful();
     }
 
     /**
