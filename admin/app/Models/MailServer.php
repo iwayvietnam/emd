@@ -65,10 +65,10 @@ class MailServer extends Model
             ),
             $this->sudo_password
         );
-        return $remoteQueue->listQueue()->map(function ($queue) {
+        return collect($remoteQueue->listQueue())->map(function ($queue) {
             $queue['mail_server'] = $this->id;
             return $queue;
-        });
+        })->toArray();
     }
 
     public function queueDetails(string $queueId): array
