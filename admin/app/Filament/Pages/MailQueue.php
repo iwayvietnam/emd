@@ -103,10 +103,10 @@ class MailQueue extends Page implements HasForms, HasTable
             ])
             ->actions([
                 ActionGroup::make([
-                    TableAction::make("detail")
+                    TableAction::make("details")
                         ->icon("heroicon-m-eye")
-                        ->color("info")
-                        ->label(__("Detail")),
+                        ->color("primary")
+                        ->label(__("Viwe Details")),
                     TableAction::make("flush")
                         ->icon("heroicon-m-arrow-up-circle")
                         ->color("primary")
