@@ -102,6 +102,13 @@ class MailQueue extends Page implements HasForms, HasTable
                         )
                     )
                     ->label(__("Message Size")),
+                TextColumn::make("arrival_time")
+                    ->state(
+                        static fn(MailServerQueue $record) => date(
+                            "Y-m-d H:i:s", (int) $record->arrival_time
+                        )
+                    )
+                    ->label(__("Arrival Time")),
             ])
             ->bulkActions([
                 BulkAction::make("delete-all")
