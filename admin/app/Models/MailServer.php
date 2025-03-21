@@ -54,7 +54,7 @@ class MailServer extends Model
         ];
     }
 
-    public function listQueue(): array
+    public function listQueue(string $configDir = "/etc/postfix"): array
     {
         $remoteQueue = new RemoteQueue(
             new RemoteServer(
@@ -63,7 +63,8 @@ class MailServer extends Model
                 $this->ssh_user,
                 $this->ssh_private_key
             ),
-            $this->sudo_password
+            $this->sudo_password,
+            $configDir
         );
         return collect($remoteQueue->listQueue())->map(function ($queue) {
             $queue['mail_server'] = $this->id;

@@ -22,7 +22,8 @@ class RemoteQueue implements QueueInterface
      */
     public function __construct(
         private readonly RemoteServer $remoteServer,
-        private readonly string $sudoPassword
+        private readonly string $sudoPassword,
+        private readonly string $configDir = "/etc/postfix"
     ) {}
 
     /**
@@ -37,6 +38,8 @@ class RemoteQueue implements QueueInterface
             self::SUDO_CMD,
             " ",
             self::POSTQUEUE_CMD,
+            " -c ",
+            $this->configDir,
             " -j",
         ])));
         foreach ($lines as $line) {
@@ -65,6 +68,8 @@ class RemoteQueue implements QueueInterface
                 self::SUDO_CMD,
                 " ",
                 self::POSTQUEUE_CMD,
+                " -c ",
+                $this->configDir,
                 " -f",
             ])));
         }
@@ -75,6 +80,8 @@ class RemoteQueue implements QueueInterface
                 self::SUDO_CMD,
                 " ",
                 self::POSTQUEUE_CMD,
+                " -c ",
+                $this->configDir,
                 " -i ",
                 $queueId,
             ])));
@@ -92,6 +99,8 @@ class RemoteQueue implements QueueInterface
             self::SUDO_CMD,
             " ",
             self::POSTSUPER_CMD,
+            " -c ",
+            $this->configDir,
             " -r ",
             $queueId,
         ])));
@@ -108,6 +117,8 @@ class RemoteQueue implements QueueInterface
             self::SUDO_CMD,
             " ",
             self::POSTSUPER_CMD,
+            " -c ",
+            $this->configDir,
             " -h ",
             $queueId,
         ])));
@@ -124,6 +135,8 @@ class RemoteQueue implements QueueInterface
             self::SUDO_CMD,
             " ",
             self::POSTSUPER_CMD,
+            " -c ",
+            $this->configDir,
             " -H ",
             $queueId,
         ])));
@@ -141,6 +154,8 @@ class RemoteQueue implements QueueInterface
                 self::SUDO_CMD,
                 " ",
                 self::POSTSUPER_CMD,
+                " -c ",
+                $this->configDir,
                 " -d ",
                 implode(" -d ", $queueIds),
             ]));
@@ -158,6 +173,8 @@ class RemoteQueue implements QueueInterface
             self::SUDO_CMD,
             " ",
             self::POSTCAT_CMD,
+            " -c ",
+            $this->configDir,
             " -q ",
             $queueId,
         ]));
@@ -200,6 +217,8 @@ class RemoteQueue implements QueueInterface
             self::SUDO_CMD,
             " ",
             self::POSTCAT_CMD,
+            " -c ",
+            $this->configDir,
             " -qb ",
             $queueId,
         ]));
