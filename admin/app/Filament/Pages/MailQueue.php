@@ -14,7 +14,7 @@ use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action as TableAction;
 use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Actions\BulkAction
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
