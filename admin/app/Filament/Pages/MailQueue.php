@@ -101,6 +101,22 @@ class MailQueue extends Page implements HasForms, HasTable
                     )
                     ->label(__("Message Size")),
             ])
+            ->bulkActions([
+                TableAction::make("delete-all")
+                    ->icon("heroicon-m-trash")
+                    ->color("danger")
+                    ->action(function ($records) {
+                        $formState = session()->get(MailServerQueue::class);
+                        $server = MailServer::find($formState["mail_server"] ?? 0);
+                        $server?->deleteQueue(
+                            $records->map(
+                                fn (MailServerQueue $record) => $record->queue_id
+                            )->toArray()
+                        );
+                        redirect($this->getUrl());
+                    })
+                    ->label(__("Delete")),
+            ])
             ->actions([
                 ActionGroup::make([
                     TableAction::make("details")
@@ -110,18 +126,18 @@ class MailQueue extends Page implements HasForms, HasTable
                     TableAction::make("flush")
                         ->icon("heroicon-m-arrow-up-circle")
                         ->color("primary")
-                        ->action(function (MailServerQueue $queue) {
-                            $server = MailServer::find($queue->mail_server);
-                            $server->flushQueue([$queue->queue_id]);
+                        ->action(function ($record) {
+                            $server = MailServer::find($record->mail_server);
+                            $server->flushQueue([$record->queue_id]);
                             redirect($this->getUrl());
                         })
                         ->label(__("Flush")),
                     TableAction::make("delete")
                         ->icon("heroicon-m-trash")
                         ->color("danger")
-                        ->action(function (MailServerQueue $queue) {
-                            $server = MailServer::find($queue->mail_server);
-                            $server->deleteQueue([$queue->queue_id]);
+                        ->action(function ($record) {
+                            $server = MailServer::find($record->mail_server);
+                            $server->deleteQueue([$record->queue_id]);
                             redirect($this->getUrl());
                         })
                         ->label(__("Delete")),
