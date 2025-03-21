@@ -40,6 +40,6 @@ class PassportClient extends Client
      */
     public function revoke(): bool
     {
-        return $this->forceFill(['revoked' => true])->save();
+        return $this->forceFill(["revoked" => true])->save();
     }
 }
