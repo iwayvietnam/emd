@@ -21,7 +21,8 @@ interface QueueInterface
     const QUEUE_REGEX = "/^([^\s\*\!]+)[\*\!]?\s*(\d+)\s+(\S+\s+\S+\s+\d+\s+\d+:\d+:\d+)\s+(.*)/";
     const START_OF_QUEUE_REGEX = "(?:\*\*\*\s+ENVELOPE\s+RECORDS.*\*\*\*)";
     const START_OF_MAIL_REGEX = "(?:\*\*\*\s+MESSAGE\s+CONTENTS.*\*\*\*)";
-    const END_OF_MAIL_REGEX = "(?:\*\*\*\s+HEADER\s+EXTRACTED.*\*\*\*)";
+    const HEADER_OF_MAIL_REGEX = "(?:\*\*\*\s+HEADER\s+EXTRACTED.*\*\*\*)";
+    const END_OF_MAIL_REGEX = "(?:\*\*\*\s+MESSAGE\s+FILE\s+END.*\*\*\*)";
 
     /**
      * List all messages in queues
