@@ -32,7 +32,7 @@ class MailQueue extends Page implements HasForms, HasTable
 
     protected static ?string $navigationGroup = "System";
     protected static ?string $navigationIcon = "heroicon-o-envelope";
-    protected static ?string $slug = "mail queue";
+    protected static ?string $slug = "mail-queue";
     protected static string $view = "filament.pages.mail-queue";
 
     /**

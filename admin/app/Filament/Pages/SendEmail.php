@@ -47,7 +47,7 @@ class SendEmail extends Page implements HasForms
 
     public static function getNavigationLabel(): string
     {
-        return __('Send Email');
+        return __("Send Email");
     }
 
     public function mount(): void
@@ -76,7 +76,7 @@ class SendEmail extends Page implements HasForms
                     ->multiple()
                     ->previewable(false)
                     ->moveFiles()
-                    ->disk('local')
+                    ->disk("local")
                     ->directory(
                         config("emd.api.upload_dir", self::UPLOAD_DIR) .
                         "/" .
