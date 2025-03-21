@@ -14,6 +14,7 @@ use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action as TableAction;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\BulkAction
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -95,14 +96,14 @@ class MailQueue extends Page implements HasForms, HasTable
                 TextColumn::make("recipients")->label(__("Recipients")),
                 TextColumn::make("message_size")
                     ->state(
-                        static fn(MailServerQueue $queue) => Number::fileSize(
+                        static fn($queue) => Number::fileSize(
                             $queue->message_size
                         )
                     )
                     ->label(__("Message Size")),
             ])
             ->bulkActions([
-                TableAction::make("delete-all")
+                BulkAction::make("delete-all")
                     ->icon("heroicon-m-trash")
                     ->color("danger")
                     ->action(function ($records) {
@@ -110,7 +111,7 @@ class MailQueue extends Page implements HasForms, HasTable
                         $server = MailServer::find($formState["mail_server"] ?? 0);
                         $server?->deleteQueue(
                             $records->map(
-                                fn (MailServerQueue $record) => $record->queue_id
+                                fn ($record) => $record->queue_id
                             )->toArray()
                         );
                         redirect($this->getUrl());
@@ -126,7 +127,7 @@ class MailQueue extends Page implements HasForms, HasTable
                     TableAction::make("flush")
                         ->icon("heroicon-m-arrow-up-circle")
                         ->color("primary")
-                        ->action(function (MailServerQueue $record) {
+                        ->action(function ($record) {
                             $server = MailServer::find($record->mail_server);
                             $server->flushQueue([$record->queue_id]);
                             redirect($this->getUrl());
@@ -135,7 +136,7 @@ class MailQueue extends Page implements HasForms, HasTable
                     TableAction::make("delete")
                         ->icon("heroicon-m-trash")
                         ->color("danger")
-                        ->action(function (MailServerQueue $record) {
+                        ->action(function ($record) {
                             $server = MailServer::find($record->mail_server);
                             $server->deleteQueue([$record->queue_id]);
                             redirect($this->getUrl());
