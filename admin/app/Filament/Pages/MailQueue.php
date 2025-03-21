@@ -13,6 +13,7 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action as TableAction;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -101,9 +102,20 @@ class MailQueue extends Page implements HasForms, HasTable
                     ->label(__("Message Size")),
             ])
             ->actions([
-                TableAction::make("detail")->label(__("Detail")),
-                TableAction::make("flush")->label(__("Flush")),
-                TableAction::make("delete")->label(__("Delete")),
+                ActionGroup::make([
+                    TableAction::make("detail")
+                        ->icon("heroicon-m-eye")
+                        ->color("info")
+                        ->label(__("Detail")),
+                    TableAction::make("flush")
+                        ->icon("actions::restore-action")
+                        ->color("primary")
+                        ->label(__("Flush")),
+                    TableAction::make("delete")
+                        ->icon("heroicon-m-trash")
+                        ->color("danger")
+                        ->label(__("Delete")),
+                ]),
             ]);
     }
 }
