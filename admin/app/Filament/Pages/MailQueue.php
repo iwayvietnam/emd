@@ -96,8 +96,8 @@ class MailQueue extends Page implements HasForms, HasTable
                 TextColumn::make("recipients")->label(__("Recipients")),
                 TextColumn::make("message_size")
                     ->state(
-                        static fn($queue) => Number::fileSize(
-                            $queue->message_size
+                        static fn(MailServerQueue $record) => Number::fileSize(
+                            $record->message_size
                         )
                     )
                     ->label(__("Message Size")),
@@ -111,7 +111,7 @@ class MailQueue extends Page implements HasForms, HasTable
                         $server = MailServer::find($formState["mail_server"] ?? 0);
                         $server?->deleteQueue(
                             $records->map(
-                                fn ($record) => $record->queue_id
+                                fn (MailServerQueue $record) => $record->queue_id
                             )->toArray()
                         );
                         redirect($this->getUrl());
@@ -127,7 +127,7 @@ class MailQueue extends Page implements HasForms, HasTable
                     TableAction::make("flush")
                         ->icon("heroicon-m-arrow-up-circle")
                         ->color("primary")
-                        ->action(function ($record) {
+                        ->action(function (MailServerQueue $record) {
                             $server = MailServer::find($record->mail_server);
                             $server->flushQueue([$record->queue_id]);
                             redirect($this->getUrl());
@@ -136,7 +136,7 @@ class MailQueue extends Page implements HasForms, HasTable
                     TableAction::make("delete")
                         ->icon("heroicon-m-trash")
                         ->color("danger")
-                        ->action(function ($record) {
+                        ->action(function (MailServerQueue $record) {
                             $server = MailServer::find($record->mail_server);
                             $server->deleteQueue([$record->queue_id]);
                             redirect($this->getUrl());
