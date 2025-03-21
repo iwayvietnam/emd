@@ -23,7 +23,7 @@ use Filament\Tables\Filters\SelectFilter;
 class MessageResource extends Resource
 {
     protected static ?string $model = Message::class;
-    protected static ?string $navigationGroup = "API";
+    protected static ?string $navigationGroup = "Email";
     protected static ?string $navigationIcon = "heroicon-o-envelope";
     protected static ?string $slug = "message";
 

@@ -20,7 +20,7 @@ use Filament\Tables\Columns\TextColumn;
 class MessageFailureResource extends Resource
 {
     protected static ?string $model = MessageFailure::class;
-    protected static ?string $navigationGroup = "API";
+    protected static ?string $navigationGroup = "Email";
     protected static ?string $navigationIcon = "heroicon-o-envelope";
     protected static ?string $slug = "message-failure";
 
