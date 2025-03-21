@@ -20,6 +20,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Support\Number;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Mail queue page class
@@ -108,11 +109,17 @@ class MailQueue extends Page implements HasForms, HasTable
                     ->color("danger")
                     ->action(function ($records) {
                         $formState = session()->get(MailServerQueue::class);
-                        $server = MailServer::find($formState["mail_server"] ?? 0);
+                        $server = MailServer::find(
+                            $formState["mail_server"] ?? 0
+                        );
                         $server?->deleteQueue(
-                            $records->map(
-                                fn (MailServerQueue $record) => $record->queue_id
-                            )->toArray()
+                            $records
+                                ->map(
+                                    fn(
+                                        MailServerQueue $record
+                                    ) => $record->queue_id
+                                )
+                                ->toArray()
                         );
                         redirect($this->getUrl());
                     })
@@ -123,6 +130,11 @@ class MailQueue extends Page implements HasForms, HasTable
                     TableAction::make("export")
                         ->icon("heroicon-m-arrow-down-circle")
                         ->color("primary")
+                        ->action(
+                            static fn(
+                                MailServerQueue $record
+                            ) => self::exportQueueContent($record)
+                        )
                         ->label(__("Export Content")),
                     TableAction::make("flush")
                         ->icon("heroicon-m-arrow-up-circle")
@@ -146,8 +158,9 @@ class MailQueue extends Page implements HasForms, HasTable
             ]);
     }
 
-    private static function exportQueueContent(MailServerQueue $record): Response
-    {
+    private static function exportQueueContent(
+        MailServerQueue $record
+    ): Response {
         $server = MailServer::find($record->mail_server);
         $content = $server->queueContent($record->queue_id);
 
