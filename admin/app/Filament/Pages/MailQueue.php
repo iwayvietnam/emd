@@ -126,7 +126,7 @@ class MailQueue extends Page implements HasForms, HasTable
                     TableAction::make("flush")
                         ->icon("heroicon-m-arrow-up-circle")
                         ->color("primary")
-                        ->action(function ($record) {
+                        ->action(function (MailServerQueue $record) {
                             $server = MailServer::find($record->mail_server);
                             $server->flushQueue([$record->queue_id]);
                             redirect($this->getUrl());
@@ -135,7 +135,7 @@ class MailQueue extends Page implements HasForms, HasTable
                     TableAction::make("delete")
                         ->icon("heroicon-m-trash")
                         ->color("danger")
-                        ->action(function ($record) {
+                        ->action(function (MailServerQueue $record) {
                             $server = MailServer::find($record->mail_server);
                             $server->deleteQueue([$record->queue_id]);
                             redirect($this->getUrl());
