@@ -10,4 +10,9 @@ Route::controller(TrackingController::class)
         Route::get("/click/{idHash}", "clickUrl")->name("tracking_click");
     });
 
-Route::get("/", static fn () => redirect(config("emd.panel_path")));
+Route::get(
+    "/login",
+    static fn() => ect(route("filament.admin.auth.login"))
+)->name("login");
+
+Route::get("/", static fn() => redirect(config("emd.panel_path")));
