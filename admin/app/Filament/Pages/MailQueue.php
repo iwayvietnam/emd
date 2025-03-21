@@ -67,10 +67,10 @@ class MailQueue extends Page implements HasForms, HasTable
                         ->label(__("Config Dir")),
                 ]),
                 Grid::make(2)->schema([
-                    TextInput::make("sender")->label(__("Sender"))->email(),
+                    TextInput::make("sender")->email()->label(__("Sender")),
                     TextInput::make("recipient")
-                        ->label(__("Recipient"))
-                        ->email(),
+                        ->email()
+                        ->label(__("Recipient")),
                 ]),
             ])
             ->statePath("data");
