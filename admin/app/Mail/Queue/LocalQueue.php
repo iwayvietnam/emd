@@ -110,6 +110,8 @@ class LocalQueue implements QueueInterface
                 "(.*)",
                 self::START_OF_MAIL_REGEX,
                 "(.*)",
+                self::HEADER_OF_MAIL_REGEX,
+                "(.*)",
                 self::END_OF_MAIL_REGEX,
                 "/ms",
             ]);
@@ -119,6 +121,9 @@ class LocalQueue implements QueueInterface
                 }
                 if (!empty($matches[2])) {
                     $details["message"] = trim($matches[2]);
+                }
+                if (!empty($matches[3])) {
+                    $details["header"] = trim($matches[3]);
                 }
             }
         }

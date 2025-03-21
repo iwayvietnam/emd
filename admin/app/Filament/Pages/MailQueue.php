@@ -120,10 +120,10 @@ class MailQueue extends Page implements HasForms, HasTable
             ])
             ->actions([
                 ActionGroup::make([
-                    TableAction::make("view")
-                        ->icon("heroicon-m-eye")
+                    TableAction::make("export")
+                        ->icon("heroicon-m-arrow-down-circle")
                         ->color("primary")
-                        ->label(__("View Content")),
+                        ->label(__("Export Content")),
                     TableAction::make("flush")
                         ->icon("heroicon-m-arrow-up-circle")
                         ->color("primary")
@@ -144,5 +144,19 @@ class MailQueue extends Page implements HasForms, HasTable
                         ->label(__("Delete")),
                 ]),
             ]);
+    }
+
+    private static function exportQueueContent(MailServerQueue $record): Response
+    {
+        $server = MailServer::find($record->mail_server);
+        $content = $server->queueContent($record->queue_id);
+
+        $filePath = tempnam(sys_get_temp_dir(), $record->queue_id);
+        file_put_contents($filePath, $content);
+        return response()
+            ->download($filePath, $record->queue_id . ".eml", [
+                "Content-Type" => "application/octet-stream",
+            ])
+            ->deleteFileAfterSend(true);
     }
 }
