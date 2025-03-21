@@ -110,10 +110,20 @@ class MailQueue extends Page implements HasForms, HasTable
                     TableAction::make("flush")
                         ->icon("heroicon-m-arrow-up-circle")
                         ->color("primary")
+                        ->requiresConfirmation()
+                        ->action(function ($queue) {
+                            $server = MailServer::find($queue["mail_server"]);
+                            $server->flushQueue([$queue["queue_id"]]);
+                        })
                         ->label(__("Flush")),
                     TableAction::make("delete")
                         ->icon("heroicon-m-trash")
                         ->color("danger")
+                        ->requiresConfirmation()
+                        ->action(function ($queue) {
+                            $server = MailServer::find($queue["mail_server"]);
+                            $server->deleteQueue([$queue["queue_id"]]);
+                        })
                         ->label(__("Delete")),
                 ]),
             ]);
