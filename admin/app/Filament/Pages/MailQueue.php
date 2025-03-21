@@ -58,9 +58,12 @@ class MailQueue extends Page implements HasForms, HasTable
     {
         return $form
             ->schema([
-                Select::make("mail_server")
-                    ->options(MailServer::all()->pluck("name", "id"))
-                    ->label(__("Mail Server")),
+                Grid::make(2)->schema([
+                    Select::make("mail_server")
+                        ->options(MailServer::all()->pluck("name", "id"))
+                        ->label(__("Mail Server")),
+                    TextInput::make("config")->label(__("Config Dir")),
+                ]),
                 Grid::make(2)->schema([
                     TextInput::make("sender")->label(__("Sender"))->email(),
                     TextInput::make("recipient")
@@ -91,6 +94,13 @@ class MailQueue extends Page implements HasForms, HasTable
         return $table
             ->query(MailServerQueue::query())
             ->columns([
+                TextColumn::make("arrival_time")
+                    ->state(
+                        static fn(MailServerQueue $record) => date(
+                            "Y-m-d H:i:s", (int) $record->arrival_time
+                        )
+                    )
+                    ->label(__("Arrival Time")),
                 TextColumn::make("queue_name")->label(__("Queue Name")),
                 TextColumn::make("queue_id")->label(__("Queue Id")),
                 TextColumn::make("sender")->label(__("Sender")),
@@ -102,13 +112,6 @@ class MailQueue extends Page implements HasForms, HasTable
                         )
                     )
                     ->label(__("Message Size")),
-                TextColumn::make("arrival_time")
-                    ->state(
-                        static fn(MailServerQueue $record) => date(
-                            "Y-m-d H:i:s", (int) $record->arrival_time
-                        )
-                    )
-                    ->label(__("Arrival Time")),
             ])
             ->bulkActions([
                 BulkAction::make("delete-all")
