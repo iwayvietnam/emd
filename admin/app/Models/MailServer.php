@@ -65,7 +65,60 @@ class MailServer extends Model
             ),
             $this->sudo_password
         );
-        return $remoteQueue->listQueue();
+        return $remoteQueue->listQueue()->map(function ($queue) {
+            $queue['mail_server'] = $this->id;
+            return $queue;
+        });
+    }
+
+    public function queueDetails(string $queueId): array
+    {
+        $remoteQueue = new RemoteQueue(
+            new RemoteServer(
+                $this->ip_address,
+                $this->ssh_port,
+                $this->ssh_user,
+                $this->ssh_private_key
+            ),
+            $this->sudo_password
+        );
+        return $remoteQueue->queueDetails($queueId);
+    }
+
+    public function flushQueue(array $queueIds = []): void
+    {
+        if (!empty($queueIds)) {
+            $remoteQueue = new RemoteQueue(
+                new RemoteServer(
+                    $this->ip_address,
+                    $this->ssh_port,
+                    $this->ssh_user,
+                    $this->ssh_private_key
+                ),
+                $this->sudo_password
+            );
+            foreach ($queueIds as $queueId) {
+                $remoteQueue->flushQueue($queueId);
+            }
+        }
+    }
+
+    public function deleteQueue(array $queueIds = [])
+    {
+        if (!empty($queueIds)) {
+            $remoteQueue = new RemoteQueue(
+                new RemoteServer(
+                    $this->ip_address,
+                    $this->ssh_port,
+                    $this->ssh_user,
+                    $this->ssh_private_key
+                ),
+                $this->sudo_password
+            );
+            foreach ($queueIds as $queueId) {
+                $remoteQueue->deleteQueue($queueId);
+            }
+        }
     }
 
     public function syncSenderTransports(array $transports): void
