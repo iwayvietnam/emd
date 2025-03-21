@@ -78,4 +78,12 @@ interface QueueInterface
      * @return array
      */
     function queueDetails(string $queueId): array;
+
+    /**
+     * Get message content by id in queue
+     *
+     * @param  string $queueId
+     * @return string
+     */
+    function queueContent(string $queueId): string;
 }

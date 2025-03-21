@@ -71,7 +71,7 @@ class MailServer extends Model
         })->toArray();
     }
 
-    public function queueDetails(string $queueId): array
+    public function queueContent(string $queueId): string
     {
         $remoteQueue = new RemoteQueue(
             new RemoteServer(
@@ -82,7 +82,7 @@ class MailServer extends Model
             ),
             $this->sudo_password
         );
-        return $remoteQueue->queueDetails($queueId);
+        return $remoteQueue->queueContent($queueId);
     }
 
     public function flushQueue(array $queueIds = []): void

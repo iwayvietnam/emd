@@ -125,4 +125,16 @@ class LocalQueue implements QueueInterface
 
         return $details;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function queueContent(string $queueId): string
+    {
+        $result = Process::run(self::POSTCAT_CMD . " -qb $queueId");
+        if ($result->failed()) {
+            logger()->error($result->errorOutput());
+        }
+        return $result->output();
+    }
 }

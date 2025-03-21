@@ -185,6 +185,22 @@ class RemoteQueue implements QueueInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function queueContent(string $queueId): string
+    {
+        return $this->runCommand(implode([
+            sprintf(self::ECHO_CMD, $this->sudoPassword),
+            " | ",
+            self::SUDO_CMD,
+            " ",
+            self::POSTCAT_CMD,
+            " -qb ",
+            $queueId,
+        ]));
+    }
+
+    /**
      * Execute command.
      *
      * @param string $command.
