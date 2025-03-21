@@ -115,9 +115,7 @@ class MailServer extends Model
                 ),
                 $this->sudo_password
             );
-            foreach ($queueIds as $queueId) {
-                $remoteQueue->deleteQueue($queueId);
-            }
+            $remoteQueue->deleteQueue($queueIds);
         }
     }
 
