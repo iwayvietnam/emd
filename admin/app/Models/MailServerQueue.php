@@ -18,25 +18,28 @@ class MailServerQueue extends Model
 
     public function getRows(): array
     {
-        $formState = session()->get(MailServerQueue::class);
-        $server = MailServer::find($formState["mail_server"] ?? 0);
-        $queues = collect($server?->listQueue() ?? []);
+        if (request()->isMethod('get')) {
+            $formState = session()->get(MailServerQueue::class);
+            $server = MailServer::find($formState["mail_server"] ?? 0);
+            $queues = collect($server?->listQueue() ?? []);
 
-        $sender = $formState["sender"] ?? "";
-        if (!empty($sender)) {
-            $queues = $queues->filter(
-                fn($queue) => str($queue["sender"])->contains($sender)
-            );
+            $sender = $formState["sender"] ?? "";
+            if (!empty($sender)) {
+                $queues = $queues->filter(
+                    fn($queue) => str($queue["sender"])->contains($sender)
+                );
+            }
+
+            $recipient = $formState["recipient"] ?? "";
+            if (!empty($recipient)) {
+                $queues = $queues->filter(
+                    fn($queue) => str($queue["recipients"])->contains($recipient)
+                );
+            }
+
+            return array_values($queues->toArray());
         }
-
-        $recipient = $formState["recipient"] ?? "";
-        if (!empty($recipient)) {
-            $queues = $queues->filter(
-                fn($queue) => str($queue["recipients"])->contains($recipient)
-            );
-        }
-
-        return array_values($queues->toArray());
+        return [];
     }
 
     protected function sushiShouldCache()
