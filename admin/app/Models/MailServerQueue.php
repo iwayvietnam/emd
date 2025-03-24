@@ -21,7 +21,9 @@ class MailServerQueue extends Model
         $formState = session()->get(MailServerQueue::class);
         $server = MailServer::find($formState["mail_server"] ?? 0);
         $queues = collect(
-            $server?->listQueue($formState["config_dir"] ?? MailServer::CONFIG_DIR) ?? []
+            $server?->listQueue(
+                $formState["config_dir"] ?? MailServer::CONFIG_DIR
+            ) ?? []
         );
 
         $sender = $formState["sender"] ?? "";

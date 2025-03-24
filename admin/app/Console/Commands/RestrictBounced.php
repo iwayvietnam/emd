@@ -58,7 +58,7 @@ class RestrictBounced extends Command implements Isolatable
         if (file_exists($logFile) && is_readable($logFile)) {
             $recipients = collect(
                 array_map(
-                    static fn($record) => $record['recipient'],
+                    static fn($record) => $record["recipient"],
                     RestrictedRecipient::all()->toArray()
                 )
             );

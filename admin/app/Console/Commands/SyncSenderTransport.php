@@ -41,7 +41,7 @@ class SyncSenderTransport extends Command implements Isolatable
      */
     public function handle(): int
     {
-        $this->syncSenderTransport($this->argument('server'));
+        $this->syncSenderTransport($this->argument("server"));
         $this->info("Sync sender transport command was successful!");
         return Command::SUCCESS;
     }
@@ -49,10 +49,9 @@ class SyncSenderTransport extends Command implements Isolatable
     private function syncSenderTransport(string $server): void
     {
         if (filter_var($server, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-            $server = MailServer::firstWhere('ip_address', $server);
-        }
-        else {
-            $server = MailServer::firstWhere('name', $server);
+            $server = MailServer::firstWhere("ip_address", $server);
+        } else {
+            $server = MailServer::firstWhere("name", $server);
         }
         if ($server->id) {
             $transports = SenderTransport::transports();

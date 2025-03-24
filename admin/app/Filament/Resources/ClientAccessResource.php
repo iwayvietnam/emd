@@ -37,7 +37,9 @@ class ClientAccessResource extends Resource
             ->columns([
                 TextColumn::make("policy.name")->label(__("Policy")),
                 TextColumn::make("client.name")->label(__("Client")),
-                TextColumn::make("sender")->searchable()->label(__("Sender Address")),
+                TextColumn::make("sender")
+                    ->searchable()
+                    ->label(__("Sender Address")),
                 TextColumn::make("client_ip")->label(__("Client Ip")),
                 TextColumn::make("verdict")->label(__("Verdict")),
             ])
@@ -70,7 +72,8 @@ class ClientAccessResource extends Resource
                         ->label("Reset Quota Counter"),
                     Actions\DeleteAction::make(),
                 ]),
-            ])->defaultSort("created_at", "desc");
+            ])
+            ->defaultSort("created_at", "desc");
     }
 
     public static function getPages(): array

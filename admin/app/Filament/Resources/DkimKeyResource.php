@@ -81,7 +81,9 @@ class DkimKeyResource extends Resource
                     Action::make("export_csr")
                         ->label(__("Export Dns Record"))
                         ->icon("heroicon-m-arrow-down-tray")
-                        ->action(static fn($record) => self::exportDnsRecord($record)),
+                        ->action(
+                            static fn($record) => self::exportDnsRecord($record)
+                        ),
                     DeleteAction::make(),
                 ]),
             ])

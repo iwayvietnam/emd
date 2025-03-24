@@ -48,13 +48,10 @@ class ListSenderTransports extends ListRecords
         if (!empty($transports)) {
             try {
                 MailServer::find($id)->syncSenderTransports($transports);
-            }
-            catch (\Throwable $th) {
+            } catch (\Throwable $th) {
                 logger()->error($th);
                 Notification::make()
-                    ->title(
-                        __("Failed to synchronize sender transports!")
-                    )
+                    ->title(__("Failed to synchronize sender transports!"))
                     ->danger()
                     ->send();
                 return;
@@ -62,9 +59,7 @@ class ListSenderTransports extends ListRecords
         }
 
         Notification::make()
-            ->title(
-                __("Sender transports have been synchronized!")
-            )
+            ->title(__("Sender transports have been synchronized!"))
             ->success()
             ->send();
     }

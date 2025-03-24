@@ -37,7 +37,7 @@ class SendEmail extends Page implements HasForms
 
     protected static ?string $navigationGroup = "Email";
     protected static ?string $navigationIcon = "heroicon-o-envelope";
-    protected static ?string $slug = 'send-email';
+    protected static ?string $slug = "send-email";
     protected static string $view = "filament.pages.send-email";
 
     /**
@@ -79,8 +79,8 @@ class SendEmail extends Page implements HasForms
                     ->disk("local")
                     ->directory(
                         config("emd.api.upload_dir", self::UPLOAD_DIR) .
-                        "/" .
-                        request()->user()->email
+                            "/" .
+                            request()->user()->email
                     ),
                 Toggle::make("should_queue")->label(__("Should Queue")),
             ])

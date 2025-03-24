@@ -99,7 +99,8 @@ class MailQueue extends Page implements HasForms, HasTable
                 TextColumn::make("arrival_time")
                     ->state(
                         static fn(MailServerQueue $record) => date(
-                            "Y-m-d H:i:s", (int) $record->arrival_time
+                            "Y-m-d H:i:s",
+                            (int) $record->arrival_time
                         )
                     )
                     ->label(__("Arrival Time")),
