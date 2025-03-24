@@ -71,13 +71,15 @@ class MailQueue extends Page implements HasTable
     {
         return [
             FormAction::make("list")
-                ->label(__("List Mail Queue"))
-                ->submit("listMailQueue"),
+                ->submit("listMailQueue")
+                ->after(fn () => logger()->info('After listMailQueue'))
+                ->label(__("List Mail Queue")),
         ];
     }
 
     public function listMailQueue(): void
     {
+        logger()->info('listMailQueue');
         session()->put(MailServerQueue::class, $this->form->getState());
         redirect($this->getUrl());
     }
