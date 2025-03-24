@@ -39,8 +39,11 @@ class Transport extends Model
             }
         });
 
-        static::deleting(static function (self $model) {
-            SenderTransport::where("transport_id", $model->id)->delete();
-        });
+        static::deleting(
+            static fn(self $model) => SenderTransport::where(
+                "transport_id",
+                $model->id
+            )->delete()
+        );
     }
 }

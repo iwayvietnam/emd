@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\RateLimiter;
  */
 class ClientAccess extends Model
 {
-    const RATE_LIMIT_SUFFIX = 'rate-limit-counter';
-    const QUOTA_LIMIT_SUFFIX = 'quota-limit-counter';
-    const CACHE_KEY_SUFFIX = 'client-accesses';
+    const RATE_LIMIT_SUFFIX = "rate-limit-counter";
+    const QUOTA_LIMIT_SUFFIX = "quota-limit-counter";
+    const CACHE_KEY_SUFFIX = "client-accesses";
 
     /**
      * The table associated with the model.
@@ -39,6 +39,17 @@ class ClientAccess extends Model
         "client_ip",
         "verdict",
     ];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::created(
+            static fn(self $model) => $model
+                ->resetRateCounter()
+                ->resetQuotaCounter()
+        );
+    }
 
     public function client(): BelongsTo
     {

@@ -65,9 +65,10 @@ class Message extends Model
     {
         parent::boot();
 
-        static::creating(static function (self $model) {
-            $model->hash = $model->hash ?: Str::uuid()->toString();
-        });
+        static::creating(
+            static fn(self $model) => ($model->hash =
+                $model->hash ?: Str::uuid()->toString())
+        );
 
         static::created(static function (self $model) {
             foreach ($model->uploads as $upload) {

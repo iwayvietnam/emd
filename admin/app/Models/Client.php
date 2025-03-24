@@ -42,8 +42,11 @@ class Client extends Model
     {
         parent::boot();
 
-        static::deleting(static function (self $model) {
-            ClientAccess::where("client_id", $model->id)->delete();
-        });
+        static::deleting(
+            static fn(self $model) => ClientAccess::where(
+                "client_id",
+                $model->id
+            )->delete()
+        );
     }
 }

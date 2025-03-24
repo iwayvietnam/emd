@@ -44,9 +44,10 @@ class MessageUrl extends Model
     {
         parent::boot();
 
-        static::creating(static function (self $model) {
-            $model->hash = $model->hash ?: Str::uuid()->toString();
-        });
+        static::creating(
+            static fn(self $model) => ($model->hash =
+                $model->hash ?: Str::uuid()->toString())
+        );
     }
 
     public function message(): BelongsTo
