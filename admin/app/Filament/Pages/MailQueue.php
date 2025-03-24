@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\MailServer;
 use App\Models\MailServerQueue;
+use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Forms\Components\Actions\Action as FormAction;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
@@ -29,6 +30,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class MailQueue extends Page implements HasTable
 {
+    use InteractsWithActions;
     use InteractsWithTable;
 
     protected static ?string $navigationGroup = "System";
