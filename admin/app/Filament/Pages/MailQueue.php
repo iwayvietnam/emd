@@ -131,7 +131,8 @@ class MailQueue extends Page implements HasForms, HasTable
                                         MailServerQueue $record
                                     ) => $record->queue_id
                                 )
-                                ->toArray()
+                                ->toArray(),
+                            $formState["config_dir"] ?? MailServer::CONFIG_DIR
                         );
                         redirect($this->getUrl());
                     })
