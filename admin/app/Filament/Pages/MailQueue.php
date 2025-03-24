@@ -63,8 +63,7 @@ class MailQueue extends Page implements HasTable
                 ->action(function () {
                     logger()->info('resetStars');
                 }),
-        ]),
-
+        ]);
         $this->form->fill(session()->get(MailServerQueue::class));
     }
 
