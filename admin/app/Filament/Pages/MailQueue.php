@@ -8,8 +8,6 @@ use Filament\Actions\Action as FormAction;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action as TableAction;
@@ -29,9 +27,8 @@ use Symfony\Component\HttpFoundation\Response;
  * @category Filament
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
-class MailQueue extends Page implements HasForms, HasTable
+class MailQueue extends Page implements HasTable
 {
-    use InteractsWithForms;
     use InteractsWithTable;
 
     protected static ?string $navigationGroup = "System";
