@@ -161,11 +161,6 @@ class MailQueue extends Page implements HasTable
                         })
                         ->label(__("Delete")),
                 ]),
-            ])
-            ->headerActions([
-                TableAction::make("listMailQueue")
-                    ->action(fn () => logger()->info('listMailQueue'))
-                    ->label(__("List Mail Queue")),
             ]);
     }
 
