@@ -20,27 +20,11 @@ class MailServerQueue extends Model
     {
         $formState = session()->get(MailServerQueue::class);
         $server = MailServer::find($formState["mail_server"] ?? 0);
-        $queues = collect(
-            $server?->listQueue(
-                $formState["config_dir"] ?? MailServer::CONFIG_DIR
-            ) ?? []
-        );
+        $queues = $server?->listQueue(
+            $formState["config_dir"] ?? MailServer::CONFIG_DIR
+        ) ?? [];
 
-        $sender = $formState["sender"] ?? "";
-        if (!empty($sender)) {
-            $queues = $queues->filter(
-                fn($queue) => str($queue["sender"])->contains($sender)
-            );
-        }
-
-        $recipient = $formState["recipient"] ?? "";
-        if (!empty($recipient)) {
-            $queues = $queues->filter(
-                fn($queue) => str($queue["recipients"])->contains($recipient)
-            );
-        }
-
-        return array_values($queues->toArray());
+        return $queues;
     }
 
     protected function sushiShouldCache()
