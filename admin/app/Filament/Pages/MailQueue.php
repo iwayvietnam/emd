@@ -79,7 +79,6 @@ class MailQueue extends Page implements HasTable
 
     public function listMailQueue(): void
     {
-        logger()->info('listMailQueue');
         session()->put(MailServerQueue::class, $this->form->getState());
         redirect($this->getUrl());
     }
