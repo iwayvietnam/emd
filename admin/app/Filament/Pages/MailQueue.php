@@ -106,8 +106,8 @@ class MailQueue extends Page implements HasForms, HasTable
                     ->label(__("Arrival Time")),
                 TextColumn::make("queue_name")->label(__("Queue Name")),
                 TextColumn::make("queue_id")->label(__("Queue Id")),
-                TextColumn::make("sender")->label(__("Sender")),
-                TextColumn::make("recipients")->label(__("Recipients")),
+                TextColumn::make("sender")->searchable()->label(__("Sender")),
+                TextColumn::make("recipients")->searchable()->label(__("Recipients")),
                 TextColumn::make("message_size")
                     ->state(
                         static fn(MailServerQueue $record) => Number::fileSize(
