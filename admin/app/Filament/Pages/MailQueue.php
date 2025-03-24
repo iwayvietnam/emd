@@ -5,7 +5,6 @@ namespace App\Filament\Pages;
 use App\Models\MailServer;
 use App\Models\MailServerQueue;
 use Filament\Forms\Components\Actions\Action as FormAction;
-use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -49,21 +48,6 @@ class MailQueue extends Page implements HasTable
 
     public function mount(): void
     {
-        Actions::make([
-            FormAction::make('star')
-                ->icon('heroicon-m-star')
-                ->requiresConfirmation()
-                ->action(function () {
-                    logger()->info('star');
-                }),
-            FormAction::make('resetStars')
-                ->icon('heroicon-m-x-mark')
-                ->color('danger')
-                ->requiresConfirmation()
-                ->action(function () {
-                    logger()->info('resetStars');
-                }),
-        ]);
         $this->form->fill(session()->get(MailServerQueue::class));
     }
 
@@ -88,7 +72,7 @@ class MailQueue extends Page implements HasTable
         return [
             FormAction::make("list")
                 ->submit("listMailQueue")
-                ->after(fn () => logger()->info('After listMailQueue'))
+                ->action(fn () => logger()->info('After listMailQueue'))
                 ->label(__("List Mail Queue")),
         ];
     }
