@@ -4,7 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\MailServer;
 use App\Models\MailServerQueue;
-use Filament\Actions\Action as FormAction;
+use Filament\Forms\Components\Actions\Action as FormAction;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
