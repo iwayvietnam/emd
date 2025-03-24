@@ -18,6 +18,7 @@ class MailServer extends Model
     const POSTMAP_CMD = "sudo -S postmap lmdb:%s";
     const COPY_CMD = "sudo -S cp -f %s %s";
     const ECHO_CMD = "echo '%s'";
+    const CONFIG_DIR = "/etc/postfix";
 
     /**
      * The table associated with the model.
@@ -54,7 +55,7 @@ class MailServer extends Model
         ];
     }
 
-    public function listQueue(string $configDir = "/etc/postfix"): array
+    public function listQueue(string $configDir = self::CONFIG_DIR): array
     {
         $remoteQueue = new RemoteQueue(
             new RemoteServer(
@@ -66,14 +67,18 @@ class MailServer extends Model
             $this->sudo_password,
             $configDir
         );
-        return collect($remoteQueue->listQueue())->map(function ($queue) {
-            $queue['mail_server'] = $this->id;
-            return $queue;
-        })->toArray();
+        return collect($remoteQueue->listQueue())
+            ->map(function ($queue) {
+                $queue["mail_server"] = $this->id;
+                return $queue;
+            })
+            ->toArray();
     }
 
-    public function queueContent(string $queueId): string
-    {
+    public function queueContent(
+        string $queueId,
+        string $configDir = self::CONFIG_DIR
+    ): string {
         $remoteQueue = new RemoteQueue(
             new RemoteServer(
                 $this->ip_address,
@@ -81,13 +86,16 @@ class MailServer extends Model
                 $this->ssh_user,
                 $this->ssh_private_key
             ),
-            $this->sudo_password
+            $this->sudo_password,
+            $configDir
         );
         return $remoteQueue->queueContent($queueId);
     }
 
-    public function flushQueue(array $queueIds = []): void
-    {
+    public function flushQueue(
+        array $queueIds = [],
+        string $configDir = self::CONFIG_DIR
+    ): void {
         if (!empty($queueIds)) {
             $remoteQueue = new RemoteQueue(
                 new RemoteServer(
@@ -96,7 +104,8 @@ class MailServer extends Model
                     $this->ssh_user,
                     $this->ssh_private_key
                 ),
-                $this->sudo_password
+                $this->sudo_password,
+                $configDir
             );
             foreach ($queueIds as $queueId) {
                 $remoteQueue->flushQueue($queueId);
@@ -104,8 +113,10 @@ class MailServer extends Model
         }
     }
 
-    public function deleteQueue(array $queueIds = [])
-    {
+    public function deleteQueue(
+        array $queueIds = [],
+        string $configDir = self::CONFIG_DIR
+    ) {
         if (!empty($queueIds)) {
             $remoteQueue = new RemoteQueue(
                 new RemoteServer(
@@ -114,7 +125,8 @@ class MailServer extends Model
                     $this->ssh_user,
                     $this->ssh_private_key
                 ),
-                $this->sudo_password
+                $this->sudo_password,
+                $configDir
             );
             $remoteQueue->deleteQueue($queueIds);
         }

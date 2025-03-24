@@ -63,7 +63,7 @@ class MailQueue extends Page implements HasForms, HasTable
                         ->options(MailServer::all()->pluck("name", "id"))
                         ->label(__("Mail Server")),
                     TextInput::make("config_dir")
-                        ->default("/etc/postfix")
+                        ->default(MailServer::CONFIG_DIR)
                         ->label(__("Config Dir")),
                 ]),
                 Grid::make(2)->schema([

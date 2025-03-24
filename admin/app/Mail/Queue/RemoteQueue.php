@@ -18,12 +18,13 @@ class RemoteQueue implements QueueInterface
      *
      * @param RemoteServer $remoteServer
      * @param string $sudoPassword
+     * @param string $configDir
      * @return self
      */
     public function __construct(
         private readonly RemoteServer $remoteServer,
         private readonly string $sudoPassword,
-        private readonly string $configDir = "/etc/postfix"
+        private readonly string $configDir
     ) {}
 
     /**
