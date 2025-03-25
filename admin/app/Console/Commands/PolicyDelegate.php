@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Mail\Policy\Policy;
 use App\Mail\Policy\PolicyRequest;
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 /**
@@ -46,14 +45,14 @@ class PolicyDelegate extends Command
 
     private static function readInput(): string
     {
-        $input = Str::of("");
+        $lines = [];
         while (!feof(STDIN)) {
             $line = fgets(STDIN);
             if ($line === false || trim($line) === "") {
                 break;
             }
-            $input->append($line);
+            $lines[] = trim($line);
         }
-        return (string) $input;
+        return implode(PHP_EOL, $lines);
     }
 }
