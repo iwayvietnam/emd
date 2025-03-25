@@ -64,21 +64,9 @@ class User extends Authenticatable implements FilamentUser
     {
         parent::boot();
 
-        static::deleting(
-            static fn(self $model) => self::deletePassport($model)
-        );
-    }
-
-    private static function deletePassport(self $model)
-    {
-        PassportClient::where(
-            "user_id",
-            $model->id
-        )->delete();
-
-        PassportToken::where(
-            "user_id",
-            $model->id
-        )->delete();
+        static::deleting(static function (self $model) {
+            $model->clients()->delete();
+            $model->tokens()->delete();
+        });
     }
 }
