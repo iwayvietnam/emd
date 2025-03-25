@@ -49,6 +49,14 @@ class ClientAccess extends Model
                 ->resetRateCounter()
                 ->resetQuotaCounter()
         );
+
+        static::saved(
+            static fn() => static::clearCache()
+        );
+
+        static::deleted(
+            static fn() => static::clearCache()
+        );
     }
 
     public function client(): BelongsTo
