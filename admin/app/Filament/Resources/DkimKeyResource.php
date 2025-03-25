@@ -6,7 +6,6 @@ use Amp\Dns\DnsRecord;
 use Amp\Dns\DnsException;
 use App\Filament\Resources\DkimKeyResource\Pages;
 use App\Models\DkimKey;
-use App\Models\Domain;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
@@ -47,11 +46,6 @@ class DkimKeyResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->label(__("Created At")),
-            ])
-            ->filters([
-                SelectFilter::make("domain_id")
-                    ->options(Domain::all()->pluck("name", "id"))
-                    ->label(__("Domain")),
             ])
             ->actions([
                 ActionGroup::make([
