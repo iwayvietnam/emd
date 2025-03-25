@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Mail;
+namespace App\Mail\Message;
 
 use App\Models\Message;
 use App\Models\MessageFailure;

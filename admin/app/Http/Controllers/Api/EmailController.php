@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Mail\SendMessage;
+use App\Mail\Message\SendMessage;
 use App\Models\Message;
 use App\Models\MessageFailure;
 use Illuminate\Http\Request;

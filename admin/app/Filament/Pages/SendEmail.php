@@ -2,7 +2,7 @@
 
 namespace App\Filament\Pages;
 
-use App\Mail\SendMessage;
+use App\Mail\Message\SendMessage;
 use App\Models\Client;
 use App\Models\Message;
 use App\Models\MessageFailure;
