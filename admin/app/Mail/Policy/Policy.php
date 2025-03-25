@@ -20,18 +20,16 @@ use Illuminate\Support\Facades\RateLimiter;
  */
 class Policy implements PolicyInterface
 {
-    private array $clientAccesses = [];
-
     /**
      * {@inheritdoc}
      */
     public function check(RequestInterface $request): ResponseInterface
     {
-        $this->clientAccesses = ClientAccess::cachedAccesses();
+        $clientAccesses = ClientAccess::cachedAccesses();
         $state = ProtocolState::tryFrom($request->getProtocolState());
         switch ($state) {
             case ProtocolState::Rcpt:
-                if ($this->isRejected($request)) {
+                if (self::isRejected($request, $clientAccesses)) {
                     logger()->error("Client {sender}:{address} is rejected.", [
                         "sender" => $request->getSender(),
                         "address" => $request->getClientAddress(),
@@ -41,7 +39,7 @@ class Policy implements PolicyInterface
                         "Client access is not allowed!"
                     );
                 }
-                if ($this->rateIsExceeded($request)) {
+                if (self::rateIsExceeded($request, $clientAccesses)) {
                     logger()->error(
                         "Rate limit of client {sender}:{address} is exceeded",
                         [
@@ -54,7 +52,7 @@ class Policy implements PolicyInterface
                         "Rate limit is exceeded. Retry later!"
                     );
                 }
-                if ($this->recipientIsRestricted($request)) {
+                if (self::recipientIsRestricted($request)) {
                     logger()->error(
                         "Recipient {recipient} of client {sender}:{address} is restricted.",
                         [
@@ -70,7 +68,7 @@ class Policy implements PolicyInterface
                 }
                 return new PolicyResponse(AccessVerdict::Ok);
             case ProtocolState::EndOfMessage:
-                if ($this->quotaIsExceeded($request)) {
+                if (self::quotaIsExceeded($request, $clientAccesses)) {
                     logger()->error(
                         "Quota limit of client {sender}:{address} is exceeded.",
                         [
@@ -95,24 +93,28 @@ class Policy implements PolicyInterface
         }
     }
 
-    private function isRejected(RequestInterface $request): bool
-    {
+    private static function isRejected(
+        RequestInterface $request,
+        array $clientAccesses = []
+    ): bool {
         $address = $request->getClientAddress();
         $sender = $request->getSender();
-        if (isset($this->clientAccesses[$sender][$address]["verdict"])) {
-            $verdict = $this->clientAccesses[$sender][$address]["verdict"];
+        if (isset($clientAccesses[$sender][$address]["verdict"])) {
+            $verdict = $clientAccesses[$sender][$address]["verdict"];
             return AccessVerdict::tryFrom($verdict) === AccessVerdict::Reject;
         } else {
             return true;
         }
     }
 
-    private function rateIsExceeded(RequestInterface $request): bool
-    {
+    private static function rateIsExceeded(
+        RequestInterface $request,
+        array $clientAccesses = []
+    ): bool {
         $address = $request->getClientAddress();
         $sender = $request->getSender();
-        if (isset($this->clientAccesses[$sender][$address]["policy"])) {
-            $policy = $this->clientAccesses[$sender][$address]["policy"];
+        if (isset($clientAccesses[$sender][$address]["policy"])) {
+            $policy = $clientAccesses[$sender][$address]["policy"];
             if (!empty($policy) && !empty($policy["rate_limit"])) {
                 $counterKey = self::counterKey(
                     $request,
@@ -132,12 +134,14 @@ class Policy implements PolicyInterface
         return false;
     }
 
-    private function quotaIsExceeded(RequestInterface $request): bool
-    {
+    private static function quotaIsExceeded(
+        RequestInterface $request,
+        array $clientAccesses = []
+    ): bool {
         $address = $request->getClientAddress();
         $sender = $request->getSender();
-        if (isset($this->clientAccesses[$sender][$address]["policy"])) {
-            $policy = $this->clientAccesses[$sender][$address]["policy"];
+        if (isset($clientAccesses[$sender][$address]["policy"])) {
+            $policy = $clientAccesses[$sender][$address]["policy"];
             if (!empty($policy) && !empty($policy["quota_limit"])) {
                 $counterKey = self::counterKey(
                     $request,
@@ -162,8 +166,9 @@ class Policy implements PolicyInterface
         return false;
     }
 
-    private function recipientIsRestricted(RequestInterface $request): bool
-    {
+    private static function recipientIsRestricted(
+        RequestInterface $request
+    ): bool {
         $restrictedRecipients = RestrictedRecipient::cachedRecipients();
         return AccessVerdict::tryFrom(
             $restrictedRecipients[$request->getRecipient()] ?? ""
