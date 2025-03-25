@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\PassportClient;
+use App\Models\PassportToken;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -41,11 +42,13 @@ class AppServiceProvider extends ServiceProvider
             )->by($request->user()?->id ?: $request->ip())
         );
 
-        Passport::useClientModel(PassportClient::class);
         if ((bool) config("emd.api.password_grant")) {
             Passport::enablePasswordGrant();
         }
  
+        Passport::useClientModel(PassportClient::class);
+        Passport::useTokenModel(PassportToken::class);
+
         Passport::tokensExpireIn(
             now()->addDays((int) config("emd.api.acccess_tokens_expiry"))
         );

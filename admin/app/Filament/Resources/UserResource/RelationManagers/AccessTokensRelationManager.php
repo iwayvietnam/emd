@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
+use App\Models\PassportToken;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -9,7 +10,6 @@ use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
-use Laravel\Passport\Token;
 
 /**
  * User passport access token relation manager class
@@ -55,13 +55,13 @@ class AccessTokensRelationManager extends RelationManager
                 Actions\ViewAction::make(),
                 Actions\Action::make("revoke")
                     ->action(
-                        static fn(Token $token) => self::revokeToken($token)
+                        static fn(PassportToken $token) => self::revokeToken($token)
                     )
                     ->label(__("Revoke")),
             ]);
     }
 
-    private static function revokeToken(Token $token): void
+    private static function revokeToken(PassportToken $token): void
     {
         $token->revoke();
     }

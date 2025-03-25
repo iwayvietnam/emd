@@ -59,4 +59,21 @@ class User extends Authenticatable implements FilamentUser
             "@" . config("emd.app_domain", "yourdomain.com")
         );
     }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(static function(self $model) {
+            PassportClient::where(
+                "user_id",
+                $model->id
+            )->delete();
+
+            PassportToken::where(
+                "user_id",
+                $model->id
+            )->delete();
+        });
+    }
 }
