@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Mail\SendMessage;
+use App\Models\Client;
 use App\Models\Message;
 use App\Models\MessageFailure;
 use App\Support\Helper;
@@ -101,10 +102,11 @@ class SendEmail extends Page implements HasForms
         $shouldQueue = (bool) $data["should_queue"];
 
         $recipients = Helper::explodeRecipients($data["recipients"]);
+        $client = Client::firstWhere('sender_address', $data["sender"]);
         foreach ($recipients as $recipient) {
             $message = new Message([
                 "user_id" => $user->id,
-                "from_name" => $user->name,
+                "from_name" => $client?->name ?? $user->name,
                 "from_email" => $data["sender"],
                 "reply_to" => $data["sender"],
                 "message_id" =>
