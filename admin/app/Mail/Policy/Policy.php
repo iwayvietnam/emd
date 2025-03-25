@@ -128,7 +128,7 @@ class Policy implements PolicyInterface
                 ) {
                     return true;
                 }
-                RateLimiter::hit($counterKey, (int) $policy["rate_period"]);
+                RateLimiter::hit($counterKey, $policy["rate_period"]);
             }
         }
         return false;
@@ -157,7 +157,7 @@ class Policy implements PolicyInterface
                 }
                 RateLimiter::increment(
                     $counterKey,
-                    (int) $policy["quota_period"],
+                    $policy["quota_period"],
                     $request->getSize()
                 );
             }
