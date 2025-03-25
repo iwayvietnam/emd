@@ -1,0 +1,59 @@
+<?php declare(strict_types=1);
+
+namespace App\Console\Commands;
+
+use App\Mail\Policy\Policy;
+use App\Mail\Policy\PolicyRequest;
+use Illuminate\Console\Command;
+use Illuminate\Support\Str;
+use Symfony\Component\Console\Attribute\AsCommand;
+
+/**
+ * Policy delegate command class
+ *
+ * @package  App
+ * @category Console
+ * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
+ */
+#[AsCommand(name: "policy:delegate")]
+class PolicyDelegate extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = "policy:delegate";
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = "Command to handle policy delegation";
+
+    /**
+     * Execute the console command.
+     */
+    public function handle(): int
+    {
+        echo (new Policy())->check(
+            PolicyRequest::fromData(self::readInput())
+        )->getAction() . PHP_EOL;
+
+        return Command::SUCCESS;
+    }
+
+    private static function readInput(): string
+    {
+        $input = Str::of("");
+        while (!feof(STDIN)) {
+            $line = fgets(STDIN);
+            if ($line === false || trim($line) === "") {
+                break;
+            }
+            $input->append($line);
+        }
+        return (string) $input;
+    }
+}
