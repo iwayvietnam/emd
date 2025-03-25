@@ -5,7 +5,7 @@
             :actions="$this->getFormActions()"
         />
     </x-filament-panels::form>
-    <div class="flex flex-col gap-y-6">
+    <x-filament::table>
         {{ $this->table }}
-    </div>
+    </x-filament::table>
 </x-filament-panels::page>
