@@ -45,17 +45,14 @@ class ClientAccess extends Model
         parent::boot();
 
         static::created(
-            static fn(self $model) => $model
-                ->resetRateCounter()
-                ->resetQuotaCounter()
-        );
-
-        static::saved(
-            static fn() => static::clearCache()
+            static function (self $model) {
+                self::clearCache();
+                $model->resetRateCounter()->resetQuotaCounter();
+            }
         );
 
         static::deleted(
-            static fn() => static::clearCache()
+            static fn() => self::clearCache()
         );
     }
 
