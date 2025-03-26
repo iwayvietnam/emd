@@ -77,7 +77,7 @@ class CreateClientAccess extends CreateRecord
 
     protected function getCreatedNotificationTitle(): ?string
     {
-        return __("Client accesses has been created");
+        return __("Client accesses has been created!");
     }
 
     protected function getRedirectUrl(): string
