@@ -81,12 +81,12 @@ class CreateDkimKey extends CreateRecord
                 ->required()
                 ->columnSpan(2)
                 ->hintActions([
-                    Action::make("genarate")
-                        ->label(__("Genarate Private Key"))
+                    Action::make("generate")
+                        ->label(__("Generate Private Key"))
                         ->action(
                             static fn(Get $get, Set $set) => $set(
                                 "private_key",
-                                self::genaratePrivateKey((int) $get("key_bits"))
+                                self::generatePrivateKey((int) $get("key_bits"))
                             )
                         ),
                 ])
@@ -128,7 +128,7 @@ class CreateDkimKey extends CreateRecord
         return $this->getResource()::getUrl();
     }
 
-    private static function genaratePrivateKey(int $keyBits = 1024): string
+    private static function generatePrivateKey(int $keyBits = 1024): string
     {
         return RSA::createKey($keyBits)->toString("PKCS8");
     }
