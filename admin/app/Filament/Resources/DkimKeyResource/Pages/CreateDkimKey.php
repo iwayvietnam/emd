@@ -74,6 +74,7 @@ class CreateDkimKey extends CreateRecord
                         2048 => "2048 bits",
                     ])
                     ->default(1024)
+                    ->selectablePlaceholder(false)
                     ->label(__("Key Bits")),
             ]),
             Textarea::make("private_key")
