@@ -88,7 +88,7 @@ class RestrictedRecipientResource extends Resource
 
     private static function testConnect(string $mx, string $recipient): string
     {
-        $appDomain = env("APP_DOMAIN", "emd.org.vn");
+        $appDomain = config("emd.app_domain");
         $connect = @fsockopen($mx, 25);
         if (preg_match("/^220/i", $out = fgets($connect))) {
             fputs($connect, "HELO $appDomain\r\n");
