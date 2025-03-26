@@ -89,12 +89,13 @@ class RestrictedRecipientResource extends Resource
     private static function testConnect(string $mx, string $recipient): string
     {
         $appDomain = config("emd.app_domain");
+        $mailFrom = config("mail.from.address");
         $connect = @fsockopen($mx, 25);
         if (preg_match("/^220/i", $out = fgets($connect))) {
-            fputs($connect, "HELO $appDomain\r\n");
+            fputs($connect, "EHLO $appDomain\r\n");
             $helo = fgets($connect);
 
-            fputs($connect, "MAIL FROM: <sender@$appDomain>\r\n");
+            fputs($connect, "MAIL FROM: <$mailFrom>\r\n");
             $from = fgets($connect);
 
             fputs($connect, "RCPT TO: <$recipient>\r\n");
