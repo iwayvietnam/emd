@@ -47,7 +47,6 @@ class CreateDkimKey extends CreateRecord
                     )
                     ->required()
                     ->unique()
-                    ->searchable()
                     ->label(__("Domain")),
                 TextInput::make("selector")
                     ->rules([
