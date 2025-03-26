@@ -14,6 +14,7 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Str;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Crypt\RSA;
 
@@ -95,22 +96,24 @@ class CreateDkimKey extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $privateKey = PublicKeyLoader::loadPrivateKey($data["private_key"]);
+        $publicKey = PublicKeyLoader::loadPrivateKey(
+            $data["private_key"]
+        )->getPublicKey();
 
         $selector = $data["selector"];
-        $dnsRecord = "$selector._domainkey\tIN\tTXT\t ( \"v=DKIM1; k=rsa; h=sha256; t=s; p=";
-        $pubLines = explode(
-            "\n",
-            $privateKey->getPublicKey()->toString("PKCS8")
+        $dnsRecord = Str::of(
+            "$selector._domainkey\tIN\tTXT\t ( \"v=DKIM1; k=rsa; h=sha256; t=s; p="
         );
+        $pubLines = explode("\n", $publicKey->toString("PKCS8"));
         foreach ($pubLines as $line) {
             if (strpos($line, "-----") !== 0) {
-                $dnsRecord .= trim($line);
+                $dnsRecord->append(trim($line));
             }
         }
-        $dnsRecord .= '" ) ;';
+        $dnsRecord->append('" ) ;');
 
-        $data["dns_record"] = $dnsRecord;
+        $data["key_bits"] = $publicKey->getLength();
+        $data["dns_record"] = (string) $dnsRecord;
         $data["domain"] = Domain::find((int) $data["domain_id"])->name;
         return $data;
     }
