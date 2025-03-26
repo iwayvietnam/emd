@@ -14,7 +14,6 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Resources\Pages\CreateRecord;
-use Illuminate\Support\Str;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Crypt\RSA;
 
@@ -101,19 +100,19 @@ class CreateDkimKey extends CreateRecord
         )->getPublicKey();
 
         $selector = $data["selector"];
-        $dnsRecord = Str::of(
+        $dnsLines = [
             "$selector._domainkey\tIN\tTXT\t ( \"v=DKIM1; k=rsa; h=sha256; t=s; p="
-        );
+        ];
         $pubLines = explode("\n", $publicKey->toString("PKCS8"));
         foreach ($pubLines as $line) {
             if (strpos($line, "-----") !== 0) {
-                $dnsRecord->append(trim($line));
+                $dnsLines[] = trim($line);
             }
         }
-        $dnsRecord->append('" ) ;');
+        $dnsLines[] = '" ) ;';
 
         $data["key_bits"] = $publicKey->getLength();
-        $data["dns_record"] = (string) $dnsRecord;
+        $data["dns_record"] = implode($dnsLines);
         $data["domain"] = Domain::find((int) $data["domain_id"])->name;
         return $data;
     }
