@@ -125,7 +125,7 @@ class CreateDkimKey extends CreateRecord
         return $this->getResource()::getUrl();
     }
 
-    private function genaratePrivateKey(int $keyBits = 1024): string
+    private static function genaratePrivateKey(int $keyBits = 1024): string
     {
         return RSA::createKey($keyBits)->toString("PKCS8");
     }
