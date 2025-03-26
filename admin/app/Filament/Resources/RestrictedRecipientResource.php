@@ -92,7 +92,7 @@ class RestrictedRecipientResource extends Resource
         $mailFrom = config("mail.from.address");
         $connect = @fsockopen($mx, 25);
         if (preg_match("/^220/i", $out = fgets($connect))) {
-            fputs($connect, "EHLO $appDomain\r\n");
+            fputs($connect, "HELO $appDomain\r\n");
             $helo = fgets($connect);
 
             fputs($connect, "MAIL FROM: <$mailFrom>\r\n");
