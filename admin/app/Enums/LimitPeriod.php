@@ -17,6 +17,7 @@ enum LimitPeriod: int implements HasLabel
     case PerHour = 3600;
     case PerDay = 86400;
     case PerWeek = 604800;
+    case PerMonth = 2592000;
 
     public function getLabel(): string
     {
@@ -25,6 +26,7 @@ enum LimitPeriod: int implements HasLabel
             self::PerHour => __("Per Hour"),
             self::PerDay => __("Per Day"),
             self::PerWeek => __("Per Week"),
+            self::PerMonth => __("Per Month"),
         };
     }
 }
