@@ -17,7 +17,7 @@ enum LimitPeriod: int implements HasLabel
     case PerHour = 3600;
     case PerDay = 86400;
     case PerWeek = 604800;
-    case PerMonth = 2592000;
+    case PerMonth = 2629744;
 
     public function getLabel(): string
     {
