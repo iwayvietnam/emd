@@ -34,8 +34,9 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->id(config("emd.panel_id", self::NAME))
-            ->path(config("emd.panel_path", self::NAME))
+            ->id(config("emd.panel.id", self::NAME))
+            ->path(config("emd.panel.path", self::NAME))
+            ->topNavigation(config("emd.panel.top_navigation", false))
             ->login()
             ->profile(EditUserProfile::class, isSimple: false)
             ->colors([

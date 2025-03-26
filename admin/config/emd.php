@@ -2,13 +2,16 @@
 
 return [
     "app_domain" => env("APP_DOMAIN", "yourdomain.com"),
-    "panel_id" => env("PANEL_ID", "admin"),
-    "panel_path" => env("PANEL_PATH", "admin"),
     "https" => (bool) env("FORCE_HTTPS", false),
     "sender_transport" => env(
         "SENDER_TRANSPORT",
         "/etc/postfix/sender_transport"
     ),
+    "panel" => [
+        "id" => env("PANEL_ID", "admin"),
+        "path" => env("PANEL_PATH", "admin"),
+        "top_navigation" => (bool) env("TOP_NAVIGATION", false),
+    ],
     "api" => [
         "password_grant" => env("API_PASSWORD_GRANT", false),
         "request_rate" => (int) env("API_REQUEST_RATE", 600),
