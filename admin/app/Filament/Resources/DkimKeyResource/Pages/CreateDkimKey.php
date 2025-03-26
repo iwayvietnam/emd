@@ -5,7 +5,7 @@ namespace App\Filament\Resources\DkimKeyResource\Pages;
 use App\Filament\Resources\DkimKeyResource;
 use App\Models\Domain;
 use App\Models\DkimKey;
-use Filament\Actions\Action;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -113,11 +113,6 @@ class CreateDkimKey extends CreateRecord
         $data["dns_record"] = $dnsRecord;
         $data["domain"] = Domain::find((int) $data["domain_id"])->name;
         return $data;
-    }
-
-    protected function getCreateFormAction(): Action
-    {
-        return parent::getCreateFormAction()->label(__("Create"));
     }
 
     protected function getCreatedNotificationTitle(): ?string
