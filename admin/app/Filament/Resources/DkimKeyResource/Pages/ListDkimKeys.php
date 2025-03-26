@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\DkimKeyResource\Pages;
 
 use App\Filament\Resources\DkimKeyResource;
-use Filament\Actions\Action;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 /**
@@ -25,9 +25,7 @@ class ListDkimKeys extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Action::make("gen")
-                ->url(static::getResource()::getUrl("gen"))
-                ->label(__("Generate DKIM Key")),
+            CreateAction::make()->label(__("New DKIM Key")),
         ];
     }
 }

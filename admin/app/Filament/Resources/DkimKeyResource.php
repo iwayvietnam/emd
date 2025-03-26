@@ -88,7 +88,7 @@ class DkimKeyResource extends Resource
     {
         return [
             "index" => Pages\ListDkimKeys::route("/"),
-            "gen" => Pages\GenDkimKey::route("/gen"),
+            "create" => Pages\CreateDkimKey::route("/create"),
         ];
     }
 
