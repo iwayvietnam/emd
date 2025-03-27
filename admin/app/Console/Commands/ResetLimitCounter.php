@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\LimitPeriod;
 use App\Models\ClientAccess;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
@@ -47,7 +48,39 @@ class ResetLimitCounter extends Command implements Isolatable
     private function resetLimitCounter(): void
     {
         foreach (ClientAccess::all() as $record) {
-            $record->resetRateCounter()->resetQuotaCounter();
+            $period = LimitPeriod::tryFrom($record->policy->quota_period);
+            switch ($period) {
+                case LimitPeriod::PerWeek:
+                    if (date("D") === "Mon") {
+                        $record->resetQuotaCounter();
+                    }
+                    break;
+                case LimitPeriod::PerMonth:
+                    if ((int) date("j") === 1) {
+                        $record->resetQuotaCounter();
+                    }
+                    break;
+                default:
+                    $record->resetQuotaCounter();
+                    break;
+            }
+
+            $period = LimitPeriod::tryFrom($record->policy->rate_period);
+            switch ($period) {
+                case LimitPeriod::PerWeek:
+                    if (date("D") === "Mon") {
+                        $record->resetRateCounter();
+                    }
+                    break;
+                case LimitPeriod::PerMonth:
+                    if ((int) date("j") === 1) {
+                        $record->resetRateCounter();
+                    }
+                    break;
+                default:
+                    $record->resetRateCounter();
+                    break;
+            }
         }
     }
 }
