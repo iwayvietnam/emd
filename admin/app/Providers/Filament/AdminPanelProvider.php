@@ -23,7 +23,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
  * Admin panel provider class
  *
  * @package  App
- * @category Models
+ * @category Providers
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
 class AdminPanelProvider extends PanelProvider
