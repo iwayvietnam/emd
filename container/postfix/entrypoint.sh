@@ -18,8 +18,9 @@ fi
 
 # POLICY configuration
 if [[ "$POLICY_ENABLE" == "true" ]]; then
-    postconf -e "smtpd_recipient_restrictions=permit_mynetworks, check_policy_service $POLICY_SERVICE, reject"
-    postconf -e "smtpd_end_of_data_restrictions=permit_mynetworks, check_policy_service $POLICY_SERVICE, reject"
+    postconf -e "smtpd_recipient_restrictions=check_policy_service $POLICY_SERVICE, reject"
+    postconf -e "smtpd_end_of_data_restrictions=check_policy_service $POLICY_SERVICE, reject"
+    postconf -e "smtpd_relay_restrictions=permit"
 fi
 
 /usr/sbin/postfix -c /etc/postfix start >/dev/null 2>&1
