@@ -47,16 +47,19 @@ class ResetLimitCounter extends Command implements Isolatable
 
     private function resetLimitCounter(): void
     {
+        $day = date("D");
+        $date = (int) date("j");
+
         foreach (ClientAccess::all() as $record) {
             $period = LimitPeriod::tryFrom($record->policy->quota_period);
             switch ($period) {
                 case LimitPeriod::PerWeek:
-                    if (date("D") === "Mon") {
+                    if ($day === "Mon") {
                         $record->resetQuotaCounter();
                     }
                     break;
                 case LimitPeriod::PerMonth:
-                    if ((int) date("j") === 1) {
+                    if ($date === 1) {
                         $record->resetQuotaCounter();
                     }
                     break;
@@ -68,12 +71,12 @@ class ResetLimitCounter extends Command implements Isolatable
             $period = LimitPeriod::tryFrom($record->policy->rate_period);
             switch ($period) {
                 case LimitPeriod::PerWeek:
-                    if (date("D") === "Mon") {
+                    if ($day === "Mon") {
                         $record->resetRateCounter();
                     }
                     break;
                 case LimitPeriod::PerMonth:
-                    if ((int) date("j") === 1) {
+                    if ($date === 1) {
                         $record->resetRateCounter();
                     }
                     break;
