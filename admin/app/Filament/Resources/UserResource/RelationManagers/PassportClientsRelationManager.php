@@ -50,6 +50,11 @@ class PassportClientsRelationManager extends RelationManager
                 ->readonly()
                 ->required()
                 ->label(__("Client Secret")),
+            TextInput::make("redirect")
+                ->required()
+                ->url()
+                ->columnSpan(2)
+                ->label(__("Redirect URL")),
             Toggle::make("password_client")
                 ->live()
                 ->inline(false)
@@ -58,11 +63,6 @@ class PassportClientsRelationManager extends RelationManager
                 ->options(array_keys(config("auth.providers")))
                 ->required(static fn(Get $get) => $get("password_client"))
                 ->label(__("Provider")),
-            TextInput::make("redirect")
-                ->required()
-                ->url()
-                ->columnSpan(2)
-                ->label(__("Redirect URL")),
             Hidden::make("personal_access_client")->default(false),
             Hidden::make("revoked")->default(false),
         ]);
