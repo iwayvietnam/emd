@@ -57,6 +57,7 @@ class AccessTokensRelationManager extends RelationManager
                     ->action(
                         static fn(PassportToken $token) => self::revokeToken($token)
                     )
+                    ->requiresConfirmation()
                     ->label(__("Revoke")),
             ]);
     }
