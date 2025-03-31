@@ -5,8 +5,11 @@ namespace App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\PassportClient;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
@@ -47,13 +50,19 @@ class PassportClientsRelationManager extends RelationManager
                 ->readonly()
                 ->required()
                 ->label(__("Client Secret")),
+            Toggle::make("password_client")
+                ->live()
+                ->label(__("First Party Client")),
+            Select::make("provider")
+                ->options(array_keys(config("auth.providers")))
+                ->required(static fn(Get $get) => $get("password_client"))
+                ->label(__("Provider")),
             TextInput::make("redirect")
                 ->required()
                 ->url()
                 ->columnSpan(2)
                 ->label(__("Redirect URL")),
             Hidden::make("personal_access_client")->default(false),
-            Hidden::make("password_client")->default(false),
             Hidden::make("revoked")->default(false),
         ]);
     }
