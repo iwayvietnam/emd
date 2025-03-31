@@ -52,7 +52,7 @@ class PassportClientsRelationManager extends RelationManager
                 ->label(__("Client Secret")),
             Toggle::make("password_client")
                 ->live()
-                ->label(__("First Party Client")),
+                ->label(__("First Party")),
             Select::make("provider")
                 ->options(array_keys(config("auth.providers")))
                 ->required(static fn(Get $get) => $get("password_client"))
