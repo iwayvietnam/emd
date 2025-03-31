@@ -13,7 +13,7 @@ use Laravel\Passport\Client;
  */
 class PassportClient extends Client
 {
-    protected static function boot(): void
+    public static function boot()
     {
         parent::boot();
 
