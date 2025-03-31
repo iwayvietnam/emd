@@ -11,9 +11,7 @@ namespace App\Mail\Policy\Interface;
  */
 interface AdapterInterface
 {
-    const POLICY_NAME = "Access Policy";
     const POLICY_WORKER = 4;
-    const POLICY_DAEMONIZE = true;
     const LISTEN_HOST = "127.0.0.1";
     const LISTEN_PORT = 1403;
 

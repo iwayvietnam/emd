@@ -15,6 +15,8 @@ use Workerman\Connection\ConnectionInterface as Connection;
  */
 class Workerman extends Base
 {
+    const WORKER_NAME = "Access Policy Delegation";
+
     /**
      * Server worker
      *
@@ -41,10 +43,7 @@ class Workerman extends Base
             ])
         );
 
-        $this->worker->name = config(
-            "emd.policy.server_name",
-            self::POLICY_NAME
-        );
+        $this->worker->name = self::WORKER_NAME;
         $this->worker->count = (int) config(
             "emd.policy.server_worker",
             self::POLICY_WORKER
