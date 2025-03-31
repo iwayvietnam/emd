@@ -93,6 +93,7 @@ class PassportClientsRelationManager extends RelationManager
                             $client
                         )
                     )
+                    ->requiresConfirmation()
                     ->label(__("Revoke")),
             ]);
     }
