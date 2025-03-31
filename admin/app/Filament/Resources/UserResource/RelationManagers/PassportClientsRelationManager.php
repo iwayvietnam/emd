@@ -103,6 +103,9 @@ class PassportClientsRelationManager extends RelationManager
                             $client
                         )
                     )
+                    ->disabled(
+                        static fn(PassportClient $client) => $client->revoked
+                    )
                     ->requiresConfirmation()
                     ->label(__("Revoke")),
             ]);
