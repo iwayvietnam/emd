@@ -108,9 +108,4 @@ class PassportClientsRelationManager extends RelationManager
                     ->label(__("Revoke")),
             ]);
     }
-
-    private static function revokeClient(PassportClient $client): void
-    {
-        $client->revoke();
-    }
 }
