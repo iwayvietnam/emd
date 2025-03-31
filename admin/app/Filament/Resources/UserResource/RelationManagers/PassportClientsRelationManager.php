@@ -64,7 +64,7 @@ class PassportClientsRelationManager extends RelationManager
         return $infolist->schema([
             TextEntry::make("name")->label(__("Client Name")),
             TextEntry::make("id")->label(__("Client Id")),
-            TextEntry::make("secret")->label(__("Client Secret")),
+            TextEntry::make("encrypted_secret")->label(__("Client Secret")),
             TextEntry::make("redirect")->label(__("Redirect URL")),
         ]);
     }

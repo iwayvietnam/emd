@@ -13,6 +13,7 @@ return [
         "top_navigation" => (bool) env("TOP_NAVIGATION", false),
     ],
     "api" => [
+        "hash_secret" => env("API_HASH_SECRET", false),
         "password_grant" => env("API_PASSWORD_GRANT", false),
         "request_rate" => (int) env("API_REQUEST_RATE", 600),
         "upload_dir" => env("API_UPLOAD_DIR", "attachments"),
