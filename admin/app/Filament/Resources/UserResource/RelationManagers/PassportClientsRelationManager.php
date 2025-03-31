@@ -5,7 +5,6 @@ namespace App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\PassportClient;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
@@ -39,11 +38,10 @@ class PassportClientsRelationManager extends RelationManager
                     Action::make("genarate")
                         ->label(__("Genarate Client Secret"))
                         ->action(
-                            static function (Set $set) {
-                                $secret = Str::random(40);
-                                $set("secret",$secret);
-                                $set("encrypted_secret",$secret);
-                            } 
+                            static fn(Set $set) => $set(
+                                "secret",
+                                Str::random(40)
+                            )
                         ),
                 ])
                 ->readonly()
@@ -54,7 +52,6 @@ class PassportClientsRelationManager extends RelationManager
                 ->url()
                 ->columnSpan(2)
                 ->label(__("Redirect URL")),
-            Hidden::make("encrypted_secret"),
             Hidden::make("personal_access_client")->default(false),
             Hidden::make("password_client")->default(false),
             Hidden::make("revoked")->default(false),

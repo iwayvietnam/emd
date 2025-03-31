@@ -14,16 +14,27 @@ use Laravel\Passport\Client;
 class PassportClient extends Client
 {
     /**
+     * Bootstrap the model and its traits.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(static function (self $model) {
+            $model->encrypted_secret = $model->plainSecret;
+        });
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
     protected function casts(): array
     {
-        return [
-            ...$this->casts,
-            "encrypted_secret" => "encrypted",
-        ];
+        return [...$this->casts, "encrypted_secret" => "encrypted"];
     }
 
     /**
