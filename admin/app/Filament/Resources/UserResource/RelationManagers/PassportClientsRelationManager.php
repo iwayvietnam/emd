@@ -99,9 +99,7 @@ class PassportClientsRelationManager extends RelationManager
                 Actions\ViewAction::make(),
                 Actions\Action::make("revoke")
                     ->action(
-                        static fn(PassportClient $client) => self::revokeClient(
-                            $client
-                        )
+                        static fn(PassportClient $client) => $client->revoke()
                     )
                     ->disabled(
                         static fn(PassportClient $client) => $client->revoked

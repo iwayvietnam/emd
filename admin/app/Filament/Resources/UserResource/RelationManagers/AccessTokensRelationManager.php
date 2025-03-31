@@ -55,15 +55,13 @@ class AccessTokensRelationManager extends RelationManager
                 Actions\ViewAction::make(),
                 Actions\Action::make("revoke")
                     ->action(
-                        static fn(PassportToken $token) => self::revokeToken($token)
+                        static fn(PassportToken $token) => $token->revoke()
+                    )
+                    ->disabled(
+                        static fn(PassportToken $token) => $token->revoked
                     )
                     ->requiresConfirmation()
                     ->label(__("Revoke")),
             ]);
-    }
-
-    private static function revokeToken(PassportToken $token): void
-    {
-        $token->revoke();
     }
 }
