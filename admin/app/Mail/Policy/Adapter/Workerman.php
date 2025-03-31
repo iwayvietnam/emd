@@ -15,6 +15,8 @@ use Workerman\Connection\ConnectionInterface as Connection;
  */
 class Workerman extends Base
 {
+    const LOG_FILE = "workerman.log";
+    const PID_FILE = "workerman.pid";
     const WORKER_NAME = "Access Policy Delegation";
 
     /**
@@ -48,8 +50,8 @@ class Workerman extends Base
             "emd.policy.server_worker",
             self::POLICY_WORKER
         );
-        Worker::$logFile = storage_path("logs") . "/workerman.log";
-        Worker::$pidFile = storage_path() . "/workerman.pid";
+        Worker::$logFile = storage_path("logs") . "/" . self::LOG_FILE;
+        Worker::$pidFile = storage_path() . "/" . self::PID_FILE;
     }
 
     /**

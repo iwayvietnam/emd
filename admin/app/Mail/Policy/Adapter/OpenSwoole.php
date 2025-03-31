@@ -15,6 +15,9 @@ use OpenSwoole\Constant;
  */
 class OpenSwoole extends Base
 {
+    const LOG_FILE = "openswoole.log";
+    const PID_FILE = "openswoole.pid";
+
     /**
      * Open Swoole server
      *
@@ -40,12 +43,12 @@ class OpenSwoole extends Base
             "worker_num" => (int) config(
                 "emd.policy.server_worker", self::POLICY_WORKER
             ),
-            "log_file" => storage_path("logs") . "/openswoole.log",
+            "log_file" => storage_path("logs") . "/" . self::LOG_FILE,
             "log_level" => (bool) config("app.debug")
                 ? Constant::LOG_DEBUG
                 : Constant::LOG_INFO,
             "log_rotation" => Constant::LOG_ROTATION_DAILY,
-            "pid_file" => storage_path() . "/openswoole.pid",
+            "pid_file" => storage_path() . "/" . self::PID_FILE,
         ]);
     }
 

@@ -14,6 +14,9 @@ use Swoole\Server;
  */
 class Swoole extends Base
 {
+    const LOG_FILE = "swoole.log";
+    const PID_FILE = "swoole.pid";
+
     /**
      * Swoole server
      *
@@ -42,12 +45,12 @@ class Swoole extends Base
                 self::POLICY_WORKER
             ),
             "debug_mode" => (bool) config("app.debug"),
-            "log_file" => storage_path("logs") . "/swoole.log",
+            "log_file" => storage_path("logs") . "/" . self::LOG_FILE,
             "log_level" => (bool) config("app.debug")
                 ? SWOOLE_LOG_DEBUG
                 : SWOOLE_LOG_INFO,
             "log_rotation" => SWOOLE_LOG_ROTATION_DAILY,
-            "pid_file" => storage_path() . "/swoole.pid",
+            "pid_file" => storage_path() . "/" . self::PID_FILE,
         ]);
     }
 
