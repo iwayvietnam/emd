@@ -2,6 +2,8 @@
 
 namespace App\Mail\Policy;
 
+use App\Mail\Policy\Adapter\OpenSwoole;
+use App\Mail\Policy\Adapter\Swoole;
 use App\Mail\Policy\Adapter\Workerman;
 
 /**
@@ -13,11 +15,15 @@ use App\Mail\Policy\Adapter\Workerman;
  */
 final class Service
 {
-    const DEFAULT_ADAPTER = Workerman::class;
-
     public static function handle(): void
     {
-        $adapter = config("emd.policy.adapter", self::DEFAULT_ADAPTER);
-        (new $adapter(new Policy()))->handle();
+        $adapter = match (true) {
+            class_exists(\OpenSwoole\Server::class) => new OpenSwoole(
+                new Policy()
+            ),
+            class_exists(\Swoole\Server::class) => new Swoole(new Policy()),
+            default => new Workerman(new Policy()),
+        };
+        $adapter->handle();
     }
 }
