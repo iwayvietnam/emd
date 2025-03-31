@@ -39,10 +39,11 @@ class PassportClientsRelationManager extends RelationManager
                     Action::make("genarate")
                         ->label(__("Genarate Client Secret"))
                         ->action(
-                            static fn(Set $set) => $set(
-                                "secret",
-                                Str::random(40)
-                            )
+                            static function (Set $set) {
+                                $secret = Str::random(40);
+                                $set("secret",$secret);
+                                $set("encrypted_secret",$secret);
+                            } 
                         ),
                 ])
                 ->readonly()
@@ -53,6 +54,7 @@ class PassportClientsRelationManager extends RelationManager
                 ->url()
                 ->columnSpan(2)
                 ->label(__("Redirect URL")),
+            Hidden::make("encrypted_secret"),
             Hidden::make("personal_access_client")->default(false),
             Hidden::make("password_client")->default(false),
             Hidden::make("revoked")->default(false),
