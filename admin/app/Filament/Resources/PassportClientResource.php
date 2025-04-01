@@ -6,7 +6,6 @@ use App\Filament\Resources\PassportClientResource\Pages;
 use App\Models\PassportClient;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -19,6 +18,7 @@ use Filament\Tables\Columns;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 
 /**
  * Passport client resource class.
@@ -37,16 +37,11 @@ class PassportClientResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Grid::make(2)->schema([
-                TextInput::make("name")->required()->label(__("Client Name")),
-                Select::make("provider")
-                    ->required()
-                    ->options(array_keys(config("auth.providers")))
-                    ->label(__("Provider")),
-                Hidden::make("password_client")->default(true),
-                Hidden::make("personal_access_client")->default(false),
-                Hidden::make("revoked")->default(false),
-            ]),
+            TextInput::make("name")->required()->label(__("Client Name")),
+            Select::make("provider")
+                ->required()
+                ->options(array_keys(config("auth.providers")))
+                ->label(__("Provider")),
             TextInput::make("secret")
                 ->hintActions([
                     Action::make("genarate")
@@ -61,6 +56,9 @@ class PassportClientResource extends Resource
                 ->readonly()
                 ->required()
                 ->label(__("Client Secret")),
+            Hidden::make("password_client")->default(true),
+            Hidden::make("personal_access_client")->default(false),
+            Hidden::make("revoked")->default(false),
         ]);
     }
 
