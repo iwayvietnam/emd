@@ -61,10 +61,5 @@ class AppServiceProvider extends ServiceProvider
         Passport::personalAccessTokensExpireIn(
             now()->addDays((int) config("emd.api.personal_tokens_expiry"))
         );
- 
-        Passport::tokensCan([
-            'send-emails' => 'Send emails',
-            'upload-files' => 'Upload files',
-        ]);
     }
 }
