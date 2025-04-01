@@ -56,6 +56,7 @@ class PassportClientResource extends Resource
                 ->readonly()
                 ->required()
                 ->label(__("Client Secret")),
+            Hidden::make("redirect")->default('http://localhost'),
             Hidden::make("password_client")->default(true),
             Hidden::make("personal_access_client")->default(false),
             Hidden::make("revoked")->default(false),
