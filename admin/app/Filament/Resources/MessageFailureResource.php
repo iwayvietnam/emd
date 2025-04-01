@@ -21,7 +21,7 @@ class MessageFailureResource extends Resource
 {
     protected static ?string $model = MessageFailure::class;
     protected static ?string $navigationGroup = "Email";
-    protected static ?string $navigationIcon = "heroicon-o-envelope";
+    protected static ?string $navigationIcon = "heroicon-o-ticket";
     protected static ?string $slug = "message-failure";
 
     public static function table(Table $table): Table
