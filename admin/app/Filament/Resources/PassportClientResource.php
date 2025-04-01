@@ -63,7 +63,7 @@ class PassportClientResource extends Resource
         ]);
     }
 
-    public function infolist(Infolist $infolist): Infolist
+    public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist->schema([
             TextEntry::make("name")->label(__("Client Name")),
