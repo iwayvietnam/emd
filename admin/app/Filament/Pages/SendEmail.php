@@ -37,7 +37,7 @@ class SendEmail extends Page implements HasForms
     const UPLOAD_DIR = "attachments";
 
     protected static ?string $navigationGroup = "Email";
-    protected static ?string $navigationIcon = "heroicon-o-envelope";
+    protected static ?string $navigationIcon = "heroicon-o-inbox";
     protected static ?string $slug = "send-email";
     protected static string $view = "filament.pages.send-email";
 
