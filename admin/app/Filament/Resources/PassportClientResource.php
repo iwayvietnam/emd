@@ -13,7 +13,7 @@ use Filament\Forms\Set;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -85,7 +85,18 @@ class PassportClientResource extends Resource
                     ->label(__("Is Revoked")),
             ])
             ->filters([TernaryFilter::make("revoked")->label(__("Is Revoked"))])
-            ->actions([ViewAction::make()])
+            ->actions([
+                Actions\ViewAction::make(),
+                Actions\Action::make("revoke")
+                    ->action(
+                        static fn(PassportClient $client) => $client->revoke()
+                    )
+                    ->disabled(
+                        static fn(PassportClient $client) => $client->revoked
+                    )
+                    ->requiresConfirmation()
+                    ->label(__("Revoke")),
+            ])
             ->modifyQueryUsing(
                 static fn(Builder $query) => $query->where(
                     "password_client",
