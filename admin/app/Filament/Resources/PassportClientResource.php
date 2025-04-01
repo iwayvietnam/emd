@@ -40,7 +40,12 @@ class PassportClientResource extends Resource
             TextInput::make("name")->required()->label(__("Client Name")),
             Select::make("provider")
                 ->required()
-                ->options(array_keys(config("auth.providers")))
+                ->options(
+                    array_combine(
+                        array_keys(config("auth.providers")),
+                        array_keys(config("auth.providers"))
+                    )
+                )
                 ->label(__("Provider")),
             TextInput::make("secret")
                 ->hintActions([
