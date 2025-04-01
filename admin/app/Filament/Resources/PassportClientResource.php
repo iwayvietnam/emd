@@ -37,22 +37,8 @@ class PassportClientResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Grid::make(3)->schema([
+            Grid::make(2)->schema([
                 TextInput::make("name")->required()->label(__("Client Name")),
-                TextInput::make("secret")
-                    ->hintActions([
-                        Action::make("genarate")
-                            ->label(__("Genarate Client Secret"))
-                            ->action(
-                                static fn(Set $set) => $set(
-                                    "secret",
-                                    Str::random(40)
-                                )
-                            ),
-                    ])
-                    ->readonly()
-                    ->required()
-                    ->label(__("Client Secret")),
                 Select::make("provider")
                     ->required()
                     ->options(array_keys(config("auth.providers")))
@@ -61,6 +47,20 @@ class PassportClientResource extends Resource
                 Hidden::make("personal_access_client")->default(false),
                 Hidden::make("revoked")->default(false),
             ]),
+            TextInput::make("secret")
+                ->hintActions([
+                    Action::make("genarate")
+                        ->label(__("Genarate Client Secret"))
+                        ->action(
+                            static fn(Set $set) => $set(
+                                "secret",
+                                Str::random(40)
+                            )
+                        ),
+                ])
+                ->readonly()
+                ->required()
+                ->label(__("Client Secret")),
         ]);
     }
 
