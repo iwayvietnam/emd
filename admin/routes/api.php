@@ -18,9 +18,9 @@ Route::controller(EmailController::class)
 Route::post("/send", [
     EmailController::class,
     "send",
-])->middleware(["auth:api", "scope:send-emails"]);
+])->middleware("auth:api");
 
 Route::post("/upload", [
     UploadController::class,
     "upload",
-])->middleware(["auth:api", "scope:upload-files"]);
+])->middleware("auth:api");
