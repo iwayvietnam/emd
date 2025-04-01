@@ -5,11 +5,6 @@ use App\Http\Controllers\Api\UploadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get(
-    "/user",
-    static fn (Request $request) => $request->user()
-)->middleware("auth:api");
-
 Route::middleware("auth:api")->controller(
     EmailController::class
 )->group(static function () {
