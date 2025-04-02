@@ -48,8 +48,30 @@ class ClientResource extends Resource
                     ->label(__("Domain")),
             ])
             ->actions([
-                Actions\EditAction::make(),
-                Actions\DeleteAction::make(),
+                Actions\ActionGroup::make([
+                    Actions\Action::make("reset_rate")
+                        ->requiresConfirmation()
+                        ->action(
+                            static fn(Client $record) => self::resetRateCounter(
+                                $record
+                            )
+                        )
+                        ->icon("heroicon-m-check-badge")
+                        ->color("primary")
+                        ->label("Reset Rate Counter"),
+                    Actions\Action::make("reset_quata")
+                        ->requiresConfirmation()
+                        ->action(
+                            static fn(
+                                Client $record
+                            ) => self::resetQuotaCounter($record)
+                        )
+                        ->icon("heroicon-m-check-badge")
+                        ->color("primary")
+                        ->label("Reset Quota Counter"),
+                    Actions\EditAction::make(),
+                    Actions\DeleteAction::make(),
+                ]),
             ])
             ->defaultSort("created_at", "desc");
     }
@@ -61,5 +83,23 @@ class ClientResource extends Resource
             "create" => Pages\CreateClient::route("/create"),
             "edit" => Pages\EditClient::route("/{record}/edit"),
         ];
+    }
+
+    private static function resetRateCounter(Client $record): void
+    {
+        $record->resetRateCounter();
+        Notification::make()
+            ->title(__("Rate counter have been reset!"))
+            ->success()
+            ->send();
+    }
+
+    private static function resetQuotaCounter(Client $record): void
+    {
+        $record->resetQuotaCounter();
+        Notification::make()
+            ->title(__("Quota counter have been reset!"))
+            ->success()
+            ->send();
     }
 }
