@@ -39,8 +39,8 @@ Syslog                  Yes
 SyslogSuccess           Yes
 Mode                    sv
 Canonicalization        relaxed/simple
-SigningTable dsn:mysql://user:password@host:port/database/table=dkim_keys?keycol=domain?datacol=id
-KeyTable     dsn:mysql://user:password@host:port/database/table=dkim_keys?keycol=id?datacol=domain,selector,private_key
+SigningTable dsn:mysql://user:password@port+host/database/table=dkim_keys?keycol=domain?datacol=id
+KeyTable     dsn:mysql://user:password@port+host/database/table=dkim_keys?keycol=id?datacol=domain,selector,private_key
 SignatureAlgorithm      rsa-sha256
 Socket                  inet:8891@localhost
 PidFile                 /var/run/opendkim/opendkim.pid
