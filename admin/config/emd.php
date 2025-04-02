@@ -17,8 +17,8 @@ return [
         "password_grant" => env("API_PASSWORD_GRANT", false),
         "request_rate" => (int) env("API_REQUEST_RATE", 600),
         "upload_dir" => env("API_UPLOAD_DIR", "attachments"),
-        "acccess_tokens_expiry" => (int) env("ACCCESS_TOKENS_EXPIRY", 15),
-        "refresh_tokens_expiry" => (int) env("REFRESH_TOKENS_EXPIRY", 30),
+        "acccess_tokens_expiry" => (int) env("ACCCESS_TOKENS_EXPIRY", 30),
+        "refresh_tokens_expiry" => (int) env("REFRESH_TOKENS_EXPIRY", 180),
         "personal_tokens_expiry" => (int) env("PERSONAL_TOKENS_EXPIRY", 365),
     ],
     "mail" => [
