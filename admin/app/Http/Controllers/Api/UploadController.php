@@ -20,12 +20,12 @@ class UploadController extends Controller
     const UPLOAD_DIR = "attachments";
 
     /**
-     * Upload files.
+     * Invoke upload files.
      *
      * @param  Request $request
      * @return JsonResource
      */
-    public function upload(Request $request): JsonResource
+    public function __invoke(Request $request): JsonResource
     {
         $uploadDir = config("emd.api.upload_dir", self::UPLOAD_DIR);
         $storeDir = $uploadDir . "/" . $request->user()->email;
