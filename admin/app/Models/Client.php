@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\RateLimiter;
 
 /**
  * Client model class
@@ -15,9 +14,6 @@ use Illuminate\Support\Facades\RateLimiter;
  */
 class Client extends Model
 {
-    const RATE_LIMIT_SUFFIX = "rate-limit-counter";
-    const QUOTA_LIMIT_SUFFIX = "quota-limit-counter";
-
     /**
      * The table associated with the model.
      *
@@ -52,26 +48,5 @@ class Client extends Model
                 $model->id
             )->delete()
         );
-    }
-
-    public function resetRateCounter(): self
-    {
-        RateLimiter::resetAttempts(
-            $this->limitCounterKey(self::RATE_LIMIT_SUFFIX)
-        );
-        return $this;
-    }
-
-    public function resetQuotaCounter(): self
-    {
-        RateLimiter::resetAttempts(
-            $this->limitCounterKey(self::QUOTA_LIMIT_SUFFIX)
-        );
-        return $this;
-    }
-
-    private function limitCounterKey(string $suffix): string
-    {
-        return sha1($this->sender_address . "|" . $suffix);
     }
 }
