@@ -66,7 +66,7 @@ class ClientAccess extends Model
     public function resetRateCounter(): self
     {
         RateLimiter::resetAttempts(
-            $this->limitCounterKey(ClientAccess::RATE_LIMIT_SUFFIX)
+            $this->limitCounterKey(self::RATE_LIMIT_SUFFIX)
         );
         return $this;
     }
@@ -74,7 +74,7 @@ class ClientAccess extends Model
     public function resetQuotaCounter(): self
     {
         RateLimiter::resetAttempts(
-            $this->limitCounterKey(ClientAccess::QUOTA_LIMIT_SUFFIX)
+            $this->limitCounterKey(self::QUOTA_LIMIT_SUFFIX)
         );
         return $this;
     }
@@ -114,6 +114,6 @@ class ClientAccess extends Model
 
     private static function cacheKey(): string
     {
-        return sha1(static::class . "|" . static::CACHE_KEY_SUFFIX);
+        return sha1(self::class . "|" . self::CACHE_KEY_SUFFIX);
     }
 }

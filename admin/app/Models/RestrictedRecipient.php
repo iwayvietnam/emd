@@ -52,6 +52,6 @@ class RestrictedRecipient extends Model
 
     private static function cacheKey(): string
     {
-        return sha1(static::class . "|" . static::CACHE_KEY_SUFFIX);
+        return sha1(self::class . "|" . self::CACHE_KEY_SUFFIX);
     }
 }
