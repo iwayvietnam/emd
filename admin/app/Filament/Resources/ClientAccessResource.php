@@ -7,7 +7,7 @@ use App\Models\ClientAccess;
 use App\Models\Policy;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -48,7 +48,31 @@ class ClientAccessResource extends Resource
                     ->options(Policy::all()->pluck("name", "id"))
                     ->label(__("Policy")),
             ])
-            ->actions([DeleteAction::make()])
+            ->actions([
+                Actions\ActionGroup::make([
+                    Actions\Action::make("reset_rate")
+                        ->requiresConfirmation()
+                        ->action(
+                            static fn(
+                                ClientAccess $record
+                            ) => self::resetRateCounter($record)
+                        )
+                        ->icon("heroicon-m-check-badge")
+                        ->color("primary")
+                        ->label("Reset Rate Counter"),
+                    Actions\Action::make("reset_quata")
+                        ->requiresConfirmation()
+                        ->action(
+                            static fn(
+                                ClientAccess $record
+                            ) => self::resetQuotaCounter($record)
+                        )
+                        ->icon("heroicon-m-check-badge")
+                        ->color("primary")
+                        ->label("Reset Quota Counter"),
+                    Actions\DeleteAction::make(),
+                ]),
+            ])
             ->defaultSort("created_at", "desc");
     }
 
@@ -58,5 +82,23 @@ class ClientAccessResource extends Resource
             "index" => Pages\ListClientAccesses::route("/"),
             "create" => Pages\CreateClientAccess::route("/create"),
         ];
+    }
+
+    private static function resetRateCounter(ClientAccess $record): void
+    {
+        $record->resetRateCounter();
+        Notification::make()
+            ->title(__("Rate counter have been reset from the cache!"))
+            ->success()
+            ->send();
+    }
+
+    private static function resetQuotaCounter(ClientAccess $record): void
+    {
+        $record->resetQuotaCounter();
+        Notification::make()
+            ->title(__("Quota counter have been reset from the cache!"))
+            ->success()
+            ->send();
     }
 }
