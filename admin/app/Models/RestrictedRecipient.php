@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Cache;
  */
 class RestrictedRecipient extends Model
 {
-    const CACHE_KEY_SUFFIX = 'restricted-recipients';
+    const CACHE_KEY_SUFFIX = "restricted-recipients";
 
     /**
      * The table associated with the model.
@@ -35,12 +35,8 @@ class RestrictedRecipient extends Model
         $cacheKey = self::cacheKey();
         $recipients = Cache::get($cacheKey, []);
         if (empty($recipients)) {
-            $recipients = static::all()->pluck(
-                "verdict", "recipient"
-            )->all();
-            Cache::put(
-                $cacheKey, $recipients
-            );
+            $recipients = static::all()->pluck("verdict", "recipient")->all();
+            Cache::put($cacheKey, $recipients);
         }
         return $recipients;
     }
@@ -52,6 +48,6 @@ class RestrictedRecipient extends Model
 
     private static function cacheKey(): string
     {
-        return sha1(self::class . "|" . self::CACHE_KEY_SUFFIX);
+        return sha1(implode([self::class, self::CACHE_KEY_SUFFIX]));
     }
 }

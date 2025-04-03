@@ -116,8 +116,9 @@ class Policy implements PolicyInterface
         if (isset($clientAccesses[$sender][$address]["policy"])) {
             $policy = $clientAccesses[$sender][$address]["policy"];
             if (!empty($policy) && !empty($policy["rate_limit"])) {
-                $counterKey = self::counterKey(
-                    $request,
+                $counterKey = self::limitCounterKey(
+                    $policy["name"],
+                    $sender,
                     ClientAccess::RATE_LIMIT_SUFFIX
                 );
                 if (
@@ -143,8 +144,9 @@ class Policy implements PolicyInterface
         if (isset($clientAccesses[$sender][$address]["policy"])) {
             $policy = $clientAccesses[$sender][$address]["policy"];
             if (!empty($policy) && !empty($policy["quota_limit"])) {
-                $counterKey = self::counterKey(
-                    $request,
+                $counterKey = self::limitCounterKey(
+                    $policy["name"],
+                    $sender,
                     ClientAccess::QUOTA_LIMIT_SUFFIX
                 );
                 if (
@@ -175,16 +177,11 @@ class Policy implements PolicyInterface
         ) === AccessVerdict::Reject;
     }
 
-    private static function counterKey(
-        RequestInterface $request,
+    private static function limitCounterKey(
+        string $policy,
+        string $sender,
         string $suffix
-    ): string {
-        return sha1(
-            $request->getSender() .
-                "|" .
-                $request->getClientAddress() .
-                "|" .
-                $suffix
-        );
+    ) {
+        return sha1(implode([$policy, $sender, $suffix]));
     }
 }

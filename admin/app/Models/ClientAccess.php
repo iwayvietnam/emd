@@ -44,13 +44,9 @@ class ClientAccess extends Model
     {
         parent::boot();
 
-        static::created(
-            static fn() => self::clearCache()
-        );
+        static::created(static fn() => self::clearCache());
 
-        static::deleted(
-            static fn() => self::clearCache()
-        );
+        static::deleted(static fn() => self::clearCache());
     }
 
     public function client(): BelongsTo
@@ -109,11 +105,11 @@ class ClientAccess extends Model
 
     private function limitCounterKey(string $suffix): string
     {
-        return sha1($this->sender . "|" . $this->client_ip . "|" . $suffix);
+        return sha1(implode([$this->policy->name, $this->sender, $suffix]));
     }
 
     private static function cacheKey(): string
     {
-        return sha1(self::class . "|" . self::CACHE_KEY_SUFFIX);
+        return sha1(implode([self::class, self::CACHE_KEY_SUFFIX]));
     }
 }
