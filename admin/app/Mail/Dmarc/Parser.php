@@ -13,7 +13,7 @@ use Webklex\PHPIMAP\Message;
  */
 final class Parser
 {
-    const EMPTY_NODE_XPATH = "//*[not(text())]";
+    const EMPTY_NODE_XPATH = "//*[not(node())]";
 
     public static function parseMessage(Message $message): array
     {
