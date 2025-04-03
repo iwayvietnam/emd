@@ -51,10 +51,9 @@ final class Scanner
         $folder = $this->imapClient->getFolderByName($reportFolder, true);
         if (!empty($folder)) {
             $dmarcReports = [];
-            $canMove = in_array(
-                "MOVE",
-                $this->imapClient->getConnection()->getCapabilities()
-            );
+            $canMove = collect(
+                $this->imapClient->getConnection()->getCapabilities()->array()
+            )->contains("MOVE");
             $messages = $folder->messages()->all()->get();
             foreach ($messages as $message) {
                 $reports = Parser::parseMessage($message);
