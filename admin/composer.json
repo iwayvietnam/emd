@@ -7,17 +7,16 @@
     "license": "AGPL",
     "require": {
         "php": "^8.2|^8.3|^8.4",
-        "amphp/dns": "^2.3",
+        "amphp/dns": "^2.4",
         "calebporzio/sushi": "^2.5",
         "elasticsearch/elasticsearch": "^8.17",
         "filament/filament": "^3.3",
-        "laravel/framework": "^12.0",
-        "laravel/passport": "^12.0",
-        "laravel/tinker": "^2.10",
+        "laravel/framework": "^12.6",
+        "laravel/passport": "^12.4",
         "nelexa/zip": "^4.0",
         "phpseclib/phpseclib": "^3.0",
-        "webklex/php-imap": "^4.1",
-        "workerman/workerman": "^5.0"
+        "webklex/php-imap": "^6.1",
+        "workerman/workerman": "^5.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
