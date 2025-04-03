@@ -107,10 +107,8 @@ final class Parser
         }
     }
 
-    private static function gzdecode(
-        string $data,
-        string &$fileName = ""
-    ): string|bool {
+    private static function gzdecode(string $data): string|bool
+    {
         $len = strlen($data);
         if ($len < 18 || strcmp(substr($data, 0, 2), "\x1f\x8b")) {
             logger()->error("gzdecode: not in gzip format.");
@@ -144,7 +142,6 @@ final class Parser
             $headerLen += 2 + $extraLen;
         }
         $fileNameLen = 0;
-        $fileName = "";
         if ($flags & 8) {
             // C-style string
             if ($len - $headerLen - 1 < 8) {
@@ -157,7 +154,6 @@ final class Parser
             ) {
                 return false; // invalid
             }
-            $fileName = substr($data, $headerLen, $fileNameLen);
             $headerLen += $fileNameLen + 1;
         }
         $commentLen = 0;
