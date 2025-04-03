@@ -6,7 +6,7 @@
     "keywords": ["emd", "admin"],
     "license": "AGPL",
     "require": {
-        "php": "^8.2",
+        "php": "^8.2|^8.3|^8.4",
         "amphp/dns": "^2.3",
         "calebporzio/sushi": "^2.5",
         "elasticsearch/elasticsearch": "^8.17",
