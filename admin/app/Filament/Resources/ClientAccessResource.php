@@ -12,7 +12,6 @@ use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Support\InteractsWithTime;
 
 /**
  * Client access resource class
@@ -72,13 +71,12 @@ class ClientAccessResource extends Resource
                                 ->label(__("Remaining")),
                             TextEntry::make("availableAt")
                                 ->state(
-                                    fn(ClientAccess $record) => date(
+                                    static fn(ClientAccess $record) => date(
                                         "Y-m-d H:i:s",
-                                        $this->availableAt(
+                                        time() +
                                             $record->viewRateCounter()[
                                                 "availableIn"
                                             ]
-                                        )
                                     )
                                 )
                                 ->label(__("Available At")),
@@ -108,13 +106,12 @@ class ClientAccessResource extends Resource
                                 ->label(__("Remaining")),
                             TextEntry::make("availableAt")
                                 ->state(
-                                    fn(ClientAccess $record) => date(
+                                    static fn(ClientAccess $record) => date(
                                         "Y-m-d H:i:s",
-                                        $this->availableAt(
+                                        time() +
                                             $record->viewQuotaCounter()[
                                                 "availableIn"
                                             ]
-                                        )
                                     )
                                 )
                                 ->label(__("Available At")),
