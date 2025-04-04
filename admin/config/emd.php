@@ -3,7 +3,6 @@
 return [
     "app_domain" => env("APP_DOMAIN", "yourdomain.com"),
     "https" => (bool) env("FORCE_HTTPS", false),
-    "warning_threshold" => (int) env("WARNING_THRESHOLD", 80),
     "sender_transport" => env(
         "SENDER_TRANSPORT",
         "/etc/postfix/sender_transport"
@@ -31,5 +30,10 @@ return [
         "listen_host" => env("POLICY_LISTEN_HOST", "127.0.0.1"),
         "listen_port" => env("POLICY_LISTEN_PORT", 1403),
         "server_worker" => env("POLICY_SERVER_WORKER", 4),
+    ],
+    "warning" => [
+        "threshold" => (int) env("WARNING_THRESHOLD", 80),
+        "subject" => env("WARNING_SUBJECT"),
+        "recipient" => env("WARNING_RECIPIENT"),
     ],
 ];
