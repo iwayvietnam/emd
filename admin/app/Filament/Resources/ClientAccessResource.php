@@ -12,6 +12,7 @@ use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\InteractsWithTime;
 
 /**
  * Client access resource class
@@ -22,6 +23,8 @@ use Filament\Tables\Table;
  */
 class ClientAccessResource extends Resource
 {
+    use InteractsWithTime;
+
     protected static ?string $model = ClientAccess::class;
     protected static ?string $navigationGroup = "Access Control";
     protected static ?string $navigationIcon = "heroicon-o-lock-open";
@@ -67,15 +70,18 @@ class ClientAccessResource extends Resource
                                     ) => $record->viewRateCounter()["remaining"]
                                 )
                                 ->label(__("Remaining")),
-                            TextEntry::make("availableIn")
+                            TextEntry::make("availableAt")
                                 ->state(
-                                    static fn(
-                                        ClientAccess $record
-                                    ) => $record->viewRateCounter()[
-                                        "availableIn"
-                                    ]
+                                    fn(ClientAccess $record) => date(
+                                        "Y-m-d H:i:s",
+                                        $this->availableAt(
+                                            $record->viewRateCounter()[
+                                                "availableIn"
+                                            ]
+                                        )
+                                    )
                                 )
-                                ->label(__("Available In")),
+                                ->label(__("Available At")),
                         ])
                         ->modalHeading(__("Rate Limit Info"))
                         ->modalSubmitAction(false)
@@ -100,15 +106,18 @@ class ClientAccessResource extends Resource
                                     ]
                                 )
                                 ->label(__("Remaining")),
-                            TextEntry::make("availableIn")
+                            TextEntry::make("availableAt")
                                 ->state(
-                                    static fn(
-                                        ClientAccess $record
-                                    ) => $record->viewQuotaCounter()[
-                                        "availableIn"
-                                    ]
+                                    fn(ClientAccess $record) => date(
+                                        "Y-m-d H:i:s",
+                                        $this->availableAt(
+                                            $record->viewQuotaCounter()[
+                                                "availableIn"
+                                            ]
+                                        )
+                                    )
                                 )
-                                ->label(__("Available In")),
+                                ->label(__("Available At")),
                         ])
                         ->modalHeading(__("Quota Limit Info"))
                         ->modalSubmitAction(false)
