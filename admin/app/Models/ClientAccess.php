@@ -61,15 +61,17 @@ class ClientAccess extends Model
 
     public function viewRateCounter(): array
     {
-        return self::viewLimitCounter(
-            $this->limitCounterKey(self::RATE_LIMIT_SUFFIX)
+        return $this->viewLimitCounter(
+            $this->limitCounterKey(self::RATE_LIMIT_SUFFIX),
+            $this->policy->rate_limit
         );
     }
 
     public function viewQuotaCounter(): array
     {
-        return self::viewLimitCounter(
+        return $this->viewLimitCounter(
             $this->limitCounterKey(self::QUOTA_LIMIT_SUFFIX)
+            $this->policy->quota_limit
         );
     }
 
@@ -117,12 +119,12 @@ class ClientAccess extends Model
         Cache::forget(self::cacheKey());
     }
 
-    private static function viewLimitCounter(string $counterKey): array
+    private function viewLimitCounter(string $counterKey, int $maxAttempts = 0): array
     {
         return [
             'attempts' => RateLimiter::attempts($counterKey),
             'availableIn' => RateLimiter::availableIn($counterKey),
-            'remaining' => RateLimiter::remaining($counterKey),
+            'remaining' => RateLimiter::remaining($counterKey, $maxAttempts),
         ];
     }
 
