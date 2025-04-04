@@ -55,17 +55,25 @@ class ClientAccessResource extends Resource
                         ->infolist([
                             TextEntry::make("attempts")
                                 ->state(
-                                    static fn(ClientAccess $record) => $record->viewRateCounter()["attempts"]
+                                    static fn(
+                                        ClientAccess $record
+                                    ) => $record->viewRateCounter()["attempts"]
                                 )
                                 ->label(__("Attempts")),
                             TextEntry::make("remaining")
                                 ->state(
-                                    static fn(ClientAccess $record) => $record->viewRateCounter()["remaining"]
+                                    static fn(
+                                        ClientAccess $record
+                                    ) => $record->viewRateCounter()["remaining"]
                                 )
                                 ->label(__("Remaining")),
                             TextEntry::make("availableIn")
                                 ->state(
-                                    static fn(ClientAccess $record) => $record->viewRateCounter()["availableIn"]
+                                    static fn(
+                                        ClientAccess $record
+                                    ) => $record->viewRateCounter()[
+                                        "availableIn"
+                                    ]
                                 )
                                 ->label(__("Available In")),
                         ])
@@ -78,17 +86,27 @@ class ClientAccessResource extends Resource
                         ->infolist([
                             TextEntry::make("attempts")
                                 ->state(
-                                    static fn(ClientAccess $record) => $record->viewQuotaCounter()["attempts"]
+                                    static fn(
+                                        ClientAccess $record
+                                    ) => $record->viewQuotaCounter()["attempts"]
                                 )
                                 ->label(__("Attempts")),
                             TextEntry::make("remaining")
                                 ->state(
-                                    static fn(ClientAccess $record) => $record->viewQuotaCounter()["remaining"]
+                                    static fn(
+                                        ClientAccess $record
+                                    ) => $record->viewQuotaCounter()[
+                                        "remaining"
+                                    ]
                                 )
                                 ->label(__("Remaining")),
                             TextEntry::make("availableIn")
                                 ->state(
-                                    static fn(ClientAccess $record) => $record->viewQuotaCounter()["availableIn"]
+                                    static fn(
+                                        ClientAccess $record
+                                    ) => $record->viewQuotaCounter()[
+                                        "availableIn"
+                                    ]
                                 )
                                 ->label(__("Available In")),
                         ])
