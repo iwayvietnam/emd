@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ClientAccessResource\Pages;
 use App\Models\ClientAccess;
 use App\Models\Policy;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions;
@@ -50,6 +51,52 @@ class ClientAccessResource extends Resource
             ])
             ->actions([
                 Actions\ActionGroup::make([
+                    Actions\Action::make("view_rate")
+                        ->infolist([
+                            TextEntry::make("attempts")
+                                ->state(
+                                    static fn(ClientAccess $record) => $record->viewRateCounter()["attempts"]
+                                )
+                                ->label(__("Attempts")),
+                            TextEntry::make("remaining")
+                                ->state(
+                                    static fn(ClientAccess $record) => $record->viewRateCounter()["remaining"]
+                                )
+                                ->label(__("Remaining")),
+                            TextEntry::make("availableIn")
+                                ->state(
+                                    static fn(ClientAccess $record) => $record->viewRateCounter()["availableIn"]
+                                )
+                                ->label(__("Available In")),
+                        ])
+                        ->modalHeading(__("Rate Limit Info"))
+                        ->modalSubmitAction(false)
+                        ->icon("heroicon-m-eye")
+                        ->color("primary")
+                        ->label("View Rate Limit"),
+                    Actions\Action::make("view_quota")
+                        ->infolist([
+                            TextEntry::make("attempts")
+                                ->state(
+                                    static fn(ClientAccess $record) => $record->viewQuotaCounter()["attempts"]
+                                )
+                                ->label(__("Attempts")),
+                            TextEntry::make("remaining")
+                                ->state(
+                                    static fn(ClientAccess $record) => $record->viewQuotaCounter()["remaining"]
+                                )
+                                ->label(__("Remaining")),
+                            TextEntry::make("availableIn")
+                                ->state(
+                                    static fn(ClientAccess $record) => $record->viewQuotaCounter()["availableIn"]
+                                )
+                                ->label(__("Available In")),
+                        ])
+                        ->modalHeading(__("Quota Limit Info"))
+                        ->modalSubmitAction(false)
+                        ->icon("heroicon-m-eye")
+                        ->color("primary")
+                        ->label("View Quota Limit"),
                     Actions\Action::make("reset_rate")
                         ->requiresConfirmation()
                         ->action(
@@ -60,7 +107,7 @@ class ClientAccessResource extends Resource
                         ->icon("heroicon-m-check-badge")
                         ->color("primary")
                         ->label("Reset Rate Counter"),
-                    Actions\Action::make("reset_quata")
+                    Actions\Action::make("reset_quota")
                         ->requiresConfirmation()
                         ->action(
                             static fn(
