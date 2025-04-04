@@ -70,7 +70,7 @@ class ClientAccess extends Model
     public function viewQuotaCounter(): array
     {
         return $this->viewLimitCounter(
-            $this->limitCounterKey(self::QUOTA_LIMIT_SUFFIX)
+            $this->limitCounterKey(self::QUOTA_LIMIT_SUFFIX),
             $this->policy->quota_limit
         );
     }
