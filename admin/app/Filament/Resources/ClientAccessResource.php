@@ -12,6 +12,7 @@ use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Number;
 
 /**
  * Client access resource class
@@ -90,16 +91,18 @@ class ClientAccessResource extends Resource
                                 ->state(
                                     static fn(
                                         ClientAccess $record
-                                    ) => $record->viewQuotaCounter()["attempts"]
+                                    ) => Number::fileSize(
+                                        $record->viewQuotaCounter()["attempts"]
+                                    )
                                 )
                                 ->label(__("Attempts")),
                             TextEntry::make("remaining")
                                 ->state(
                                     static fn(
                                         ClientAccess $record
-                                    ) => $record->viewQuotaCounter()[
-                                        "remaining"
-                                    ]
+                                    ) => Number::fileSize(
+                                        $record->viewQuotaCounter()["remaining"]
+                                    )
                                 )
                                 ->label(__("Remaining")),
                             TextEntry::make("availableAt")
