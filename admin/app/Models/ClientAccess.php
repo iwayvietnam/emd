@@ -59,6 +59,20 @@ class ClientAccess extends Model
         return $this->belongsTo(Policy::class, "policy_id");
     }
 
+    public function viewRateCounter(): array
+    {
+        return self::viewLimitCounter(
+            $this->limitCounterKey(self::RATE_LIMIT_SUFFIX)
+        );
+    }
+
+    public function viewQuotaCounter(): array
+    {
+        return self::viewLimitCounter(
+            $this->limitCounterKey(self::QUOTA_LIMIT_SUFFIX)
+        );
+    }
+
     public function resetRateCounter(): self
     {
         RateLimiter::resetAttempts(
@@ -101,6 +115,15 @@ class ClientAccess extends Model
     public static function clearCache(): void
     {
         Cache::forget(self::cacheKey());
+    }
+
+    private static function viewLimitCounter(string $counterKey): array
+    {
+        return [
+            'attempts' => RateLimiter::attempts($counterKey),
+            'availableIn' => RateLimiter::availableIn($counterKey),
+            'remaining' => RateLimiter::remaining($counterKey),
+        ];
     }
 
     private function limitCounterKey(string $suffix): string

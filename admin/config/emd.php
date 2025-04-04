@@ -3,6 +3,7 @@
 return [
     "app_domain" => env("APP_DOMAIN", "yourdomain.com"),
     "https" => (bool) env("FORCE_HTTPS", false),
+    "warning_threshold" => (int) env("WARNING_THRESHOLD", 80),
     "sender_transport" => env(
         "SENDER_TRANSPORT",
         "/etc/postfix/sender_transport"
