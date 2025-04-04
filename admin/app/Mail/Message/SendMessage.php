@@ -6,9 +6,7 @@ use App\Models\Message;
 use App\Models\MessageFailure;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Mail\Mailables\Address;
-use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Mail\Mailables\Headers;
@@ -38,13 +36,12 @@ class SendMessage extends Mailable
     public function __construct(
         private readonly Message $message,
         private readonly bool $trackClick = false
-    )
-    {
+    ) {
         foreach ($message->uploads as $upload) {
             $this->attachments[] = [
-                'file' => Storage::path($upload),
-                'options' => [
-                    'mime' => Storage::mimeType($upload),
+                "file" => Storage::path($upload),
+                "options" => [
+                    "mime" => Storage::mimeType($upload),
                 ],
             ];
         }
