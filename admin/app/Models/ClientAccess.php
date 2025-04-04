@@ -124,6 +124,7 @@ class ClientAccess extends Model
         return [
             'attempts' => RateLimiter::attempts($counterKey),
             'availableIn' => RateLimiter::availableIn($counterKey),
+            'maxAttempts' => $maxAttempts,
             'remaining' => RateLimiter::remaining($counterKey, $maxAttempts),
         ];
     }
