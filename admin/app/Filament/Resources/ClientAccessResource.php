@@ -22,8 +22,6 @@ use Filament\Tables\Table;
  */
 class ClientAccessResource extends Resource
 {
-    use InteractsWithTime;
-
     protected static ?string $model = ClientAccess::class;
     protected static ?string $navigationGroup = "Access Control";
     protected static ?string $navigationIcon = "heroicon-o-lock-open";
