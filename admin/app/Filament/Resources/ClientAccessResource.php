@@ -83,7 +83,7 @@ class ClientAccessResource extends Resource
                         ->modalHeading(__("Rate Limit Info"))
                         ->modalSubmitAction(false)
                         ->icon("heroicon-m-eye")
-                        ->color("primary")
+                        ->color("info")
                         ->label("View Rate Limit"),
                     Actions\Action::make("view_quota")
                         ->infolist([
@@ -120,7 +120,7 @@ class ClientAccessResource extends Resource
                         ->modalHeading(__("Quota Limit Info"))
                         ->modalSubmitAction(false)
                         ->icon("heroicon-m-eye")
-                        ->color("primary")
+                        ->color("info")
                         ->label("View Quota Limit"),
                     Actions\Action::make("reset_rate")
                         ->requiresConfirmation()
