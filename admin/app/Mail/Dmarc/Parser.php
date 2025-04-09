@@ -21,20 +21,16 @@ final class Parser
 
         $attachments = $message->attachments();
         foreach ($attachments as $attachment) {
-            $xml = false;
-            switch ($attachment->content_type) {
-                case "application/zip":
-                case "application/x-zip-compressed":
-                    $xml = self::unzip($attachment->content);
-                    break;
-                case "application/gzip":
-                case "application/x-gzip":
-                    $xml = self::gunzip($attachment->content);
-                    break;
-                case "application/xml":
-                    $xml = $attachment->content;
-                    break;
-            }
+            $xml = match ($attachment->content_type) {
+                "application/zip",
+                "application/x-zip-compressed"
+                    => self::unzip($attachment->content),
+                "application/gzip", "application/x-gzip" => self::gunzip(
+                    $attachment->content
+                ),
+                "application/xml" => $attachment->content,
+                default => false,
+            };
             if (!empty($xml)) {
                 $report = self::parseXml($xml);
                 if (!empty($report)) {
