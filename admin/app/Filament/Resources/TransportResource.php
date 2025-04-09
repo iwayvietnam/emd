@@ -80,8 +80,6 @@ class TransportResource extends Resource
     {
         return [
             "index" => Pages\ListTransports::route("/"),
-            "create" => Pages\CreateTransport::route("/create"),
-            "edit" => Pages\EditTransport::route("/{record}/edit"),
         ];
     }
 
