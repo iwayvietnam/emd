@@ -33,7 +33,7 @@ return [
     ],
     "warning" => [
         "threshold" => (int) env("WARNING_THRESHOLD", 80),
-        "subject" => env("WARNING_SUBJECT"),
+        "subject" => env("WARNING_SUBJECT", "Policy Limit Warning"),
         "recipient" => env("WARNING_RECIPIENT"),
     ],
 ];
