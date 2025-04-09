@@ -46,6 +46,12 @@ class RestrictedRecipient extends Model
         Cache::forget(self::cacheKey());
     }
 
+    protected static function boot(): void
+    {
+        parent::boot();
+        static::created(static fn() => static::clearCache());
+    }
+
     private static function cacheKey(): string
     {
         return sha1(implode([self::class, self::CACHE_KEY_SUFFIX]));
