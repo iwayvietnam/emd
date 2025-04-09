@@ -19,6 +19,10 @@ class ListTransports extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [CreateAction::make()->label(__("New Transport"))];
+        return [
+            CreateAction::make()
+                ->createAnother(false)
+                ->label(__("New Transport")),
+        ];
     }
 }
