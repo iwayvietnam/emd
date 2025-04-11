@@ -13,8 +13,6 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -29,10 +27,8 @@ use Symfony\Component\Mailer\Exception\ExceptionInterface as MailerException;
  * @category Filament
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
-class SendEmail extends Page implements HasForms
+class SendEmail extends Page
 {
-    use InteractsWithForms;
-
     const QUEUE_NAME = "default";
     const UPLOAD_DIR = "attachments";
 
