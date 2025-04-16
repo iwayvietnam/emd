@@ -108,7 +108,6 @@ class MailServerResource extends Resource
             TextEntry::make("name")->label(__("Name")),
             TextEntry::make("ip_address")->label(__("IP Address")),
             TextEntry::make("ssh_public_key")
-                ->formatStateUsing(static fn($state) => chunk_split($state))
                 ->columnSpan(2)
                 ->label(__("SSH Public Key")),
         ]);
