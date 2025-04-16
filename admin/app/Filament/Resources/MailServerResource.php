@@ -63,8 +63,6 @@ class MailServerResource extends Resource
                 TextInput::make("sudo_password")
                     ->required()
                     ->password()
-                    ->dehydrateStateUsing(fn($state) => $state)
-                    ->dehydrated(fn($state) => filled($state))
                     ->label(__("Sudo Password")),
             ]),
             Textarea::make("ssh_private_key")
