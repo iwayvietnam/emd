@@ -120,8 +120,6 @@ class MailServerResource extends Resource
             ->columns([
                 TextColumn::make("name")->sortable()->label(__("Name")),
                 TextColumn::make("ip_address")->label(__("Ip Address")),
-                TextColumn::make("ssh_user")->label(__("SSH user")),
-                TextColumn::make("ssh_port")->label(__("SSH port")),
                 TextColumn::make("created_at")
                     ->dateTime()
                     ->sortable()
