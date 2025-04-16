@@ -128,6 +128,7 @@ class MailServerResource extends Resource
                     ->label(__("Created At")),
             ])
             ->actions([
+                Actions\ViewAction::make(),
                 Actions\DeleteAction::make(),
             ]);
     }
