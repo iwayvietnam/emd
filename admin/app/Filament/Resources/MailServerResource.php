@@ -44,15 +44,15 @@ class MailServerResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            TextInput::make("name")
-                ->required()
-                ->unique(ignoreRecord: true)
-                ->label(__("Name")),
-            TextInput::make("ip_address")
-                ->required()
-                ->ipv4()
-                ->label(__("Ip Address")),
-            Grid::make(3)->schema([
+            Grid::make(5)->schema([
+                TextInput::make("name")
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->label(__("Name")),
+                TextInput::make("ip_address")
+                    ->required()
+                    ->ipv4()
+                    ->label(__("Ip Address")),
                 TextInput::make("ssh_user")->required()->label(__("SSH User")),
                 TextInput::make("ssh_port")
                     ->required()
