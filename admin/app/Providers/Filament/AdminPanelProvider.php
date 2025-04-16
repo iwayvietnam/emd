@@ -37,7 +37,7 @@ class AdminPanelProvider extends PanelProvider
             ->id(config("emd.panel.id", self::NAME))
             ->path(config("emd.panel.path", self::NAME))
             ->topNavigation(config("emd.panel.top_navigation", false))
-            ->domain(config("emd.app_domain"))
+            // ->domain(config("emd.app_domain"))
             ->login()
             ->profile(EditUserProfile::class, isSimple: false)
             ->colors([
