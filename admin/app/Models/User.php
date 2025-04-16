@@ -54,10 +54,14 @@ class User extends Authenticatable implements FilamentUser
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        return str_ends_with(
-            $this->email,
-            "@" . config("emd.app_domain", "yourdomain.com")
-        );
+        $domain = config("emd.app_domain");
+        if (!empty($domain)) {
+            return str_ends_with(
+                $this->email,
+                "@" . $domain
+            );
+        }
+        return false;
     }
 
     protected static function boot(): void
