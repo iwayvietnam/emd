@@ -63,6 +63,7 @@ class MailServerResource extends Resource
                 TextInput::make("sudo_password")
                     ->required()
                     ->password()
+                    ->visibleOn('create')
                     ->label(__("Sudo Password")),
             ]),
             Textarea::make("ssh_private_key")
