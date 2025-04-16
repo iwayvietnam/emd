@@ -13,6 +13,8 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
+use Filament\Infolists\Infolist;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
@@ -63,7 +65,6 @@ class MailServerResource extends Resource
                 TextInput::make("sudo_password")
                     ->required()
                     ->password()
-                    ->visibleOn('create')
                     ->label(__("Sudo Password")),
             ]),
             Textarea::make("ssh_private_key")
@@ -101,6 +102,18 @@ class MailServerResource extends Resource
         ]);
     }
 
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist->schema([
+            TextEntry::make("name")->label(__("Name")),
+            TextEntry::make("ip_address")->label(__("IP Address")),
+            TextEntry::make("ssh_public_key")
+                ->html()
+                ->columnSpan(2)
+                ->label(__("SSH Public Key")),
+        ]);
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -115,7 +128,6 @@ class MailServerResource extends Resource
                     ->label(__("Created At")),
             ])
             ->actions([
-                Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
             ]);
     }
@@ -125,7 +137,6 @@ class MailServerResource extends Resource
         return [
             "index" => Pages\ListMailServers::route("/"),
             "create" => Pages\CreateMailServer::route("/create"),
-            "edit" => Pages\EditMailServer::route("/{record}/edit"),
         ];
     }
 
