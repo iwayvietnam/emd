@@ -40,12 +40,12 @@ class ResetLimitCounter extends Command implements Isolatable
      */
     public function handle(): int
     {
-        $this->resetLimitCounter();
+        $this->clearLimitCounter();
         $this->info("Reset limit counter command was successful!");
         return Command::SUCCESS;
     }
 
-    private function resetLimitCounter(): void
+    private function clearLimitCounter(): void
     {
         $day = date("D");
         $date = (int) date("j");
@@ -55,16 +55,16 @@ class ResetLimitCounter extends Command implements Isolatable
             switch ($period) {
                 case LimitPeriod::PerWeek:
                     if ($day === "Mon") {
-                        $record->resetQuotaCounter();
+                        $record->clearQuotaCounter();
                     }
                     break;
                 case LimitPeriod::PerMonth:
                     if ($date === 1) {
-                        $record->resetQuotaCounter();
+                        $record->clearQuotaCounter();
                     }
                     break;
                 default:
-                    $record->resetQuotaCounter();
+                    $record->clearQuotaCounter();
                     break;
             }
 
@@ -72,16 +72,16 @@ class ResetLimitCounter extends Command implements Isolatable
             switch ($period) {
                 case LimitPeriod::PerWeek:
                     if ($day === "Mon") {
-                        $record->resetRateCounter();
+                        $record->clearRateCounter();
                     }
                     break;
                 case LimitPeriod::PerMonth:
                     if ($date === 1) {
-                        $record->resetRateCounter();
+                        $record->clearRateCounter();
                     }
                     break;
                 default:
-                    $record->resetRateCounter();
+                    $record->clearRateCounter();
                     break;
             }
         }
