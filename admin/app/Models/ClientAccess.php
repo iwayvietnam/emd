@@ -73,17 +73,17 @@ class ClientAccess extends Model
         );
     }
 
-    public function resetRateCounter(): self
+    public function clearRateCounter(): self
     {
-        RateLimiter::resetAttempts(
+        RateLimiter::clear(
             $this->limitCounterKey(self::RATE_LIMIT_SUFFIX)
         );
         return $this;
     }
 
-    public function resetQuotaCounter(): self
+    public function clearQuotaCounter(): self
     {
-        RateLimiter::resetAttempts(
+        RateLimiter::clear(
             $this->limitCounterKey(self::QUOTA_LIMIT_SUFFIX)
         );
         return $this;

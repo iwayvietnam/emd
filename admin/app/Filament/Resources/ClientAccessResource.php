@@ -122,26 +122,26 @@ class ClientAccessResource extends Resource
                         ->icon("heroicon-m-eye")
                         ->color("info")
                         ->label("View Quota Limit"),
-                    Actions\Action::make("reset_rate")
+                    Actions\Action::make("clear_rate")
                         ->requiresConfirmation()
                         ->action(
                             static fn(
                                 ClientAccess $record
-                            ) => self::resetRateCounter($record)
+                            ) => self::clearRateCounter($record)
                         )
                         ->icon("heroicon-m-check-badge")
                         ->color("primary")
-                        ->label("Reset Rate Counter"),
-                    Actions\Action::make("reset_quota")
+                        ->label("Clear Rate Counter"),
+                    Actions\Action::make("clear_quota")
                         ->requiresConfirmation()
                         ->action(
                             static fn(
                                 ClientAccess $record
-                            ) => self::resetQuotaCounter($record)
+                            ) => self::clearQuotaCounter($record)
                         )
                         ->icon("heroicon-m-check-badge")
                         ->color("primary")
-                        ->label("Reset Quota Counter"),
+                        ->label("Clear Quota Counter"),
                     Actions\DeleteAction::make(),
                 ]),
             ])
@@ -156,20 +156,20 @@ class ClientAccessResource extends Resource
         ];
     }
 
-    private static function resetRateCounter(ClientAccess $record): void
+    private static function clearRateCounter(ClientAccess $record): void
     {
-        $record->resetRateCounter();
+        $record->clearRateCounter();
         Notification::make()
-            ->title(__("Rate counter have been reset from the cache!"))
+            ->title(__("Rate counter have been clear from the cache!"))
             ->success()
             ->send();
     }
 
-    private static function resetQuotaCounter(ClientAccess $record): void
+    private static function clearQuotaCounter(ClientAccess $record): void
     {
-        $record->resetQuotaCounter();
+        $record->clearQuotaCounter();
         Notification::make()
-            ->title(__("Quota counter have been reset from the cache!"))
+            ->title(__("Quota counter have been clear from the cache!"))
             ->success()
             ->send();
     }
