@@ -68,6 +68,7 @@ class RestrictedRecipientResource extends Resource
     {
         return [
             "index" => Pages\ListRestrictedRecipients::route("/"),
+            "create" => Pages\CreateRestrictedRecipient::route("/create"),
         ];
     }
 
