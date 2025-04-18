@@ -131,7 +131,7 @@ class ClientAccessResource extends Resource
                         )
                         ->icon("heroicon-m-check-badge")
                         ->color("primary")
-                        ->label("Clear Rate Counter"),
+                        ->label("Clear Rate Limit"),
                     Actions\Action::make("clear_quota")
                         ->requiresConfirmation()
                         ->action(
@@ -141,7 +141,7 @@ class ClientAccessResource extends Resource
                         )
                         ->icon("heroicon-m-check-badge")
                         ->color("primary")
-                        ->label("Clear Quota Counter"),
+                        ->label("Clear Quota Limit"),
                     Actions\DeleteAction::make(),
                 ]),
             ])
