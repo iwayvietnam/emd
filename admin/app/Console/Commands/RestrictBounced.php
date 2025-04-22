@@ -87,7 +87,7 @@ class RestrictBounced extends Command implements Isolatable
                         ]);
                         $recipients->push($recipient);
                         $this->info(
-                            $recipient . " was added to restrict recipients!"
+                            "$recipient was added to restrict recipients!"
                         );
                     }
                 }
