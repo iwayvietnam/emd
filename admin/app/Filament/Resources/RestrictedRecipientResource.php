@@ -93,18 +93,26 @@ class RestrictedRecipientResource extends Resource
         $connect = @fsockopen($mx, 25);
         if (preg_match("/^220/i", $out = fgets($connect))) {
             fputs($connect, "HELO $appDomain\r\n");
-            $out = fgets($connect);
+            $helo = fgets($connect);
+            logger()->debug("HELO {appDomain}: {$helo}.", [
+                "appDomain" => $appDomain,
+                "helo" => $helo,
+            ]);
 
             fputs($connect, "MAIL FROM: <$mailFrom>\r\n");
-            $out = fgets($connect);
+            $from = fgets($connect);
+            logger()->debug("MAIL FROM {mailFrom}: {$from}.", [
+                "mailFrom" => $mailFrom,
+                "from" => $from,
+            ]);
 
             fputs($connect, "RCPT TO: <$recipient>\r\n");
-            $out = fgets($connect);
+            $to = fgets($connect);
 
             fputs($connect, "QUIT");
         }
         fclose($connect);
 
-        return $out;
+        return $to ?? $out;
     }
 }
