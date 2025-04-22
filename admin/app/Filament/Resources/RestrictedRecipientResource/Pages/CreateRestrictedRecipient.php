@@ -43,7 +43,7 @@ class CreateRestrictedRecipient extends CreateRecord
 
     protected function getCreatedNotificationTitle(): ?string
     {
-        return __("Restrict recipients has been created");
+        return __("Restrict recipients have been created!");
     }
 
     protected function getRedirectUrl(): string
@@ -65,7 +65,7 @@ class CreateRestrictedRecipient extends CreateRecord
             RestrictedRecipient::clearCache();
             return $model;
         } else {
-            throw new Halt("Error Create Restrict Recipients");
+            throw new Halt("Error create restrict recipients!");
         }
     }
 }
