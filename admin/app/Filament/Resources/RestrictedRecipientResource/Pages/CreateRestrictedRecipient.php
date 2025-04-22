@@ -30,7 +30,7 @@ class CreateRestrictedRecipient extends CreateRecord
             Textarea::make("recipients")
                 ->required()
                 ->columnSpan(2)
-                ->hint(__("Each recipient is on a line."))
+                ->hint(__("Each recipient is on a line or seperated by a comma."))
                 ->label(__("Recipients")),
             Hidden::make("verdict")->default("REJECT"),
         ]);
