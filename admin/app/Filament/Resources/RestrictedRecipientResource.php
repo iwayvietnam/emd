@@ -105,6 +105,6 @@ class RestrictedRecipientResource extends Resource
         }
         fclose($connect);
 
-        return $to;
+        return $to ?? $recipient;
     }
 }
