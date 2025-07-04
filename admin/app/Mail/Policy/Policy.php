@@ -9,6 +9,7 @@ use App\Mail\Policy\Interface\RequestInterface;
 use App\Mail\Policy\Interface\ResponseInterface;
 use App\Models\ClientAccess;
 use App\Models\RestrictedRecipient;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 
 /**
@@ -30,7 +31,7 @@ class Policy implements PolicyInterface
         switch ($state) {
             case ProtocolState::Rcpt:
                 if (self::isRejected($request, $clientAccesses)) {
-                    logger()->error("Client {sender}:{address} is rejected.", [
+                    Log::error("Client {sender}:{address} is rejected.", [
                         "sender" => $request->getSender(),
                         "address" => $request->getClientAddress(),
                     ]);
@@ -40,7 +41,7 @@ class Policy implements PolicyInterface
                     );
                 }
                 if (self::rateIsExceeded($request, $clientAccesses)) {
-                    logger()->error(
+                    Log::error(
                         "Rate limit of client {sender}:{address} is exceeded",
                         [
                             "sender" => $request->getSender(),
@@ -53,7 +54,7 @@ class Policy implements PolicyInterface
                     );
                 }
                 if (self::recipientIsRestricted($request)) {
-                    logger()->error(
+                    Log::error(
                         "Recipient {recipient} of client {sender}:{address} is restricted.",
                         [
                             "recipient" => $request->getRecipient(),
@@ -69,7 +70,7 @@ class Policy implements PolicyInterface
                 return new PolicyResponse(AccessVerdict::Ok);
             case ProtocolState::EndOfMessage:
                 if (self::quotaIsExceeded($request, $clientAccesses)) {
-                    logger()->error(
+                    Log::error(
                         "Quota limit of client {sender}:{address} is exceeded.",
                         [
                             "sender" => $request->getSender(),
@@ -83,7 +84,7 @@ class Policy implements PolicyInterface
                 }
                 return new PolicyResponse(AccessVerdict::Ok);
             default:
-                logger()->error("Protocol state {state} is invalid.", [
+                Log::error("Protocol state {state} is invalid.", [
                     "state" => $state,
                 ]);
                 return new PolicyResponse(
