@@ -4,7 +4,9 @@ namespace App\Filament\Resources\ClientAccessResource\Pages;
 
 use App\Filament\Resources\ClientAccessResource;
 use App\Models\ClientAccess;
+use App\Models\MailServer;
 use Filament\Actions;
+use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 
@@ -23,10 +25,82 @@ class ListClientAccesses extends ListRecords
     {
         return [
             Actions\CreateAction::make()->label(__("New Client Access")),
+            Actions\Action::make("syncClient")
+                ->form([
+                    Select::make("mail_server")
+                        ->options(MailServer::all()->pluck("name", "id"))
+                        ->required()
+                        ->label(__("Mail Server")),
+                ])
+                ->action(
+                    static fn(array $data) => self::syncClientIpAccesses(
+                        (int) $data["mail_server"]
+                    )
+                )
+                ->label(__("Sync Client Ip Accesses")),
+            Actions\Action::make("syncSender")
+                ->form([
+                    Select::make("mail_server")
+                        ->options(MailServer::all()->pluck("name", "id"))
+                        ->required()
+                        ->label(__("Mail Server")),
+                ])
+                ->action(
+                    static fn(array $data) => self::syncSenderAccesses(
+                        (int) $data["mail_server"]
+                    )
+                )
+                ->label(__("Sync Sender Accesses")),
             Actions\Action::make("clear_cache")
                 ->action(static fn() => self::clearAccessCache())
                 ->label(__("Clear Cache")),
         ];
+    }
+
+    private static function syncClientIpAccesses(int $id): void
+    {
+        $accesses = ClientAccess::clientIpAccesses();
+
+        if (!empty($accesses)) {
+            try {
+                MailServer::find($id)->syncClientIpAccesses($accesses);
+            } catch (\Throwable $th) {
+                logger()->error($th);
+                Notification::make()
+                    ->title(__("Failed to synchronize client ip accesses!"))
+                    ->danger()
+                    ->send();
+                return;
+            }
+        }
+
+        Notification::make()
+            ->title(__("Client ip accesses have been synchronized!"))
+            ->success()
+            ->send();
+    }
+
+    private static function syncSenderAccesses(int $id): void
+    {
+        $accesses = ClientAccess::senderAccesses();
+
+        if (!empty($accesses)) {
+            try {
+                MailServer::find($id)->syncSenderAccesses($accesses);
+            } catch (\Throwable $th) {
+                logger()->error($th);
+                Notification::make()
+                    ->title(__("Failed to synchronize sender accesses!"))
+                    ->danger()
+                    ->send();
+                return;
+            }
+        }
+
+        Notification::make()
+            ->title(__("Sender accesses have been synchronized!"))
+            ->success()
+            ->send();
     }
 
     private static function clearAccessCache(): void
