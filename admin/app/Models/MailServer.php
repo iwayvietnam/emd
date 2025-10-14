@@ -132,10 +132,106 @@ class MailServer extends Model
         }
     }
 
+    public function syncClientIpAccesses(array $accesses): void
+    {
+        if (!empty($accesses)) {
+            $accessFile = config("emd.postfix.client_ip_access");
+            $tempFile = tempnam(sys_get_temp_dir(), "emd");
+            $remoteServer = new RemoteServer(
+                $this->ip_address,
+                $this->ssh_port,
+                $this->ssh_user,
+                $this->ssh_private_key
+            );
+            $remoteServer->uploadContent(
+                $tempFile,
+                implode(PHP_EOL, $accesses)
+            );
+            $remoteServer->runCommand(
+                implode([
+                    sprintf(self::ECHO_CMD, $this->sudo_password),
+                    " | ",
+                    sprintf(self::COPY_CMD, $tempFile, $accessFile),
+                ])
+            );
+            $remoteServer->runCommand(
+                implode([
+                    sprintf(self::ECHO_CMD, $this->sudo_password),
+                    " | ",
+                    sprintf(self::POSTMAP_CMD, $accessFile),
+                ])
+            );
+        }
+    }
+
+    public function syncSenderAccesses(array $accesses): void
+    {
+        if (!empty($accesses)) {
+            $accessFile = config("emd.postfix.sender_access");
+            $tempFile = tempnam(sys_get_temp_dir(), "emd");
+            $remoteServer = new RemoteServer(
+                $this->ip_address,
+                $this->ssh_port,
+                $this->ssh_user,
+                $this->ssh_private_key
+            );
+            $remoteServer->uploadContent(
+                $tempFile,
+                implode(PHP_EOL, $accesses)
+            );
+            $remoteServer->runCommand(
+                implode([
+                    sprintf(self::ECHO_CMD, $this->sudo_password),
+                    " | ",
+                    sprintf(self::COPY_CMD, $tempFile, $accessFile),
+                ])
+            );
+            $remoteServer->runCommand(
+                implode([
+                    sprintf(self::ECHO_CMD, $this->sudo_password),
+                    " | ",
+                    sprintf(self::POSTMAP_CMD, $accessFile),
+                ])
+            );
+        }
+    }
+
+    public function syncRecipientRestrictions(array $restrictions): void
+    {
+        if (!empty($restrictions)) {
+            $restrictionFile = config("emd.postfix.recipient_restriction");
+            $tempFile = tempnam(sys_get_temp_dir(), "emd");
+            $remoteServer = new RemoteServer(
+                $this->ip_address,
+                $this->ssh_port,
+                $this->ssh_user,
+                $this->ssh_private_key
+            );
+            $remoteServer->uploadContent(
+                $tempFile,
+                implode(PHP_EOL, $restrictions)
+            );
+            $remoteServer->runCommand(
+                implode([
+                    sprintf(self::ECHO_CMD, $this->sudo_password),
+                    " | ",
+                    sprintf(self::COPY_CMD, $tempFile, $restrictionFile),
+                ])
+            );
+            $remoteServer->runCommand(
+                implode([
+                    sprintf(self::ECHO_CMD, $this->sudo_password),
+                    " | ",
+                    sprintf(self::POSTMAP_CMD, $restrictionFile),
+                ])
+            );
+        }
+    }
+
     public function syncSenderTransports(array $transports): void
     {
         if (!empty($transports)) {
-            $transportFile = config("emd.sender_transport");
+            $transportFile = config("emd.postfix.sender_transport");
             $tempFile = tempnam(sys_get_temp_dir(), "emd");
             $remoteServer = new RemoteServer(
                 $this->ip_address,

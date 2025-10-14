@@ -3,10 +3,6 @@
 return [
     "app_domain" => env("APP_DOMAIN", "yourdomain.com"),
     "https" => (bool) env("FORCE_HTTPS", false),
-    "sender_transport" => env(
-        "SENDER_TRANSPORT",
-        "/etc/postfix/sender_transport"
-    ),
     "panel" => [
         "id" => env("PANEL_ID", "admin"),
         "path" => env("PANEL_PATH", "admin"),
@@ -30,6 +26,24 @@ return [
         "listen_host" => env("POLICY_LISTEN_HOST", "127.0.0.1"),
         "listen_port" => env("POLICY_LISTEN_PORT", 1403),
         "server_worker" => env("POLICY_SERVER_WORKER", 4),
+    ],
+    "postfix" => [
+        "client_ip_access" => env(
+            "POSTFIX_CLIENT_IP_ACCESS",
+            "/etc/postfix/client_ip_access"
+        ),
+        "sender_access" => env(
+            "POSTFIX_SENDER_ACCESS",
+            "/etc/postfix/sender_access"
+        ),
+        "recipient_restriction" => env(
+            "POSTFIX_RECIPIENT_RESTRICTION",
+            "/etc/postfix/recipient_restriction"
+        ),
+        "sender_transport" => env(
+            "POSTFIX_SENDER_TRANSPORT",
+            "/etc/postfix/sender_transport"
+        ),
     ],
     "warning" => [
         "threshold" => (int) env("WARNING_THRESHOLD", 80),
