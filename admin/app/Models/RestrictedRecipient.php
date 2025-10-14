@@ -56,4 +56,11 @@ class RestrictedRecipient extends Model
     {
         return sha1(implode([self::class, self::CACHE_KEY_SUFFIX]));
     }
+
+    public static function recipient_restrictions(): array
+    {
+        return static::all()->map(
+            static fn ($item) =>  $item->recipient . " " . $item->verdict
+        )->toArray();
+    }
 }
