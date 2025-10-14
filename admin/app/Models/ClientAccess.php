@@ -137,14 +137,14 @@ class ClientAccess extends Model
         return sha1(implode([self::class, self::CACHE_KEY_SUFFIX]));
     }
 
-    public static function client_ip_accesses(): array
+    public static function clientIpAccesses(): array
     {
         return static::all()->map(
             static fn ($item) =>  $item->client_ip . " " . $item->verdict
         )->toArray();
     }
 
-    public static function sender_accesses(): array
+    public static function senderAccesses(): array
     {
         return static::all()->map(
             static fn ($item) =>  $item->sender . " " . $item->verdict
