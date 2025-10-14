@@ -26,7 +26,7 @@ cp /etc/postfix/main.cf{,.orig}
 cp /etc/postfix/master.cf{,.orig}
 ```
 
-#### Configure access control
+#### Configure policy access control
 Type the following commands to edit the Postfix main configuration file:
 ```sh
 postconf -e "smtpd_recipient_restrictions=permit_mynetworks,check_policy_service inet:127.0.0.1:1403,reject"
@@ -34,6 +34,31 @@ postconf -e "smtpd_end_of_data_restrictions=permit_mynetworks,check_policy_servi
 postconf -e smtpd_relay_restrictions=permit
 ```
 Note: Replace `127.0.0.1:1403` with your policy service host and port.
+
+#### Configure client accesses
+Type the following commands to configure client accesses:
+```sh
+touch /etc/postfix/client_ip_access
+postconf -e smtpd_client_restrictions=permit_mynetworks,check_client_access lmdb:/etc/postfix/client_ip_access,reject
+postmap lmdb:/etc/postfix/client_ip_access
+```
+
+#### Configure sender accesses
+Type the following commands to configure sender accesses:
+```sh
+touch /etc/postfix/sender_access
+postconf -e smtpd_sender_restrictions=permit_mynetworks,check_sender_access lmdb:/etc/postfix/sender_access,reject
+postmap lmdb:/etc/postfix/sender_access
+```
+
+#### Configure recipient restrictions
+Type the following commands to configure recipient restrictions:
+```sh
+touch /etc/postfix/recipient_restriction
+postconf -e smtpd_recipient_restrictions=check_recipient_access lmdb:/etc/postfix/recipient_restriction
+postconf -e smtpd_relay_restrictions=permit
+postmap lmdb:/etc/postfix/recipient_restriction
+```
 
 #### Configure sender tranport
 Type the following commands to configure tranport maps for sender:
