@@ -3,8 +3,10 @@
 namespace App\Filament\Resources\RestrictedRecipientResource\Pages;
 
 use App\Filament\Resources\RestrictedRecipientResource;
+use App\Models\MailServer;
 use App\Models\RestrictedRecipient;
 use Filament\Actions;
+use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 
@@ -25,10 +27,46 @@ class ListRestrictedRecipients extends ListRecords
             Actions\CreateAction::make()->label(
                 __("Create Restrict Recipients")
             ),
+            Actions\Action::make("sync")
+                ->form([
+                    Select::make("mail_server")
+                        ->options(MailServer::all()->pluck("name", "id"))
+                        ->required()
+                        ->label(__("Mail Server")),
+                ])
+                ->action(
+                    static fn(array $data) => self::syncRecipientRestrictions(
+                        (int) $data["mail_server"]
+                    )
+                )
+                ->label(__("Sync To Mail Server")),
             Actions\Action::make("clear_cache")
                 ->action(static fn() => self::clearRestrictedCache())
                 ->label(__("Clear Cache")),
         ];
+    }
+
+    private static function syncRecipientRestrictions(int $id): void
+    {
+        $restrictions = RestrictedRecipient::recipientRestrictions();
+
+        if (!empty($restrictions)) {
+            try {
+                MailServer::find($id)->syncRecipientRestrictions($restrictions);
+            } catch (\Throwable $th) {
+                logger()->error($th);
+                Notification::make()
+                    ->title(__("Failed to synchronize recipient restrictions!"))
+                    ->danger()
+                    ->send();
+                return;
+            }
+        }
+
+        Notification::make()
+            ->title(__("Recipient restrictions have been synchronized!"))
+            ->success()
+            ->send();
     }
 
     private static function clearRestrictedCache(): void
