@@ -5,6 +5,7 @@ namespace App\Mail\Policy\Adapter;
 use App\Mail\Policy\Interface\AdapterInterface;
 use App\Mail\Policy\Interface\PolicyInterface;
 use App\Mail\Policy\PolicyRequest;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Base adapter class
@@ -32,7 +33,7 @@ abstract class Base implements AdapterInterface
 
     protected function onConnect(string $remoteIp, int $remotePort): void
     {
-        logger()->debug("Access policy {remote_ip}:{remote_port} connect.", [
+        Log::debug("Access policy {remote_ip}:{remote_port} connect.", [
             "remote_ip" => $remoteIp,
             "remote_port" => $remotePort,
         ]);
@@ -40,7 +41,7 @@ abstract class Base implements AdapterInterface
 
     protected function onClose(string $remoteIp, int $remotePort): void
     {
-        logger()->debug("Access policy {remote_ip}:{remote_port} closed.", [
+        Log::debug("Access policy {remote_ip}:{remote_port} closed.", [
             "remote_ip" => $remoteIp,
             "remote_port" => $remotePort,
         ]);
