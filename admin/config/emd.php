@@ -27,10 +27,10 @@ return [
             "OPENDKIM_SIGNING_TABLE", "/etc/opendkim/SigningTable"
         ),
         "key_table" => env(
-            "OPENDKIM_KEY_TABLE", "/etc/postfix/KeyTable"
+            "OPENDKIM_KEY_TABLE", "/etc/opendkim/KeyTable"
         ),
         "trusted_hosts" => env(
-            "OPENDKIM_TRUSTED_HOSTS", "/etc/postfix/TrustedHosts"
+            "OPENDKIM_TRUSTED_HOSTS", "/etc/opendkim/TrustedHosts"
         ),
         "keys_directory" => env(
             "OPENDKIM_KEYS_DIRECTORY", "/etc/opendkim/keys"

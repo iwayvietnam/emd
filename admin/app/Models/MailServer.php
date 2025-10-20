@@ -137,6 +137,7 @@ class MailServer extends Model
         array $keyTable,
         array $privateKeys,
     ): void {
+        $tempFile = tempnam(sys_get_temp_dir(), "opendkim");
         $remoteServer = new RemoteServer(
             $this->ip_address,
             $this->ssh_port,
@@ -144,7 +145,6 @@ class MailServer extends Model
             $this->ssh_private_key,
         );
         if (!empty($signingTable)) {
-            $tempFile = tempnam(sys_get_temp_dir(), "opendkim");
             $remoteServer->uploadContent(
                 $tempFile,
                 implode(PHP_EOL, $signingTable),
@@ -162,7 +162,6 @@ class MailServer extends Model
             );
         }
         if (!empty($keyTable)) {
-            $tempFile = tempnam(sys_get_temp_dir(), "opendkim");
             $remoteServer->uploadContent(
                 $tempFile,
                 implode(PHP_EOL, $keyTable),
@@ -181,7 +180,6 @@ class MailServer extends Model
         }
         if (!empty($privateKeys)) {
             foreach ($privateKeys as $file => $content) {
-                $tempFile = tempnam(sys_get_temp_dir(), "opendkim");
                 $remoteServer->uploadContent(
                     $tempFile,
                     $content,
