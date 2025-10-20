@@ -154,4 +154,13 @@ class ClientAccess extends Model
         }
         return $accesses;
     }
+
+    public static function opendkimTrustedHosts()
+    {
+        $hosts = ["127.0.0.1", "::1"];
+        foreach (static::all() as $item) {
+            $hosts[$item->client_ip] = $item->client_ip;
+        }
+        return $hosts;
+    }
 }
