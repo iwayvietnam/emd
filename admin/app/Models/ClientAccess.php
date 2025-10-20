@@ -141,7 +141,7 @@ class ClientAccess extends Model
     {
         $accesses = [];
         foreach (static::all() as $item) {
-            $accesses[$item->client_ip] = $item->client_ip . " " . $item->verdict
+            $accesses[$item->client_ip] = $item->client_ip . " " . $item->verdict;
         }
         return $accesses;
     }
@@ -150,7 +150,7 @@ class ClientAccess extends Model
     {
         $accesses = [];
         foreach (static::all() as $item) {
-            $accesses[$item->sender] = $item->sender . " " . $item->verdict
+            $accesses[$item->sender] = $item->sender . " " . $item->verdict;
         }
         return $accesses;
     }
