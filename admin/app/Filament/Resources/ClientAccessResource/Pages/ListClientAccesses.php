@@ -48,10 +48,13 @@ class ListClientAccesses extends ListRecords
     {
         $clientIps = ClientAccess::clientIpAccesses();
         $senders = ClientAccess::senderAccesses();
+        $trustedHosts = ClientAccess::trustedHosts();
 
-        if (!empty($clientIps) || !empty($senders)) {
+        if (!empty($clientIps) || !empty($senders) || !empty($trustedHosts)) {
             try {
-                MailServer::find($id)->syncClientAccesses($clientIps, $senders);
+                $mailServer = MailServer::find($id)
+                $mailServer->syncClientAccesses($clientIps, $senders);
+                $mailServer->syncOpenDkimTrustedHosts($trustedHosts);
             } catch (\Throwable $th) {
                 logger()->error($th);
                 Notification::make()

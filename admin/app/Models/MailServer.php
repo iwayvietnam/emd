@@ -199,6 +199,34 @@ class MailServer extends Model
         }
     }
 
+    public function syncOpenDkimTrustedHosts(array $trustedHosts): void
+    {
+        if (!empty($trustedHosts)) {
+            $tempFile = tempnam(sys_get_temp_dir(), "opendkim");
+            $remoteServer = new RemoteServer(
+                $this->ip_address,
+                $this->ssh_port,
+                $this->ssh_user,
+                $this->ssh_private_key,
+            );
+            $remoteServer->uploadContent(
+                $tempFile,
+                implode(PHP_EOL, $trustedHosts),
+            );
+            $remoteServer->runCommand(
+                implode([
+                    sprintf(self::ECHO_CMD, $this->sudo_password),
+                    " | ",
+                    sprintf(
+                        self::COPY_CMD,
+                        $tempFile,
+                        config("emd.opendkim.trusted_hosts"),
+                    ),
+                ]),
+            );
+        }
+    }
+
     public function syncClientAccesses(array $clientIps, array $senders): void
     {
         $this->syncLmdbTable(
