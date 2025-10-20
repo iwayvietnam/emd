@@ -132,18 +132,19 @@ class MailServer extends Model
         }
     }
 
-    public function syncOpenDkimTables(
+    public function syncOpenDkimKeys(
         array $signingTable,
         array $keyTable,
+        array $privateKeys,
     ): void {
         $tempFile = tempnam(sys_get_temp_dir(), "opendkim");
+        $remoteServer = new RemoteServer(
+            $this->ip_address,
+            $this->ssh_port,
+            $this->ssh_user,
+            $this->ssh_private_key,
+        );
         if (!empty($signingTable)) {
-            $remoteServer = new RemoteServer(
-                $this->ip_address,
-                $this->ssh_port,
-                $this->ssh_user,
-                $this->ssh_private_key,
-            );
             $remoteServer->uploadContent(
                 $tempFile,
                 implode(PHP_EOL, $signingTable),
@@ -161,12 +162,6 @@ class MailServer extends Model
             );
         }
         if (!empty($keyTable)) {
-            $remoteServer = new RemoteServer(
-                $this->ip_address,
-                $this->ssh_port,
-                $this->ssh_user,
-                $this->ssh_private_key,
-            );
             $remoteServer->uploadContent(
                 $tempFile,
                 implode(PHP_EOL, $keyTable),
@@ -182,6 +177,25 @@ class MailServer extends Model
                     ),
                 ]),
             );
+        }
+        if (!empty($privateKeys)) {
+            foreach ($privateKeys as $file => $content) {
+                $remoteServer->uploadContent(
+                    $tempFile,
+                    $content,
+                );
+                $remoteServer->runCommand(
+                    implode([
+                        sprintf(self::ECHO_CMD, $this->sudo_password),
+                        " | ",
+                        sprintf(
+                            self::COPY_CMD,
+                            $tempFile,
+                            $file,
+                        ),
+                    ]),
+                );
+            }
         }
     }
 
