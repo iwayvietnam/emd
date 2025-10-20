@@ -226,7 +226,7 @@ class MailServer extends Model
 
     private function syncLmdbTable(
         array $table,
-        string $configFile,
+        string $file,
     ): void {
         if (!empty($table)) {
             $tempFile = tempnam(sys_get_temp_dir(), "postfix");
@@ -244,14 +244,14 @@ class MailServer extends Model
                 implode([
                     sprintf(self::ECHO_CMD, $this->sudo_password),
                     " | ",
-                    sprintf(self::COPY_CMD, $tempFile, $configFile),
+                    sprintf(self::COPY_CMD, $tempFile, $file),
                 ]),
             );
             $remoteServer->runCommand(
                 implode([
                     sprintf(self::ECHO_CMD, $this->sudo_password),
                     " | ",
-                    sprintf(self::POSTMAP_CMD, $configFile),
+                    sprintf(self::POSTMAP_CMD, $file),
                 ]),
             );
         }
