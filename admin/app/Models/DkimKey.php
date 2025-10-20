@@ -70,10 +70,28 @@ class DkimKey extends Model
                 $keyDir,
                 DIRECTORY_SEPARATOR,
                 $item->domain,
-                DIRECTORY_SEPARATOR,
+                '-',
                 $item->selector,
-                ".private",
             ]);
+        }
+
+        return $rows;
+    }
+
+    public static function privateKeys(): array
+    {
+        $rows = [];
+        $keyDir = config("emd.opendkim.keys_directory");
+
+        foreach (static::all() as $item) {
+            $keyFile = implode([
+                $keyDir,
+                DIRECTORY_SEPARATOR,
+                $item->domain,
+                '-',
+                $item->selector,
+            ]);
+            $rows[$keyFile] = $item->private_key;
         }
 
         return $rows;
