@@ -62,10 +62,10 @@ class MailServer extends Model
                 $this->ip_address,
                 $this->ssh_port,
                 $this->ssh_user,
-                $this->ssh_private_key
+                $this->ssh_private_key,
             ),
             $this->sudo_password,
-            $configDir
+            $configDir,
         );
         return collect($remoteQueue->listQueue())
             ->map(function ($queue) {
@@ -77,24 +77,24 @@ class MailServer extends Model
 
     public function queueContent(
         string $queueId,
-        string $configDir = self::CONFIG_DIR
+        string $configDir = self::CONFIG_DIR,
     ): string {
         $remoteQueue = new RemoteQueue(
             new RemoteServer(
                 $this->ip_address,
                 $this->ssh_port,
                 $this->ssh_user,
-                $this->ssh_private_key
+                $this->ssh_private_key,
             ),
             $this->sudo_password,
-            $configDir
+            $configDir,
         );
         return $remoteQueue->queueContent($queueId);
     }
 
     public function flushQueue(
         array $queueIds = [],
-        string $configDir = self::CONFIG_DIR
+        string $configDir = self::CONFIG_DIR,
     ): void {
         if (!empty($queueIds)) {
             $remoteQueue = new RemoteQueue(
@@ -102,10 +102,10 @@ class MailServer extends Model
                     $this->ip_address,
                     $this->ssh_port,
                     $this->ssh_user,
-                    $this->ssh_private_key
+                    $this->ssh_private_key,
                 ),
                 $this->sudo_password,
-                $configDir
+                $configDir,
             );
             foreach ($queueIds as $queueId) {
                 $remoteQueue->flushQueue($queueId);
@@ -115,7 +115,7 @@ class MailServer extends Model
 
     public function deleteQueue(
         array $queueIds = [],
-        string $configDir = self::CONFIG_DIR
+        string $configDir = self::CONFIG_DIR,
     ) {
         if (!empty($queueIds)) {
             $remoteQueue = new RemoteQueue(
@@ -123,62 +123,126 @@ class MailServer extends Model
                     $this->ip_address,
                     $this->ssh_port,
                     $this->ssh_user,
-                    $this->ssh_private_key
+                    $this->ssh_private_key,
                 ),
                 $this->sudo_password,
-                $configDir
+                $configDir,
             );
             $remoteQueue->deleteQueue($queueIds);
         }
     }
 
-    public function syncClientIpAccesses(array $accesses): void
-    {
-        $this->syncPostfixConfig($accesses, config("emd.postfix.client_ip_access"));
-    }
-
-    public function syncSenderAccesses(array $accesses): void
-    {
-        $this->syncPostfixConfig($accesses, config("emd.postfix.sender_access"));
-    }
-
-    public function syncRecipientRestrictions(array $restrictions): void
-    {
-        $this->syncPostfixConfig($restrictions, config("emd.postfix.recipient_restriction"));
-    }
-
-    public function syncSenderTransports(array $transports): void
-    {
-        $this->syncPostfixConfig($transports, config("emd.postfix.sender_transport"));
-    }
-
-    private function syncPostfixConfig(array $contents, string $configFile): void
-    {
-        if (!empty($contents)) {
-            $tempFile = tempnam(sys_get_temp_dir(), "emd");
+    public function syncOpenDkimTables(
+        array $signingTable,
+        array $keyTable,
+    ): void {
+        $tempFile = tempnam(sys_get_temp_dir(), "opendkim");
+        if (!empty($signingTable)) {
             $remoteServer = new RemoteServer(
                 $this->ip_address,
                 $this->ssh_port,
                 $this->ssh_user,
-                $this->ssh_private_key
+                $this->ssh_private_key,
             );
             $remoteServer->uploadContent(
                 $tempFile,
-                implode(PHP_EOL, $contents)
+                implode(PHP_EOL, $signingTable),
+            );
+            $remoteServer->runCommand(
+                implode([
+                    sprintf(self::ECHO_CMD, $this->sudo_password),
+                    " | ",
+                    sprintf(
+                        self::COPY_CMD,
+                        $tempFile,
+                        config("emd.opendkim.signing_table"),
+                    ),
+                ]),
+            );
+        }
+        if (!empty($keyTable)) {
+            $remoteServer = new RemoteServer(
+                $this->ip_address,
+                $this->ssh_port,
+                $this->ssh_user,
+                $this->ssh_private_key,
+            );
+            $remoteServer->uploadContent(
+                $tempFile,
+                implode(PHP_EOL, $keyTable),
+            );
+            $remoteServer->runCommand(
+                implode([
+                    sprintf(self::ECHO_CMD, $this->sudo_password),
+                    " | ",
+                    sprintf(
+                        self::COPY_CMD,
+                        $tempFile,
+                        config("emd.opendkim.key_table"),
+                    ),
+                ]),
+            );
+        }
+    }
+
+    public function syncClientIpAccesses(array $accesses): void
+    {
+        $this->syncPostfixConfig(
+            $accesses,
+            config("emd.postfix.client_ip_access"),
+        );
+    }
+
+    public function syncSenderAccesses(array $accesses): void
+    {
+        $this->syncPostfixConfig(
+            $accesses,
+            config("emd.postfix.sender_access"),
+        );
+    }
+
+    public function syncRecipientRestrictions(array $restrictions): void
+    {
+        $this->syncPostfixConfig($restrictions);
+    }
+
+    public function syncSenderTransports(array $transports): void
+    {
+        $this->syncPostfixConfig(
+            $transports,
+            config("emd.postfix.sender_transport"),
+        );
+    }
+
+    private function syncPostfixConfig(
+        array $contents,
+        string $configFile,
+    ): void {
+        if (!empty($contents)) {
+            $tempFile = tempnam(sys_get_temp_dir(), "postfix");
+            $remoteServer = new RemoteServer(
+                $this->ip_address,
+                $this->ssh_port,
+                $this->ssh_user,
+                $this->ssh_private_key,
+            );
+            $remoteServer->uploadContent(
+                $tempFile,
+                implode(PHP_EOL, $contents),
             );
             $remoteServer->runCommand(
                 implode([
                     sprintf(self::ECHO_CMD, $this->sudo_password),
                     " | ",
                     sprintf(self::COPY_CMD, $tempFile, $configFile),
-                ])
+                ]),
             );
             $remoteServer->runCommand(
                 implode([
                     sprintf(self::ECHO_CMD, $this->sudo_password),
                     " | ",
                     sprintf(self::POSTMAP_CMD, $configFile),
-                ])
+                ]),
             );
         }
     }
