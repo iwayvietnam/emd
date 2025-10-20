@@ -199,18 +199,14 @@ class MailServer extends Model
         }
     }
 
-    public function syncClientIpAccesses(array $accesses): void
+    public function syncClientAccesses(array $clientIps, array $senders): void
     {
         $this->syncPostfixConfig(
-            $accesses,
+            $clientIps,
             config("emd.postfix.client_ip_access"),
         );
-    }
-
-    public function syncSenderAccesses(array $accesses): void
-    {
         $this->syncPostfixConfig(
-            $accesses,
+            $senders,
             config("emd.postfix.sender_access"),
         );
     }
