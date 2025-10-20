@@ -201,11 +201,11 @@ class MailServer extends Model
 
     public function syncClientAccesses(array $clientIps, array $senders): void
     {
-        $this->syncPostfixConfig(
+        $this->syncLmdbTable(
             $clientIps,
             config("emd.postfix.client_ip_access"),
         );
-        $this->syncPostfixConfig(
+        $this->syncLmdbTable(
             $senders,
             config("emd.postfix.sender_access"),
         );
@@ -213,22 +213,22 @@ class MailServer extends Model
 
     public function syncRecipientRestrictions(array $restrictions): void
     {
-        $this->syncPostfixConfig($restrictions);
+        $this->syncLmdbTable($restrictions);
     }
 
     public function syncSenderTransports(array $transports): void
     {
-        $this->syncPostfixConfig(
+        $this->syncLmdbTable(
             $transports,
             config("emd.postfix.sender_transport"),
         );
     }
 
-    private function syncPostfixConfig(
-        array $contents,
+    private function syncLmdbTable(
+        array $table,
         string $configFile,
     ): void {
-        if (!empty($contents)) {
+        if (!empty($table)) {
             $tempFile = tempnam(sys_get_temp_dir(), "postfix");
             $remoteServer = new RemoteServer(
                 $this->ip_address,
@@ -238,7 +238,7 @@ class MailServer extends Model
             );
             $remoteServer->uploadContent(
                 $tempFile,
-                implode(PHP_EOL, $contents),
+                implode(PHP_EOL, $table),
             );
             $remoteServer->runCommand(
                 implode([
