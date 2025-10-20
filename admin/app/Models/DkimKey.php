@@ -33,4 +33,26 @@ class DkimKey extends Model
         "private_key",
         "dns_record",
     ];
+
+    public static function signingTable(): array
+    {
+        $rows = [];
+
+        foreach (static::all() as $item) {
+            $rows[$item->domain] = $item->domain . ' ' . $item->selector . "._domainkey." . $item->domain;
+        }
+
+        return $rows;
+    }
+
+    public static function keyTable(): array
+    {
+        $rows = [];
+
+        foreach (static::all() as $item) {
+            $rows[$item->domain] = $item->selector . "._domainkey." . $item->domain;
+        }
+
+        return $rows;
+    }
 }
