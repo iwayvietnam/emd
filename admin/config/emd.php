@@ -29,20 +29,16 @@ return [
     ],
     "postfix" => [
         "client_ip_access" => env(
-            "POSTFIX_CLIENT_IP_ACCESS",
-            "/etc/postfix/client_ip_access"
+            "POSTFIX_CLIENT_IP_ACCESS", "/etc/postfix/client_ip_access"
         ),
         "sender_access" => env(
-            "POSTFIX_SENDER_ACCESS",
-            "/etc/postfix/sender_access"
+            "POSTFIX_SENDER_ACCESS", "/etc/postfix/sender_access"
         ),
         "recipient_restriction" => env(
-            "POSTFIX_RECIPIENT_RESTRICTION",
-            "/etc/postfix/recipient_restriction"
+            "POSTFIX_RECIPIENT_RESTRICTION", "/etc/postfix/recipient_restriction"
         ),
         "sender_transport" => env(
-            "POSTFIX_SENDER_TRANSPORT",
-            "/etc/postfix/sender_transport"
+            "POSTFIX_SENDER_TRANSPORT", "/etc/postfix/sender_transport"
         ),
     ],
     "warning" => [
