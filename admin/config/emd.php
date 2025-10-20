@@ -22,6 +22,17 @@ return [
         "should_queue" => (bool) env("MAIL_SHOULD_QUEUE", true),
         "track_click" => (bool) env("MAIL_TRACK_CLICK", false),
     ],
+    "opendkim" => [
+        "signing_table" => env(
+            "OPENDKIM_SIGNING_TABLE", "/etc/opendkim/SigningTable"
+        ),
+        "key_table" => env(
+            "OPENDKIM_KEY_TABLE", "/etc/postfix/KeyTable"
+        ),
+        "trusted_hosts" => env(
+            "OPENDKIM_TRUSTED_HOSTS", "/etc/postfix/TrustedHosts"
+        ),
+    ],
     "policy" => [
         "listen_host" => env("POLICY_LISTEN_HOST", "127.0.0.1"),
         "listen_port" => env("POLICY_LISTEN_PORT", 1403),
