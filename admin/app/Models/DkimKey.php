@@ -39,7 +39,14 @@ class DkimKey extends Model
         $rows = [];
 
         foreach (static::all() as $item) {
-            $rows[$item->domain] = $item->domain . ' ' . $item->selector . "._domainkey." . $item->domain;
+            $rows[$item->domain] = implode([
+                "*@",
+                $item->domain,
+                " ",
+                $item->selector,
+                "._domainkey.",
+                $item->domain,
+            ]);
         }
 
         return $rows;
@@ -48,9 +55,25 @@ class DkimKey extends Model
     public static function keyTable(): array
     {
         $rows = [];
+        $keyDir = config("emd.opendkim.keys_directory");
 
         foreach (static::all() as $item) {
-            $rows[$item->domain] = $item->selector . "._domainkey." . $item->domain;
+            $rows[$item->domain] = implode([
+                $item->selector,
+                "._domainkey.",
+                $item->domain,
+                " ",
+                $item->domain,
+                ":",
+                $item->selector,
+                ":",
+                $keyDir,
+                DIRECTORY_SEPARATOR,
+                $item->domain,
+                DIRECTORY_SEPARATOR,
+                $item->selector,
+                ".private",
+            ]);
         }
 
         return $rows;
