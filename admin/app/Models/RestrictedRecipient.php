@@ -59,8 +59,10 @@ class RestrictedRecipient extends Model
 
     public static function recipientRestrictions(): array
     {
-        return static::all()->map(
-            static fn ($item) =>  $item->recipient . " " . $item->verdict
-        )->toArray();
+        $accesses = [];
+        foreach (static::all() as $item) {
+            $accesses[$item->recipient] = $item->recipient . " " . $item->verdict;
+        }
+        return $accesses;
     }
 }
