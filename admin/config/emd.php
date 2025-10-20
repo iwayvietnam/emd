@@ -32,6 +32,9 @@ return [
         "trusted_hosts" => env(
             "OPENDKIM_TRUSTED_HOSTS", "/etc/postfix/TrustedHosts"
         ),
+        "keys_directory" => env(
+            "OPENDKIM_KEYS_DIRECTORY", "/etc/opendkim/keys"
+        ),
     ],
     "policy" => [
         "listen_host" => env("POLICY_LISTEN_HOST", "127.0.0.1"),
