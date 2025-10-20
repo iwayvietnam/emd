@@ -67,7 +67,7 @@ class Message extends Model
 
         static::creating(
             static fn(self $model) => ($model->hash =
-                $model->hash ?: Str::uuid()->toString())
+                $model->hash ?: Str::uuid()->toString()),
         );
 
         static::created(static function (self $model) {
@@ -84,7 +84,7 @@ class Message extends Model
             preg_match_all(self::HREF_PATTERN, $model->content, $matches);
             $urls = array_filter(
                 $matches["href"] ?? [],
-                static fn($href) => filter_var($href, FILTER_VALIDATE_URL)
+                static fn($href) => filter_var($href, FILTER_VALIDATE_URL),
             );
             foreach ($urls as $url) {
                 MessageUrl::create([

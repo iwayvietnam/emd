@@ -26,12 +26,7 @@ class SenderTransport extends Model
      *
      * @var list<string>
      */
-    protected $fillable = [
-        "client_id",
-        "transport_id",
-        "sender",
-        "transport",
-    ];
+    protected $fillable = ["client_id", "transport_id", "sender", "transport"];
 
     public function client(): BelongsTo
     {
@@ -45,8 +40,8 @@ class SenderTransport extends Model
 
     public static function transports(): array
     {
-        return static::all()->map(
-            static fn ($item) =>  $item->sender . " " . $item->transport
-        )->toArray();
+        return static::all()
+            ->map(static fn($item) => $item->sender . " " . $item->transport)
+            ->toArray();
     }
 }

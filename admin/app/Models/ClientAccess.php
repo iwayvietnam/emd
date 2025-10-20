@@ -61,7 +61,7 @@ class ClientAccess extends Model
     {
         return $this->viewLimitCounter(
             $this->limitCounterKey(self::RATE_LIMIT_SUFFIX),
-            $this->policy->rate_limit
+            $this->policy->rate_limit,
         );
     }
 
@@ -69,23 +69,19 @@ class ClientAccess extends Model
     {
         return $this->viewLimitCounter(
             $this->limitCounterKey(self::QUOTA_LIMIT_SUFFIX),
-            $this->policy->quota_limit
+            $this->policy->quota_limit,
         );
     }
 
     public function clearRateCounter(): self
     {
-        RateLimiter::clear(
-            $this->limitCounterKey(self::RATE_LIMIT_SUFFIX)
-        );
+        RateLimiter::clear($this->limitCounterKey(self::RATE_LIMIT_SUFFIX));
         return $this;
     }
 
     public function clearQuotaCounter(): self
     {
-        RateLimiter::clear(
-            $this->limitCounterKey(self::QUOTA_LIMIT_SUFFIX)
-        );
+        RateLimiter::clear($this->limitCounterKey(self::QUOTA_LIMIT_SUFFIX));
         return $this;
     }
 
@@ -117,13 +113,15 @@ class ClientAccess extends Model
         Cache::forget(self::cacheKey());
     }
 
-    private function viewLimitCounter(string $counterKey, int $maxAttempts = 0): array
-    {
+    private function viewLimitCounter(
+        string $counterKey,
+        int $maxAttempts = 0,
+    ): array {
         return [
-            'attempts' => RateLimiter::attempts($counterKey),
-            'availableIn' => RateLimiter::availableIn($counterKey),
-            'maxAttempts' => $maxAttempts,
-            'remaining' => RateLimiter::remaining($counterKey, $maxAttempts),
+            "attempts" => RateLimiter::attempts($counterKey),
+            "availableIn" => RateLimiter::availableIn($counterKey),
+            "maxAttempts" => $maxAttempts,
+            "remaining" => RateLimiter::remaining($counterKey, $maxAttempts),
         ];
     }
 
@@ -141,7 +139,8 @@ class ClientAccess extends Model
     {
         $accesses = [];
         foreach (static::all() as $item) {
-            $accesses[$item->client_ip] = $item->client_ip . " " . $item->verdict;
+            $accesses[$item->client_ip] =
+                $item->client_ip . " " . $item->verdict;
         }
         return $accesses;
     }

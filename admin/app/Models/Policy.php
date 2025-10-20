@@ -51,8 +51,8 @@ class Policy extends Model
         static::deleting(
             static fn(self $model) => ClientAccess::where(
                 "policy_id",
-                $model->id
-            )->delete()
+                $model->id,
+            )->delete(),
         );
     }
 }

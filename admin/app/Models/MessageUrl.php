@@ -46,7 +46,7 @@ class MessageUrl extends Model
 
         static::creating(
             static fn(self $model) => ($model->hash =
-                $model->hash ?: Str::uuid()->toString())
+                $model->hash ?: Str::uuid()->toString()),
         );
     }
 

@@ -45,7 +45,7 @@ class Attachment extends Model
         parent::boot();
 
         static::deleting(
-            static fn(self $model) => Storage::delete($model->file_path)
+            static fn(self $model) => Storage::delete($model->file_path),
         );
     }
 

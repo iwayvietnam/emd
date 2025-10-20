@@ -61,7 +61,8 @@ class RestrictedRecipient extends Model
     {
         $accesses = [];
         foreach (static::all() as $item) {
-            $accesses[$item->recipient] = $item->recipient . " " . $item->verdict;
+            $accesses[$item->recipient] =
+                $item->recipient . " " . $item->verdict;
         }
         return $accesses;
     }

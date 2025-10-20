@@ -51,7 +51,7 @@ class DmarcReport extends Model
         return $this->hasMany(
             DmarcReportRecord::class,
             "report_id",
-            "report_id"
+            "report_id",
         );
     }
 }

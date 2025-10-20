@@ -46,6 +46,6 @@ class DmarcReportRecord extends Model
 
     public function report(): BelongsTo
     {
-        return $this->belongsTo(DmarcReport::class, 'report_id', 'report_id');
+        return $this->belongsTo(DmarcReport::class, "report_id", "report_id");
     }
 }

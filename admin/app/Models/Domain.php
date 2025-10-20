@@ -26,12 +26,7 @@ class Domain extends Model
      *
      * @var list<string>
      */
-    protected $fillable = [
-        "name",
-        "email",
-        "organization",
-        "description",
-    ];
+    protected $fillable = ["name", "email", "organization", "description"];
 
     public function clients(): HasMany
     {

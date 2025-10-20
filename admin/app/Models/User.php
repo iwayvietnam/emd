@@ -56,10 +56,7 @@ class User extends Authenticatable implements FilamentUser
     {
         $domain = config("emd.app_domain");
         if (!empty($domain)) {
-            return str_ends_with(
-                $this->email,
-                "@" . $domain
-            );
+            return str_ends_with($this->email, "@" . $domain);
         }
         return false;
     }
