@@ -139,15 +139,19 @@ class ClientAccess extends Model
 
     public static function clientIpAccesses(): array
     {
-        return static::all()->map(
-            static fn ($item) =>  $item->client_ip . " " . $item->verdict
-        )->toArray();
+        $accesses = [];
+        foreach (static::all() as $item) {
+            $accesses[$item->client_ip] = $item->client_ip . " " . $item->verdict
+        }
+        return $accesses;
     }
 
     public static function senderAccesses(): array
     {
-        return static::all()->map(
-            static fn ($item) =>  $item->sender . " " . $item->verdict
-        )->toArray();
+        $accesses = [];
+        foreach (static::all() as $item) {
+            $accesses[$item->sender] = $item->sender . " " . $item->verdict
+        }
+        return $accesses;
     }
 }
