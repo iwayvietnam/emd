@@ -40,19 +40,6 @@ class Policy implements PolicyInterface
                         "Client access is not allowed!"
                     );
                 }
-                if (self::rateIsExceeded($request, $clientAccesses)) {
-                    Log::error(
-                        "Rate limit of client {sender}:{address} is exceeded",
-                        [
-                            "sender" => $request->getSender(),
-                            "address" => $request->getClientAddress(),
-                        ]
-                    );
-                    return new PolicyResponse(
-                        AccessVerdict::Reject,
-                        "Rate limit is exceeded. Retry later!"
-                    );
-                }
                 if (self::recipientIsRestricted($request)) {
                     Log::error(
                         "Recipient {recipient} of client {sender}:{address} is restricted.",
@@ -65,6 +52,19 @@ class Policy implements PolicyInterface
                     return new PolicyResponse(
                         AccessVerdict::Reject,
                         "Recipient address is restricted!"
+                    );
+                }
+                if (self::rateIsExceeded($request, $clientAccesses)) {
+                    Log::error(
+                        "Rate limit of client {sender}:{address} is exceeded",
+                        [
+                            "sender" => $request->getSender(),
+                            "address" => $request->getClientAddress(),
+                        ]
+                    );
+                    return new PolicyResponse(
+                        AccessVerdict::Reject,
+                        "Rate limit is exceeded. Retry later!"
                     );
                 }
                 return new PolicyResponse(AccessVerdict::Ok);
