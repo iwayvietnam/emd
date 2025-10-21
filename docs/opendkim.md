@@ -39,15 +39,25 @@ Syslog                  Yes
 SyslogSuccess           Yes
 Mode                    sv
 Canonicalization        relaxed/simple
-SigningTable dsn:mysql://user:password@port+host/database/table=dkim_keys?keycol=domain?datacol=id
-KeyTable     dsn:mysql://user:password@port+host/database/table=dkim_keys?keycol=id?datacol=domain,selector,private_key
 SignatureAlgorithm      rsa-sha256
 Socket                  inet:8891@localhost
 PidFile                 /var/run/opendkim/opendkim.pid
 UMask                   022
 UserID                  opendkim:opendkim
 ```
-Replace `SigningTable` & `KeyTable` with your database configuration.
+
+Config `SigningTable` & `KeyTable` with mysql:
+```
+SigningTable dsn:mysql://user:password@port+host/database/table=dkim_keys?keycol=domain?datacol=id
+KeyTable     dsn:mysql://user:password@port+host/database/table=dkim_keys?keycol=id?datacol=domain,selector,private_key
+```
+
+Config `SigningTable` & `KeyTable` with refile:
+```
+SigningTable refile:/etc/opendkim/KeyTable
+KeyTable     refile:/etc/opendkim/SigningTable
+```
+
 
 ### Enable and start OpenDKIM service
 ```sh
