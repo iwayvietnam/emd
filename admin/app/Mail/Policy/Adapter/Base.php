@@ -36,7 +36,7 @@ abstract class Base implements AdapterInterface
         Log::debug("Access policy {remote_ip}:{remote_port} connect at {time}.", [
             "remote_ip" => $remoteIp,
             "remote_port" => $remotePort,
-            "time" => microtime(),
+            "time" => hrtime(true),
         ]);
     }
 
@@ -45,7 +45,7 @@ abstract class Base implements AdapterInterface
         Log::debug("Access policy {remote_ip}:{remote_port} closed as {time}.", [
             "remote_ip" => $remoteIp,
             "remote_port" => $remotePort,
-            "time" => microtime(),
+            "time" => hrtime(true),
         ]);
     }
 }
