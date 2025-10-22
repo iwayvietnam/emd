@@ -54,8 +54,8 @@ KeyTable     dsn:mysql://user:password@port+host/database/table=dkim_keys?keycol
 
 Config `SigningTable` & `KeyTable` with refile:
 ```
-SigningTable refile:/etc/opendkim/KeyTable
-KeyTable     refile:/etc/opendkim/SigningTable
+SigningTable refile:/etc/opendkim/SigningTable
+KeyTable     refile:/etc/opendkim/KeyTable
 ```
 
 
