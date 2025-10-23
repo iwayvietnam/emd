@@ -38,7 +38,7 @@ class PolicyDelegate extends Command
     {
         echo (new Policy())
             ->check(PolicyRequest::fromData(self::readInput()))
-            ->getAction() . PHP_EOL;
+            ->getAction() . PHP_EOL . PHP_EOL;
 
         return Command::SUCCESS;
     }
