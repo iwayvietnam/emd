@@ -38,7 +38,7 @@ log global
 #option tcplog 
 timeout server 1m
 timeout connect 30s
-server postfix-gateway 10.16.164.122:25 send-proxy
+server postfix-gateway 1 send-proxy
 
 ###
 #backend postfix-ad
@@ -48,7 +48,7 @@ log global
 #option tcplog 
 timeout server 1m
 timeout connect 30s
-server postfix-ad 10.16.164.118:25 send-proxy
+server postfix-ad 1 send-proxy
 
 ###
 #backend postfix-otp
@@ -58,7 +58,7 @@ log global
 #option tcplog 
 timeout server 1m
 timeout connect 30s
-server postfix-ad 10.16.164.116:25 send-proxy
+server postfix-ad 1 send-proxy
 
 ###backend auth_care
 backend bk_auth_care
@@ -68,10 +68,10 @@ log global
 balance roundrobin
 timeout server 1m
 timeout connect 30s
-server old-auth-care84 202.74.56.84:25 check weight 3
-server old-auth-care85 202.74.56.85:25 check weight 3
-server old-auth-care88 202.74.56.88:25 check weight 3
-server new-auth 10.16.164.118:25 check send-proxy weight 1
+server old-auth-care84 2 check weight 3
+server old-auth-care85 2 check weight 3
+server old-auth-care88 2check weight 3
+server new-auth 1 check send-proxy weight 1
 
 ###backend auth_relay
 backend bk_auth_relay
@@ -81,9 +81,9 @@ log global
 balance roundrobin
 timeout server 1m
 timeout connect 30s
-server old-auth-relay55 10.16.164.55:25 check weight 4
-server old-auth-relay56 10.16.164.56:25 check weight 4
-server new-auth 10.16.164.118:25 check send-proxy weight 1
+server old-auth-relay55 10 check weight 4
+server old-auth-relay56 10 check weight 4
+server new-auth 10 check send-proxy weight 1
 
 ###backend auth_vpb
 backend bk_auth_vpb
@@ -93,9 +93,9 @@ log global
 balance roundrobin
 timeout server 1m
 timeout connect 30s
-server old-auth-vpb44 202.74.56.44:25 check weight 4
-server old-auth-vpb45 202.74.56.45:25 check weight 4
-server new-auth 10.16.164.118:25 check send-proxy weight 1
+server old-auth-vpb44 202 check weight 4
+server old-auth-vpb45 202 check weight 4
+server new-auth 10 check send-proxy weight 1
 
 ###backend auth_einvoice
 backend bk_auth_einvoice
@@ -105,8 +105,8 @@ log global
 balance roundrobin
 timeout server 1m
 timeout connect 30s
-server old-auth-einvoice54 202.74.56.54:25 check weight 9
-server new-auth 10.16.164.118:25 check send-proxy weight 1
+server old-auth-einvoice54 20 check weight 9
+server new-auth 10 check send-proxy weight 1
 
 ###backend relay
 backend bk_relay
@@ -116,9 +116,9 @@ log global
 balance roundrobin
 timeout server 1m
 timeout connect 30s
-server old-relay200 202.74.56.200:25 check weight 4
-server old-relay223 202.74.56.223:25 check weight 4
-server new-no-auth 10.16.164.122:25 check send-proxy weight 1
+server old-relay200 20 check weight 4
+server old-relay223 20 check weight 4
+server new-no-auth 10 check send-proxy weight 1
 
 ###backend internal
 backend bk_internal
@@ -128,8 +128,8 @@ log global
 balance roundrobin
 timeout server 1m
 timeout connect 30s
-#server old-internal53 10.16.164.53:25 check weight 9
-server new-no-auth 10.16.164.122:25 check send-proxy weight 1
+#server old-internal53  check weight 9
+server new-no-auth 10.16 check send-proxy weight 1
 
 ###backend no-rules
 backend bk_no_rules
@@ -138,7 +138,7 @@ log global
 #option tcplog 
 timeout server 1m
 timeout connect 30s
-server no-rules 10.16.164.122:2525 check send-proxy
+server no-rules 10. check send-proxy
 
 
 ###
@@ -155,7 +155,7 @@ backend backend_http
   mode http
   http-request set-header X-Forwarded-Proto https if { ssl_fc }
   http-request set-header X-Forwarded-Proto http unless { ssl_fc }
-  server http-in 10.16.164.112:80 check
+  server http-in 10. check
 
 
 ###
@@ -165,5 +165,5 @@ frontend log
   default_backend backend_monitor
 
 backend backend_monitor
-  server monitor 10.16.164.117:5601 check
+  server monitor 10.16:5601 check
                                                
