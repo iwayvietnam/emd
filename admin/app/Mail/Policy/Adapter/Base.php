@@ -34,22 +34,28 @@ abstract class Base implements AdapterInterface
     protected function onConnect(string $remoteIp, int $remotePort): void
     {
         if (config("app.debug")) {
-            Log::debug("Access policy {remote_ip}:{remote_port} connect at {time}.", [
-                "remote_ip" => $remoteIp,
-                "remote_port" => $remotePort,
-                "time" => microtime(true),
-            ]);
+            Log::debug(
+                "Access policy {remote_ip}:{remote_port} connect at {time}.",
+                [
+                    "remote_ip" => $remoteIp,
+                    "remote_port" => $remotePort,
+                    "time" => microtime(true),
+                ],
+            );
         }
     }
 
     protected function onClose(string $remoteIp, int $remotePort): void
     {
         if (config("app.debug")) {
-            Log::debug("Access policy {remote_ip}:{remote_port} closed at {time}.", [
-                "remote_ip" => $remoteIp,
-                "remote_port" => $remotePort,
-                "time" => microtime(true),
-            ]);
+            Log::debug(
+                "Access policy {remote_ip}:{remote_port} closed at {time}.",
+                [
+                    "remote_ip" => $remoteIp,
+                    "remote_port" => $remotePort,
+                    "time" => microtime(true),
+                ],
+            );
         }
     }
 }
