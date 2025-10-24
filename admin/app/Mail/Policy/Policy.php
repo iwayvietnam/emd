@@ -26,7 +26,15 @@ class Policy implements PolicyInterface
      */
     public function check(RequestInterface $request): ResponseInterface
     {
+        $start = hrtime(true);
         $clientAccesses = ClientAccess::cachedAccesses();
+        Log::debug(
+            "Get cached client access in {elapsed_time} ms.",
+            [
+                "elapsed_time" => (hrtime(true) - $start) / 1_000_000,
+            ],
+        );
+
         $state = ProtocolState::tryFrom($request->getProtocolState());
         switch ($state) {
             case ProtocolState::Rcpt:
