@@ -245,7 +245,6 @@ class MailServer extends Model
             $restrictions,
             config("emd.postfix.recipient_restriction"),
         );
-        $this->syncLmdbTable($restrictions);
     }
 
     public function syncSenderTransports(array $transports): void
