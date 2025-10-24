@@ -59,8 +59,8 @@ class RestrictBounced extends Command implements Isolatable
             $recipients = collect(
                 array_map(
                     static fn($record) => $record["recipient"],
-                    RestrictedRecipient::all()->toArray()
-                )
+                    RestrictedRecipient::all()->toArray(),
+                ),
             );
             $codes = collect(self::$restrictCodes);
 
@@ -71,7 +71,7 @@ class RestrictBounced extends Command implements Isolatable
                     preg_match(
                         self::BOUNCED_STATUS_REGEX,
                         $line ?: "",
-                        $matches
+                        $matches,
                     )
                 ) {
                     $recipient = $matches[1];
@@ -87,7 +87,7 @@ class RestrictBounced extends Command implements Isolatable
                         ]);
                         $recipients->push($recipient);
                         $this->info(
-                            "$recipient was added to restrict recipients!"
+                            "$recipient was added to restrict recipients!",
                         );
                     }
                 }
