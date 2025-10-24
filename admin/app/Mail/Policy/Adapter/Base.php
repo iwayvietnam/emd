@@ -34,8 +34,6 @@ abstract class Base implements AdapterInterface
         Log::debug(
             "Access policy checked in {elapsed_time} ms.",
             [
-                "remote_ip" => $remoteIp,
-                "remote_port" => $remotePort,
                 "elapsed_time" => (hrtime(true) - $start) / 1_000_000,
             ],
         );
