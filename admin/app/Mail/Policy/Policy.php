@@ -26,15 +26,7 @@ class Policy implements PolicyInterface
      */
     public function check(RequestInterface $request): ResponseInterface
     {
-        $start = hrtime(true);
         $clientAccesses = ClientAccess::cachedAccesses();
-        Log::debug(
-            "Get cached client accesses in {elapsed_time} ms.",
-            [
-                "elapsed_time" => (hrtime(true) - $start) / 1_000_000,
-            ],
-        );
-
         $state = ProtocolState::tryFrom($request->getProtocolState());
         switch ($state) {
             case ProtocolState::Rcpt:
@@ -106,31 +98,22 @@ class Policy implements PolicyInterface
         RequestInterface $request,
         array $clientAccesses = []
     ): bool {
-        $start = hrtime(true);
         $address = $request->getClientAddress();
         $sender = $request->getSender();
-        $isRejected = true;
         if (isset($clientAccesses[$sender][$address]["verdict"])) {
             $verdict = $clientAccesses[$sender][$address]["verdict"];
-            $isRejected = AccessVerdict::tryFrom($verdict) === AccessVerdict::Reject;
+            return AccessVerdict::tryFrom($verdict) === AccessVerdict::Reject;
+        } else {
+            return true;
         }
-        Log::debug(
-            "Check client access in {elapsed_time} ms.",
-            [
-                "elapsed_time" => (hrtime(true) - $start) / 1_000_000,
-            ],
-        );
-        return $isRejected;
     }
 
     private static function rateIsExceeded(
         RequestInterface $request,
         array $clientAccesses = []
     ): bool {
-        $start = hrtime(true);
         $address = $request->getClientAddress();
         $sender = $request->getSender();
-        $isExceeded = false;
         if (isset($clientAccesses[$sender][$address]["policy"])) {
             $policy = $clientAccesses[$sender][$address]["policy"];
             if (!empty($policy) && !empty($policy["rate_limit"])) {
@@ -145,20 +128,12 @@ class Policy implements PolicyInterface
                         $policy["rate_limit"]
                     )
                 ) {
-                    $isExceeded = true;
+                    return true;
                 }
-                else {
-                    RateLimiter::hit($counterKey, $policy["rate_period"]);
-                }
+                RateLimiter::hit($counterKey, $policy["rate_period"]);
             }
         }
-        Log::debug(
-            "Check rate is exceeded in {elapsed_time} ms.",
-            [
-                "elapsed_time" => (hrtime(true) - $start) / 1_000_000,
-            ],
-        );
-        return $isExceeded;
+        return false;
     }
 
     private static function quotaIsExceeded(
@@ -197,26 +172,10 @@ class Policy implements PolicyInterface
     private static function recipientIsRestricted(
         RequestInterface $request
     ): bool {
-        $start = hrtime(true);
         $restrictedRecipients = RestrictedRecipient::cachedRecipients();
-        Log::debug(
-            "Get cached restricted recipients in {elapsed_time} ms.",
-            [
-                "elapsed_time" => (hrtime(true) - $start) / 1_000_000,
-            ],
-        );
-
-        $start = hrtime(true);
-        $isRestricted = AccessVerdict::tryFrom(
+        return AccessVerdict::tryFrom(
             $restrictedRecipients[$request->getRecipient()] ?? ""
         ) === AccessVerdict::Reject;
-        Log::debug(
-            "Check recipient is restricted in {elapsed_time} ms.",
-            [
-                "elapsed_time" => (hrtime(true) - $start) / 1_000_000,
-            ],
-        );
-        return $isRestricted;
     }
 
     private static function limitCounterKey(
