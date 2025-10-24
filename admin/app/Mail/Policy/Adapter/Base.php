@@ -26,36 +26,44 @@ abstract class Base implements AdapterInterface
 
     protected function response(string $data): string
     {
-        return $this->policy
+        $start = hrtime(true);
+        $action = $this->policy
             ->check(PolicyRequest::fromData($data))
             ->getAction();
+
+        Log::debug(
+            "Access policy checked in {elapsed_time} ms.",
+            [
+                "remote_ip" => $remoteIp,
+                "remote_port" => $remotePort,
+                "elapsed_time" => (hrtime(true) - $start) / 1_000_000,
+            ],
+        );
+
+        return $action;
     }
 
     protected function onConnect(string $remoteIp, int $remotePort): void
     {
-        if (config("app.debug")) {
-            Log::debug(
-                "Access policy {remote_ip}:{remote_port} connect at {time}.",
-                [
-                    "remote_ip" => $remoteIp,
-                    "remote_port" => $remotePort,
-                    "time" => microtime(true),
-                ],
-            );
-        }
+        Log::debug(
+            "Access policy {remote_ip}:{remote_port} connect at {time}.",
+            [
+                "remote_ip" => $remoteIp,
+                "remote_port" => $remotePort,
+                "time" => hrtime(true),
+            ],
+        );
     }
 
     protected function onClose(string $remoteIp, int $remotePort): void
     {
-        if (config("app.debug")) {
-            Log::debug(
-                "Access policy {remote_ip}:{remote_port} closed at {time}.",
-                [
-                    "remote_ip" => $remoteIp,
-                    "remote_port" => $remotePort,
-                    "time" => microtime(true),
-                ],
-            );
-        }
+        Log::debug(
+            "Access policy {remote_ip}:{remote_port} closed at {time}.",
+            [
+                "remote_ip" => $remoteIp,
+                "remote_port" => $remotePort,
+                "time" => hrtime(true),
+            ],
+        );
     }
 }
