@@ -35,7 +35,9 @@ class RestrictedRecipient extends Model
         $cacheKey = self::cacheKey();
         $recipients = Cache::get($cacheKey, []);
         if (empty($recipients)) {
-            $recipients = static::all()->pluck("verdict", "recipient")->all();
+            foreach (static::all() as $model) {
+                $recipients[$model->recipient] = $model->verdict;
+            }
             Cache::put($cacheKey, $recipients);
         }
         return $recipients;
