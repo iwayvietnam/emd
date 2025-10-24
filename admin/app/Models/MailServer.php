@@ -241,6 +241,10 @@ class MailServer extends Model
 
     public function syncRecipientRestrictions(array $restrictions): void
     {
+        $this->syncLmdbTable(
+            $restrictions,
+            config("emd.postfix.recipient_restriction"),
+        );
         $this->syncLmdbTable($restrictions);
     }
 
