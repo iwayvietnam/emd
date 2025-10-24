@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Mail\Policy\Policy;
 use App\Mail\Policy\PolicyRequest;
 use Illuminate\Console\Command;
-use Illuminate\Support\Benchmark;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 /**
@@ -37,11 +36,9 @@ class PolicyDelegate extends Command
      */
     public function handle(): int
     {
-        Benchmark::dd(static function() {
-            echo (new Policy())
-                ->check(PolicyRequest::fromData(self::readInput()))
-                ->getAction() . PHP_EOL . PHP_EOL;
-        });
+        echo (new Policy())
+            ->check(PolicyRequest::fromData(self::readInput()))
+            ->getAction() . PHP_EOL . PHP_EOL;
 
         return Command::SUCCESS;
     }
