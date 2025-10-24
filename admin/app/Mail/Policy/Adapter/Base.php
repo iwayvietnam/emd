@@ -32,7 +32,7 @@ abstract class Base implements AdapterInterface
             ->getAction();
 
         Log::debug(
-            "Access policy checked in {elapsed_time} ms.",
+            "Policy service checked client access in {elapsed_time} ms.",
             [
                 "elapsed_time" => (hrtime(true) - $start) / 1_000_000,
             ],

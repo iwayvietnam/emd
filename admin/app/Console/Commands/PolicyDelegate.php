@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Mail\Policy\Policy;
 use App\Mail\Policy\PolicyRequest;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 /**
@@ -36,9 +37,18 @@ class PolicyDelegate extends Command
      */
     public function handle(): int
     {
+        $start = hrtime(true);
+
         echo (new Policy())
             ->check(PolicyRequest::fromData(self::readInput()))
             ->getAction() . PHP_EOL . PHP_EOL;
+
+        Log::debug(
+            "Policy cli checked client access in {elapsed_time} ms.",
+            [
+                "elapsed_time" => (hrtime(true) - $start) / 1_000_000,
+            ],
+        );
 
         return Command::SUCCESS;
     }
