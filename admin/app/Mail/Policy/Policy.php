@@ -199,6 +199,14 @@ class Policy implements PolicyInterface
     ): bool {
         $start = hrtime(true);
         $restrictedRecipients = RestrictedRecipient::cachedRecipients();
+        Log::debug(
+            "Get cached restricted recipients in {elapsed_time} ms.",
+            [
+                "elapsed_time" => (hrtime(true) - $start) / 1_000_000,
+            ],
+        );
+
+        $start = hrtime(true);
         $isRestricted = AccessVerdict::tryFrom(
             $restrictedRecipients[$request->getRecipient()] ?? ""
         ) === AccessVerdict::Reject;
