@@ -158,10 +158,11 @@ class Policy implements PolicyInterface
     private static function recipientIsRestricted(
         RequestInterface $request
     ): bool {
-        $restrictedRecipients = RestrictedRecipient::cachedRecipients();
-        return AccessVerdict::tryFrom(
-            $restrictedRecipients[$request->getRecipient()] ?? ""
-        ) === AccessVerdict::Reject;
+        $restriction = RestrictedRecipient::firstWhere("recipient", $request->getRecipient());
+        if ($restriction->id) {
+            return AccessVerdict::tryFrom($restriction->verdict) === AccessVerdict::Reject;
+        }
+        return false;
     }
 
     private static function limitCounterKey(
