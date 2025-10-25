@@ -106,10 +106,10 @@ Environment variables:
 Postfix environment variables:
 | Name                          | Description           |
 |-------------------------------|-----------------------|
-| POSTFIX_CLIENT_IP_ACCESS      | Client Ip Access      |
-| POSTFIX_SENDER_ACCESS         | Sender Access         |
-| POSTFIX_RECIPIENT_RESTRICTION | Recipient Restriction |
-| POSTFIX_SENDER_TRANSPORT      | Sender Transport Map  |
+| POSTFIX_CLIENT_IP_ACCESS      | Lmdb Client Ip Access Database      |
+| POSTFIX_SENDER_ACCESS         | Lmdb Sender Access Database         |
+| POSTFIX_RECIPIENT_RESTRICTION | Lmdb Recipient Restriction Database |
+| POSTFIX_SENDER_TRANSPORT      | Lmdb Sender Transport Map Database  |
 
 OpenDKIM environment variables:
 | Name                    | Description    |
