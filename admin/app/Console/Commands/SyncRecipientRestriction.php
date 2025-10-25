@@ -41,7 +41,6 @@ class SyncRecipientRestriction extends Command implements Isolatable
     public function handle(): int
     {
         $this->syncRestriction($this->argument("server"));
-        $this->info("Sync recipient restriction command was successful!");
         return Command::SUCCESS;
     }
 
@@ -56,7 +55,16 @@ class SyncRecipientRestriction extends Command implements Isolatable
             $restrictions = RestrictedRecipient::recipientRestrictions();
             if (!empty($restrictions)) {
                 $server->syncRecipientRestrictions($restrictions);
+                $this->info(
+                    "Restrict recipients were synchronized to mail server successfully!",
+                );
+            } else {
+                $this->info(
+                    "There are no restrict recipients to sync to mail server!",
+                );
             }
+        } else {
+            $this->info("Mail server does not exists!");
         }
     }
 }

@@ -41,7 +41,6 @@ class SyncSenderTransport extends Command implements Isolatable
     public function handle(): int
     {
         $this->syncTransport($this->argument("server"));
-        $this->info("Sync sender transport command was successful!");
         return Command::SUCCESS;
     }
 
@@ -56,7 +55,16 @@ class SyncSenderTransport extends Command implements Isolatable
             $transports = SenderTransport::transports();
             if (!empty($transports)) {
                 $server->syncSenderTransports($transports);
+                $this->info(
+                    "Sender transports were synchronized to mail server successfully!",
+                );
+            } else {
+                $this->info(
+                    "There are no sender transports to sync to mail server!",
+                );
             }
+        } else {
+            $this->info("Mail server does not exists!");
         }
     }
 }
