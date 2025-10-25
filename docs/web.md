@@ -109,7 +109,6 @@ Postfix environment variables:
 | POSTFIX_RECIPIENT_RESTRICTION | Recipient Restriction |
 | POSTFIX_SENDER_TRANSPORT      | Sender Transport Map  |
 
-
 OpenDKIM environment variables:
 | OPENDKIM_SIGNING_TABLE  | Signing Table  |
 | OPENDKIM_KEY_TABLE      | KeyTable       |
