@@ -46,7 +46,6 @@ class RestrictBounced extends Command implements Isolatable
     public function handle(): int
     {
         $this->processMailLog();
-        $this->info("Restrict bounced command was successful!");
         return Command::SUCCESS;
     }
 
