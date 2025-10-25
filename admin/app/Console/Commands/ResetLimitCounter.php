@@ -41,7 +41,6 @@ class ResetLimitCounter extends Command implements Isolatable
     public function handle(): int
     {
         $this->clearLimitCounter();
-        $this->info("Reset limit counter command was successful!");
         return Command::SUCCESS;
     }
 
