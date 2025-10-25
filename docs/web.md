@@ -102,7 +102,19 @@ Environment variables:
 | POLICY_DAEMONIZE     | Policy Daemonize        |
 | POLICY_LISTEN_HOST   | Policy Listen Host      |
 | POLICY_LISTEN_PORT   | Policy Listen Port      |
-| SENDER_TRANSPORT     | Sender Transport Map    |
+
+Postfix environment variables:
+| POSTFIX_CLIENT_IP_ACCESS      | Client Ip Access      |
+| POSTFIX_SENDER_ACCESS         | Sender Access         |
+| POSTFIX_RECIPIENT_RESTRICTION | Recipient Restriction |
+| POSTFIX_SENDER_TRANSPORT      | Sender Transport Map  |
+
+
+OpenDKIM environment variables:
+| OPENDKIM_SIGNING_TABLE  | Signing Table  |
+| OPENDKIM_KEY_TABLE      | KeyTable       |
+| OPENDKIM_TRUSTED_HOSTS  | TrustedHosts   |
+| OPENDKIM_KEYS_DIRECTORY | Keys Directory |
 
 Generate the application key & passport keys. Re-cache.
 ```sh
