@@ -260,7 +260,7 @@ class MailServer extends Model
         string $file,
     ): void {
         if (!empty($table)) {
-            $tempFile = tempnam(sys_get_temp_dir(), "postfix");
+            $tempFile = tempnam("/home/{$this->ssh_user}", "postfix");
             $remoteServer = new RemoteServer(
                 $this->ip_address,
                 $this->ssh_port,
