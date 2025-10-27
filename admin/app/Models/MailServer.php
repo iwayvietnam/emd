@@ -137,7 +137,7 @@ class MailServer extends Model
         array $keyTable,
         array $privateKeys,
     ): void {
-        $tempFile = tempnam(sys_get_temp_dir(), "opendkim");
+        $tempFile = tempnam(sys_get_temp_dir(), "opendkim.");
         $remoteServer = new RemoteServer(
             $this->ip_address,
             $this->ssh_port,
@@ -202,7 +202,7 @@ class MailServer extends Model
     public function syncOpenDkimTrustedHosts(array $trustedHosts): void
     {
         if (!empty($trustedHosts)) {
-            $tempFile = tempnam(sys_get_temp_dir(), "opendkim");
+            $tempFile = tempnam(sys_get_temp_dir(), "opendkim.");
             $remoteServer = new RemoteServer(
                 $this->ip_address,
                 $this->ssh_port,
@@ -260,7 +260,7 @@ class MailServer extends Model
         string $file,
     ): void {
         if (!empty($table)) {
-            $tempFile = tempnam(sys_get_temp_dir(), "lmdb");
+            $tempFile = tempnam(sys_get_temp_dir(), "lmdb-");
             $remoteServer = new RemoteServer(
                 $this->ip_address,
                 $this->ssh_port,
