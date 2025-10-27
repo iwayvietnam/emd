@@ -271,17 +271,13 @@ class MailServer extends Model
                 $tempFile,
                 implode(PHP_EOL, $table),
             );
-            try {
-                $remoteServer->runCommand(
-                    implode([
-                        sprintf(self::ECHO_CMD, $this->sudo_password),
-                        " | ",
-                        sprintf(self::COPY_CMD, $tempFile, $file),
-                    ]),
-                );
-            } catch (\Throwable $th) {
-                echo $th;exit;
-            }
+            $remoteServer->runCommand(
+                implode([
+                    sprintf(self::ECHO_CMD, $this->sudo_password),
+                    " | ",
+                    sprintf(self::COPY_CMD, $tempFile, $file),
+                ]),
+            );
             $remoteServer->runCommand(
                 implode([
                     sprintf(self::ECHO_CMD, $this->sudo_password),
