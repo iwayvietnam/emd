@@ -51,6 +51,9 @@ return [
         "recipient_restriction" => env(
             "POSTFIX_RECIPIENT_RESTRICTION", "/etc/postfix/recipient_restriction"
         ),
+        "mynetworks" => env(
+            "POSTFIX_MYNETWORKS", "/etc/postfix/mynetworks"
+        ),
         "sender_transport" => env(
             "POSTFIX_SENDER_TRANSPORT", "/etc/postfix/sender_transport"
         ),
