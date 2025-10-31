@@ -227,7 +227,7 @@ class MailServer extends Model
         }
     }
 
-    public function syncClientAccesses(array $clientIps, array $senders): void
+    public function syncClientAccesses(array $clientIps, array $senders, array $trustedHosts): void
     {
         $this->syncLmdbTable(
             $clientIps,
@@ -236,6 +236,10 @@ class MailServer extends Model
         $this->syncLmdbTable(
             $senders,
             config("emd.postfix.sender_access"),
+        );
+        $this->syncLmdbTable(
+            $trustedHosts,
+            config("emd.postfix.mynetworks"),
         );
     }
 
