@@ -48,8 +48,8 @@ postmap lmdb:/etc/postfix/recipient_restriction
 
 Type the following commands to configure client accesses:
 ```sh
-postconf -e smtpd_client_restrictions=permit_mynetworks,check_client_access lmdb:/etc/postfix/client_ip_access,reject
-postconf -e smtpd_sender_restrictions=permit_mynetworks,check_sender_access lmdb:/etc/postfix/sender_access,reject
+postconf -e smtpd_client_restrictions=check_client_access lmdb:/etc/postfix/client_ip_access,reject
+postconf -e smtpd_sender_restrictions=check_sender_access lmdb:/etc/postfix/sender_access,reject
 postconf -e smtpd_recipient_restrictions=check_recipient_access lmdb:/etc/postfix/recipient_restriction
 postconf -e smtpd_relay_restrictions=permit
 ```
