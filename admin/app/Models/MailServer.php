@@ -239,7 +239,7 @@ class MailServer extends Model
         );
         $this->syncLmdbTable(
             $trustedHosts,
-            config("emd.postfix.mynetworks"),
+            config("emd.postfix.trusted_hosts"),
         );
     }
 
