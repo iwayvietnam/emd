@@ -41,19 +41,17 @@ Type the following commands to create lmdb database files:
 touch /etc/postfix/client_ip_access
 touch /etc/postfix/sender_access
 touch /etc/postfix/recipient_restriction
-touch /etc/postfix/trusted_hosts
 postmap lmdb:/etc/postfix/client_ip_access
 postmap lmdb:/etc/postfix/sender_access
 postmap lmdb:/etc/postfix/recipient_restriction
-postmap lmdb:/etc/postfix/trusted_hosts
 ```
 
 Type the following commands to configure client accesses:
 ```sh
 postconf -e smtpd_client_restrictions=check_client_access lmdb:/etc/postfix/client_ip_access,reject
 postconf -e smtpd_sender_restrictions=check_sender_access lmdb:/etc/postfix/sender_access,reject
+postconf -e smtpd_relay_restrictions=check_client_access lmdb:/etc/postfix/client_ip_access,reject
 postconf -e smtpd_recipient_restrictions=check_recipient_access lmdb:/etc/postfix/recipient_restriction
-postconf -e mynetworks=lmdb:/etc/postfix/trusted_hosts
 ```
 
 #### Configure sender tranport
