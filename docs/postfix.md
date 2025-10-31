@@ -29,8 +29,8 @@ cp /etc/postfix/master.cf{,.orig}
 #### Configure access control by using policy service
 Type the following commands to edit the Postfix main configuration file:
 ```sh
-postconf -e "smtpd_recipient_restrictions=permit_mynetworks,check_policy_service inet:127.0.0.1:1403,reject"
-postconf -e "smtpd_end_of_data_restrictions=permit_mynetworks,check_policy_service inet:127.0.0.1:1403,reject"
+postconf -e "smtpd_recipient_restrictions=check_policy_service inet:127.0.0.1:1403,reject"
+postconf -e "smtpd_end_of_data_restrictions=check_policy_service inet:127.0.0.1:1403,reject"
 postconf -e smtpd_relay_restrictions=permit
 ```
 Note: Replace `127.0.0.1:1403` with your policy service host and port.
