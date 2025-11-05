@@ -54,3 +54,15 @@ find "/backup/daily/${HOST}"   -mindepth 1 -maxdepth 1 -type d -mtime +7   -exec
 find "/backup/weekly/${HOST}"  -mindepth 1 -maxdepth 1 -type d -mtime +35  -exec rm -rf {} + || true
 find "/backup/monthly/${HOST}" -mindepth 1 -maxdepth 1 -type d -mtime +185 -exec rm -rf {} + || true
 
+################
+add config limit rate
+
+
+# Setup rate control
+default_destination_concurrency_limit=12
+default_destination_rate_delay=2s
+default_destination_recipient_limit=12
+initial_destination_concurrency=10
+
+### crontab bouce recipients
+0 * * * * sudo -u nginx /root/scripts/restristed.sh
