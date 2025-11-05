@@ -63,3 +63,6 @@ default_destination_concurrency_limit=12
 default_destination_rate_delay=2s
 default_destination_recipient_limit=12
 initial_destination_concurrency=10
+
+### crontab bouce recipients
+0 * * * * sudo -u nginx /root/scripts/restristed.sh
