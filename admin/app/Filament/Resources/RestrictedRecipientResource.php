@@ -94,14 +94,14 @@ class RestrictedRecipientResource extends Resource
         if (preg_match("/^220/i", $out = fgets($connect))) {
             fputs($connect, "HELO $appDomain\r\n");
             $helo = fgets($connect);
-            logger()->debug("HELO {appDomain}: {$helo}.", [
+            logger()->debug("HELO {appDomain}: {helo}.", [
                 "appDomain" => $appDomain,
                 "helo" => $helo,
             ]);
 
             fputs($connect, "MAIL FROM: <$mailFrom>\r\n");
             $from = fgets($connect);
-            logger()->debug("MAIL FROM {mailFrom}: {$from}.", [
+            logger()->debug("MAIL FROM {mailFrom}: {from}.", [
                 "mailFrom" => $mailFrom,
                 "from" => $from,
             ]);
