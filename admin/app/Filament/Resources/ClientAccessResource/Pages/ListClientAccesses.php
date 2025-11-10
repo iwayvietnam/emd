@@ -38,9 +38,6 @@ class ListClientAccesses extends ListRecords
                     )
                 )
                 ->label(__("Sync To Mail Server")),
-            Actions\Action::make("clear_cache")
-                ->action(static fn() => self::clearAccessCache())
-                ->label(__("Clear Cache")),
         ];
     }
 
@@ -67,15 +64,6 @@ class ListClientAccesses extends ListRecords
 
         Notification::make()
             ->title(__("Client accesses have been synchronized!"))
-            ->success()
-            ->send();
-    }
-
-    private static function clearAccessCache(): void
-    {
-        ClientAccess::clearCache();
-        Notification::make()
-            ->title(__("Client accesses have been removed from the cache!"))
             ->success()
             ->send();
     }

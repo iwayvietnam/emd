@@ -40,9 +40,6 @@ class ListRestrictedRecipients extends ListRecords
                     )
                 )
                 ->label(__("Sync To Mail Server")),
-            Actions\Action::make("clear_cache")
-                ->action(static fn() => self::clearRestrictedCache())
-                ->label(__("Clear Cache")),
         ];
     }
 
@@ -65,17 +62,6 @@ class ListRestrictedRecipients extends ListRecords
 
         Notification::make()
             ->title(__("Recipient restrictions have been synchronized!"))
-            ->success()
-            ->send();
-    }
-
-    private static function clearRestrictedCache(): void
-    {
-        RestrictedRecipient::clearCache();
-        Notification::make()
-            ->title(
-                __("Restricted recipients have been removed from the cache!")
-            )
             ->success()
             ->send();
     }

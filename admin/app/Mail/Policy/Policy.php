@@ -9,6 +9,7 @@ use App\Mail\Policy\Interface\RequestInterface;
 use App\Mail\Policy\Interface\ResponseInterface;
 use App\Models\ClientAccess;
 use App\Models\RestrictedRecipient;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 
@@ -21,12 +22,16 @@ use Illuminate\Support\Facades\RateLimiter;
  */
 class Policy implements PolicyInterface
 {
+    const ACCESS_CACHE_EXPIRES = 600;
+
+    const RECIPIENT_CACHE_EXPIRES = 3600;
+
     /**
      * {@inheritdoc}
      */
     public function check(RequestInterface $request): ResponseInterface
     {
-        $clientAccesses = ClientAccess::cachedAccesses();
+        $clientAccesses = self::cachedClientAccesses();
         $state = ProtocolState::tryFrom($request->getProtocolState());
         switch ($state) {
             case ProtocolState::Rcpt:
@@ -155,14 +160,48 @@ class Policy implements PolicyInterface
         return false;
     }
 
+    private static function cachedClientAccesses(): array
+    {
+        $cacheKey = ClientAccess::class;
+        $accesses = Cache::store("array")->get($cacheKey, []);
+        if (empty($accesses)) {
+            foreach (ClientAccess::all() as $model) {
+                $accesses[$model->sender][$model->client_ip] = [
+                    "policy" => [
+                        "name" => $model->policy->name,
+                        "quota_limit" => $model->policy->quota_limit,
+                        "quota_period" => $model->policy->quota_period,
+                        "rate_limit" => $model->policy->rate_limit,
+                        "rate_period" => $model->policy->rate_period,
+                    ],
+                    "client" => $model->client->name,
+                    "verdict" => $model->verdict,
+                ];
+            }
+            Cache::store("array")->put($cacheKey, $accesses, self::ACCESS_CACHE_EXPIRES);
+        }
+        return $accesses;
+    }
+
+
     private static function recipientIsRestricted(
         RequestInterface $request
     ): bool {
-        $restriction = RestrictedRecipient::firstWhere("recipient", $request->getRecipient());
-        if ($restriction->id) {
-            return AccessVerdict::tryFrom($restriction->verdict) === AccessVerdict::Reject;
+        $restrictedRecipients = self::cachedRestrictedRecipients();
+        return AccessVerdict::tryFrom(
+            $restrictedRecipients[$request->getRecipient()] ?? ""
+        ) === AccessVerdict::Reject;
+    }
+
+    private static function cachedRestrictedRecipients(): array
+    {
+        $cacheKey = RestrictedRecipient::class;
+        $recipients = Cache::store("array")->get($cacheKey, []);
+        if (empty($recipients)) {
+            $recipients = RestrictedRecipient::all()->pluck("verdict", "recipient")->all();
+            Cache::store("array")->put($cacheKey, $recipients, self::RECIPIENT_CACHE_EXPIRES);
         }
-        return false;
+        return $recipients;
     }
 
     private static function limitCounterKey(
