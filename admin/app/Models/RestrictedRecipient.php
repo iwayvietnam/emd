@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Cache;
 class RestrictedRecipient extends Model
 {
     const CACHE_KEY_SUFFIX = "restricted-recipients";
+    const CACHE_EXPIRES = 3600;
 
     /**
      * The table associated with the model.
@@ -30,20 +31,20 @@ class RestrictedRecipient extends Model
      */
     protected $fillable = ["recipient", "verdict"];
 
-    public static function cachedRecipients(): array
+    public static function cachedRecipients(string $cacheStore): array
     {
         $cacheKey = self::cacheKey();
-        $recipients = Cache::get($cacheKey, []);
+        $recipients = Cache::store($cacheStore)->get($cacheKey, []);
         if (empty($recipients)) {
             $recipients = static::all()->pluck("verdict", "recipient")->all();
-            Cache::put($cacheKey, $recipients);
+            Cache::store($cacheStore)->put($cacheKey, $recipients, self::CACHE_EXPIRES);
         }
         return $recipients;
     }
 
-    public static function clearCache(): void
+    public static function clearCache(string $cacheStore): void
     {
-        Cache::forget(self::cacheKey());
+        Cache::store($cacheStore)->forget(self::cacheKey());
     }
 
     protected static function boot(): void

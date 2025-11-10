@@ -19,6 +19,7 @@ class ClientAccess extends Model
     const RATE_LIMIT_SUFFIX = "rate-limit-counter";
     const QUOTA_LIMIT_SUFFIX = "quota-limit-counter";
     const CACHE_KEY_SUFFIX = "client-accesses";
+    const CACHE_EXPIRES = 600;
 
     /**
      * The table associated with the model.
@@ -85,10 +86,10 @@ class ClientAccess extends Model
         return $this;
     }
 
-    public static function cachedAccesses(): array
+    public static function cachedAccesses(string $cacheStore): array
     {
         $cacheKey = self::cacheKey();
-        $accesses = Cache::get($cacheKey, []);
+        $accesses = Cache::store($cacheStore)->get($cacheKey, []);
         if (empty($accesses)) {
             foreach (static::all() as $model) {
                 $accesses[$model->sender][$model->client_ip] = [
@@ -103,14 +104,14 @@ class ClientAccess extends Model
                     "verdict" => $model->verdict,
                 ];
             }
-            Cache::put($cacheKey, $accesses);
+            Cache::store($cacheStore)->put($cacheKey, $accesses, self::CACHE_EXPIRES);
         }
         return $accesses;
     }
 
-    public static function clearCache(): void
+    public static function clearCache(string $cacheStore): void
     {
-        Cache::forget(self::cacheKey());
+        Cache::store($cacheStore)->forget(self::cacheKey());
     }
 
     private function viewLimitCounter(
