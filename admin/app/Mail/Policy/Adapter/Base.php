@@ -48,7 +48,7 @@ abstract class Base implements AdapterInterface
             [
                 "remote_ip" => $remoteIp,
                 "remote_port" => $remotePort,
-                "time" => hrtime(true),
+                "time" => microtime(true),
             ],
         );
     }
@@ -60,7 +60,7 @@ abstract class Base implements AdapterInterface
             [
                 "remote_ip" => $remoteIp,
                 "remote_port" => $remotePort,
-                "time" => hrtime(true),
+                "time" => microtime(true),
             ],
         );
     }
