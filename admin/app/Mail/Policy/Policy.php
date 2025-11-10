@@ -183,7 +183,6 @@ class Policy implements PolicyInterface
         return $accesses;
     }
 
-
     private static function recipientIsRestricted(
         RequestInterface $request
     ): bool {
