@@ -62,7 +62,6 @@ class CreateRestrictedRecipient extends CreateRecord
                     "verdict" => $verdict,
                 ]);
             }
-            RestrictedRecipient::clearCache();
             return $model;
         } else {
             throw new Halt("Error create restrict recipients!");
