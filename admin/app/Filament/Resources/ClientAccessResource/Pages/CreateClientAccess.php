@@ -68,7 +68,6 @@ class CreateClientAccess extends CreateRecord
                     "verdict" => $data["verdict"],
                 ]);
             }
-            ClientAccess::clearCache();
             return $model;
         } else {
             throw new Halt("Error Create Client Accesses");
