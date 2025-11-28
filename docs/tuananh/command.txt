@@ -1,0 +1,17 @@
+yum install cyrus-sasl cyrus-sasl-gs2 cyrus-sasl-gssapi cyrus-sasl-ldap cyrus-sasl-lib cyrus-sasl-md5 cyrus-sasl-ntlm cyrus-sasl-plain
+yum install postfix-ldap
+echo "smtpd_sasl_auth_enable = yes
+smtpd_sasl_type = cyrus
+smtpd_sasl_path = smtpd
+##########
+smtpd_recipient_restrictions =
+    check_sender_access ldap:/etc/postfix/ldap_policy_by_senders.cf,
+    check_sender_access ldap:/etc/postfix/ldap_restricted_sender.cf,
+    reject_non_fqdn_recipient,
+    reject_unknown_recipient_domain,
+    permit_mynetworks,
+    permit_sasl_authenticated,
+    reject_unauth_destination, permit
+" >> /etc/postfix/main.cf
+# testsaslauthd -u mailservice_test -r vpbank.com.vn -p
+
