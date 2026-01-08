@@ -62,6 +62,14 @@ postconf -e sender_dependent_default_transport_maps=lmdb:/etc/postfix/sender_tra
 postmap lmdb:/etc/postfix/sender_transport
 ```
 
+#### Configure sender bcc
+Type the following commands to configure bcc maps for sender:
+```sh
+touch /etc/postfix/sender_bcc
+postconf -e sender_bcc_maps=lmdb:/etc/postfix/sender_bcc
+postmap lmdb:/etc/postfix/sender_bcc
+```
+
 #### Configure out with rate control
 
 * Type the following command to edit the Postfix master configuration file:
