@@ -30,6 +30,7 @@ class Client extends Model
         "domain_id",
         "name",
         "sender_address",
+        "bcc_address",
         "description",
     ];
 
@@ -48,5 +49,17 @@ class Client extends Model
                 $model->id,
             )->delete(),
         );
+    }
+
+    public static function senderBccMaps(): array
+    {
+        $addresses = [];
+        $senders = static::all()->pluck('bcc_address', 'sender_address');
+        foreach ($senders as $sender => $bcc) {
+            if (!empty(trim($bcc))) {
+                $addresses[$sender] = $sender . " " . $bcc;
+            }
+        }
+        return $addresses;
     }
 }

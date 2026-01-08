@@ -54,6 +54,9 @@ return [
         "sender_transport" => env(
             "POSTFIX_SENDER_TRANSPORT", "/etc/postfix/sender_transport"
         ),
+        "sender_bcc" => env(
+            "POSTFIX_SENDER_BCC", "/etc/postfix/sender_bcc"
+        ),
     ],
     "warning" => [
         "threshold" => (int) env("WARNING_THRESHOLD", 80),

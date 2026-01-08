@@ -28,7 +28,7 @@ class CreateClient extends CreateRecord
     public function form(Form $form): Form
     {
         return $form->schema([
-            Grid::make(3)->schema([
+            Grid::make(2)->schema([
                 Select::make("domain_id")
                     ->options(Domain::all()->pluck("name", "id"))
                     ->required()
@@ -38,6 +38,8 @@ class CreateClient extends CreateRecord
                     ->required()
                     ->unique()
                     ->label(__("Name")),
+            ]),
+            Grid::make(2)->schema([
                 TextInput::make("sender_address")
                     ->rules([
                         static fn(Get $get) => static function (
@@ -59,6 +61,9 @@ class CreateClient extends CreateRecord
                     ->required()
                     ->unique()
                     ->label(__("Sender Address")),
+                TextInput::make("bcc_address")
+                    ->email()
+                    ->label(__("Bcc Address")),
             ]),
             Textarea::make("description")
                 ->columnSpan(2)

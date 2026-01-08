@@ -22,10 +22,14 @@ class EditClient extends EditRecord
     public function form(Form $form): Form
     {
         return $form->schema([
+            TextInput::make("domain.name")->readonly()->label(__("Domain")),
             TextInput::make("name")->readonly()->label(__("Name")),
             TextInput::make("sender_address")
                 ->readonly()
                 ->label(__("Sender Address")),
+            TextInput::make("sender_bcc")
+                ->email()
+                ->label(__("Sender Bcc")),
             Textarea::make("description")
                 ->columnSpan(2)
                 ->label(__("Description")),

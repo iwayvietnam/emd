@@ -255,6 +255,14 @@ class MailServer extends Model
         );
     }
 
+    public function syncSenderBccMaps(array $bccMaps): void
+    {
+        $this->syncLmdbTable(
+            $bccMaps,
+            config("emd.postfix.sender_bcc"),
+        );
+    }
+
     private function syncLmdbTable(
         array $table,
         string $file,
