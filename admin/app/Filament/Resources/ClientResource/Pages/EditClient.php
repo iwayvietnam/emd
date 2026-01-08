@@ -29,9 +29,9 @@ class EditClient extends EditRecord
             TextInput::make("sender_address")
                 ->readonly()
                 ->label(__("Sender Address")),
-            TextInput::make("sender_bcc")
+            TextInput::make("bcc_address")
                 ->email()
-                ->label(__("Sender Bcc")),
+                ->label(__("Bcc Address")),
             Textarea::make("description")
                 ->columnSpan(2)
                 ->label(__("Description")),
