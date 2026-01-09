@@ -9,6 +9,7 @@ use Filament\Resources\Resource;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 /**
  * Restricted recipient resource class
@@ -55,6 +56,9 @@ class RestrictedRecipientResource extends Resource
                     ->icon("heroicon-m-eye")
                     ->label(__("Verify")),
                 Actions\DeleteAction::make(),
+            ])
+            ->filters([
+                DateRangeFilter::make("created_at")->label(__("Created At")),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([
