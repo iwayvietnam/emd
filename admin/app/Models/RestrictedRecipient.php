@@ -50,7 +50,6 @@ class RestrictedRecipient extends Model
     protected static function boot(): void
     {
         parent::boot();
-        static::created(static fn() => static::clearCache());
     }
 
     private static function cacheKey(): string
