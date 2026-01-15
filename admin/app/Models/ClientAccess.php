@@ -44,8 +44,6 @@ class ClientAccess extends Model
     protected static function boot(): void
     {
         parent::boot();
-        static::created(static fn() => static::clearCache());
-        static::deleted(static fn() => static::clearCache());
     }
 
     public function client(): BelongsTo
