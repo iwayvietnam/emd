@@ -56,7 +56,7 @@ class Client extends Model
         $addresses = [];
         $senders = static::all()->pluck('bcc_address', 'sender_address');
         foreach ($senders as $sender => $bcc) {
-            if (!empty(trim($bcc))) {
+            if (!$bcc != null && !empty(trim($bcc))) {
                 $addresses[$sender] = $sender . " " . $bcc;
             }
         }
