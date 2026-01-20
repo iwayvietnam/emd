@@ -55,6 +55,20 @@ class Policy implements PolicyInterface
                         "Rate limit is exceeded. Retry later!"
                     );
                 }
+                // if (self::recipientIsRestricted($request)) {
+                //     Log::error(
+                //         "Recipient {recipient} of client {sender}:{address} is restricted.",
+                //         [
+                //             "recipient" => $request->getRecipient(),
+                //             "sender" => $request->getSender(),
+                //             "address" => $request->getClientAddress(),
+                //         ]
+                //     );
+                //     return new PolicyResponse(
+                //         AccessVerdict::Reject,
+                //         "Recipient address is restricted!"
+                //     );
+                // }
                 return new PolicyResponse(AccessVerdict::Ok);
             case ProtocolState::EndOfMessage:
                 if (self::quotaIsExceeded($request, $clientAccesses)) {
