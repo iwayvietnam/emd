@@ -12,6 +12,8 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use BackedEnum;
+use UnitEnum;
 
 /**
  * Message resource class.
@@ -23,8 +25,8 @@ use Filament\Tables\Filters\SelectFilter;
 class MessageResource extends Resource
 {
     protected static ?string $model = Message::class;
-    protected static ?string $navigationGroup = "Email";
-    protected static ?string $navigationIcon = "heroicon-o-envelope";
+    protected static string | UnitEnum | null $navigationGroup = "Email";
+    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-envelope";
     protected static ?string $slug = "message";
 
     public static function table(Table $table): Table

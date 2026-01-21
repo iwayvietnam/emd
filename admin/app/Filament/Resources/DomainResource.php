@@ -14,6 +14,8 @@ use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use BackedEnum;
+use UnitEnum;
 
 /**
  * Domain resource class
@@ -27,8 +29,8 @@ class DomainResource extends Resource
     const RECORD_FORMAT = "%-10s %-56s\r\n";
 
     protected static ?string $model = Domain::class;
-    protected static ?string $navigationGroup = "System";
-    protected static ?string $navigationIcon = "heroicon-s-cog";
+    protected static string | UnitEnum | null $navigationGroup = "System";
+    protected static string | BackedEnum | null $navigationIcon = "heroicon-s-cog";
     protected static ?string $slug = "domain";
 
     public static function getNavigationLabel(): string

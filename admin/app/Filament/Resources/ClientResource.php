@@ -10,6 +10,8 @@ use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use BackedEnum;
+use UnitEnum;
 
 /**
  * Client resource class
@@ -21,8 +23,8 @@ use Filament\Tables\Table;
 class ClientResource extends Resource
 {
     protected static ?string $model = Client::class;
-    protected static ?string $navigationGroup = "Access Control";
-    protected static ?string $navigationIcon = "heroicon-m-computer-desktop";
+    protected static string | UnitEnum | null $navigationGroup = "Access Control";
+    protected static string | BackedEnum | null $navigationIcon = "heroicon-m-computer-desktop";
     protected static ?string $slug = "client";
 
     public static function getNavigationLabel(): string

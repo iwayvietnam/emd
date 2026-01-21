@@ -9,6 +9,8 @@ use Filament\Tables\Table;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use BackedEnum;
+use UnitEnum;
 
 /**
  * Message failure resource manager.
@@ -20,8 +22,8 @@ use Filament\Tables\Columns\TextColumn;
 class MessageFailureResource extends Resource
 {
     protected static ?string $model = MessageFailure::class;
-    protected static ?string $navigationGroup = "Email";
-    protected static ?string $navigationIcon = "heroicon-o-ticket";
+    protected static string | UnitEnum | null $navigationGroup = "Email";
+    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-ticket";
     protected static ?string $slug = "message-failure";
 
     public static function table(Table $table): Table

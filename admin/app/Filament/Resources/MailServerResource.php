@@ -22,6 +22,8 @@ use Filament\Tables\Table;
 use phpseclib3\Crypt\Common\PrivateKey;
 use phpseclib3\Crypt\EC;
 use phpseclib3\Crypt\RSA;
+use BackedEnum;
+use UnitEnum;
 
 /**
  * Mail server resource class
@@ -33,8 +35,8 @@ use phpseclib3\Crypt\RSA;
 class MailServerResource extends Resource
 {
     protected static ?string $model = MailServer::class;
-    protected static ?string $navigationGroup = "System";
-    protected static ?string $navigationIcon = "heroicon-o-server-stack";
+    protected static string | UnitEnum | null $navigationGroup = "System";
+    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-server-stack";
     protected static ?string $slug = "mail-server";
 
     private static array $rsaKeySizes = [

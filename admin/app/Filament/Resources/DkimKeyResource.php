@@ -15,6 +15,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Symfony\Component\HttpFoundation\Response;
+use BackedEnum;
+use UnitEnum;
 
 /**
  * Dkim key resource class
@@ -26,8 +28,8 @@ use Symfony\Component\HttpFoundation\Response;
 class DkimKeyResource extends Resource
 {
     protected static ?string $model = DkimKey::class;
-    protected static ?string $navigationGroup = "Domain";
-    protected static ?string $navigationIcon = "heroicon-o-key";
+    protected static string | UnitEnum | null $navigationGroup = "Domain";
+    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-key";
     protected static ?string $slug = "dkim";
 
     public static function getNavigationLabel(): string

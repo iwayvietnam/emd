@@ -19,6 +19,8 @@ use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use BackedEnum;
+use UnitEnum;
 
 /**
  * Passport client resource class.
@@ -30,8 +32,8 @@ use Illuminate\Support\Str;
 class PassportClientResource extends Resource
 {
     protected static ?string $model = PassportClient::class;
-    protected static ?string $navigationGroup = "System";
-    protected static ?string $navigationIcon = "heroicon-o-computer-desktop";
+    protected static string | UnitEnum | null $navigationGroup = "System";
+    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-computer-desktop";
     protected static ?string $slug = "passport-client";
 
     public static function form(Form $form): Form

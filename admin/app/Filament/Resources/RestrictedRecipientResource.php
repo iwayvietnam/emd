@@ -10,6 +10,8 @@ use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
+use BackedEnum;
+use UnitEnum;
 
 /**
  * Restricted recipient resource class
@@ -21,8 +23,8 @@ use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 class RestrictedRecipientResource extends Resource
 {
     protected static ?string $model = RestrictedRecipient::class;
-    protected static ?string $navigationGroup = "Access Control";
-    protected static ?string $navigationIcon = "heroicon-o-lock-closed";
+    protected static string | UnitEnum | null $navigationGroup = "Access Control";
+    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-lock-closed";
     protected static ?string $slug = "restricted";
 
     public static function getNavigationLabel(): string

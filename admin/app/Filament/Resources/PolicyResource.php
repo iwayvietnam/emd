@@ -17,6 +17,8 @@ use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Number;
+use BackedEnum;
+use UnitEnum;
 
 /**
  * Policy resource class
@@ -30,8 +32,8 @@ class PolicyResource extends Resource
     const MB = 1048576;
 
     protected static ?string $model = Policy::class;
-    protected static ?string $navigationGroup = "Access Control";
-    protected static ?string $navigationIcon = "heroicon-o-shield-check";
+    protected static string | UnitEnum | null $navigationGroup = "Access Control";
+    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-shield-check";
     protected static ?string $slug = "policy";
 
     public static function getNavigationLabel(): string

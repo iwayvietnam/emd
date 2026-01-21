@@ -8,6 +8,8 @@ use Filament\Resources\Resource;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use BackedEnum;
+use UnitEnum;
 
 /**
  * Sender transport resource class
@@ -19,8 +21,8 @@ use Filament\Tables\Table;
 class SenderTransportResource extends Resource
 {
     protected static ?string $model = SenderTransport::class;
-    protected static ?string $navigationGroup = "Access Control";
-    protected static ?string $navigationIcon = "heroicon-m-list-bullet";
+    protected static string | UnitEnum | null $navigationGroup = "Access Control";
+    protected static string | BackedEnum | null $navigationIcon = "heroicon-m-list-bullet";
     protected static ?string $slug = "sender-transport";
 
     public static function getNavigationLabel(): string

@@ -6,6 +6,8 @@ use App\Filament\Resources\DmarcReportResource\Pages;
 use App\Filament\Resources\DmarcReportResource\RelationManagers;
 use App\Models\DmarcReport;
 use Filament\Resources\Resource;
+use BackedEnum;
+use UnitEnum;
 
 /**
  * Dmarc report resource class
@@ -17,8 +19,8 @@ use Filament\Resources\Resource;
 class DmarcReportResource extends Resource
 {
     protected static ?string $model = DmarcReport::class;
-    protected static ?string $navigationGroup = "Domain";
-    protected static ?string $navigationIcon = "heroicon-o-chart-bar-square";
+    protected static string | UnitEnum | null $navigationGroup = "Domain";
+    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-chart-bar-square";
     protected static ?string $slug = "dmarc";
 
     public static function getNavigationLabel(): string

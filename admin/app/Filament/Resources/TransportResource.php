@@ -13,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use BackedEnum;
+use UnitEnum;
 
 /**
  * Transport resource class
@@ -24,8 +26,8 @@ use Filament\Tables\Table;
 class TransportResource extends Resource
 {
     protected static ?string $model = Transport::class;
-    protected static ?string $navigationGroup = "System";
-    protected static ?string $navigationIcon = "heroicon-m-list-bullet";
+    protected static string | UnitEnum | null $navigationGroup = "System";
+    protected static string | BackedEnum | null $navigationIcon = "heroicon-m-list-bullet";
     protected static ?string $slug = "transport";
 
     public static function getNavigationLabel(): string
