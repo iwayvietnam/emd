@@ -7,8 +7,8 @@ use App\Models\RestrictedRecipient;
 use App\Support\Helper;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Hidden;
-use Filament\Forms\Form;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Schemas\Schema;
 use Filament\Support\Exceptions\Halt;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,9 +24,9 @@ class CreateRestrictedRecipient extends CreateRecord
     protected static string $resource = RestrictedRecipientResource::class;
     protected static bool $canCreateAnother = false;
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form->schema([
+        return $schema->components([
             Textarea::make("recipients")
                 ->required()
                 ->columnSpan(2)

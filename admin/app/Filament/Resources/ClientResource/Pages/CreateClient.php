@@ -4,13 +4,13 @@ namespace App\Filament\Resources\ClientResource\Pages;
 
 use App\Models\Domain;
 use App\Filament\Resources\ClientResource;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 
 /**
@@ -25,9 +25,9 @@ class CreateClient extends CreateRecord
     protected static string $resource = ClientResource::class;
     protected static bool $canCreateAnother = false;
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form->schema([
+        return $schema->components([
             Grid::make(2)->schema([
                 Select::make("domain_id")
                     ->options(Domain::all()->pluck("name", "id"))

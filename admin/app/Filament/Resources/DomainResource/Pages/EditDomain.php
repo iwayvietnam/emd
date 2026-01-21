@@ -5,7 +5,7 @@ namespace App\Filament\Resources\DomainResource\Pages;
 use App\Filament\Resources\DomainResource;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Pages\EditRecord;
 
 /**
@@ -19,9 +19,9 @@ class EditDomain extends EditRecord
 {
     protected static string $resource = DomainResource::class;
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form->schema([
+        return $schema->components([
             TextInput::make("name")->readonly()->label(__("Name")),
             TextInput::make("email")->readonly()->label(__("Email")),
             TextInput::make("organization")

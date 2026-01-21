@@ -5,11 +5,11 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TransportResource\Pages;
 use App\Models\SenderTransport;
 use App\Models\Transport;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Schema;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -35,9 +35,9 @@ class TransportResource extends Resource
         return __("Mail Transports");
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form->schema([
+        return $schema->components([
             Grid::make(3)->schema([
                 TextInput::make("name")
                     ->required()

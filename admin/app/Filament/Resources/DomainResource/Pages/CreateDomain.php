@@ -5,9 +5,9 @@ namespace App\Filament\Resources\DomainResource\Pages;
 use App\Filament\Resources\DomainResource;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 
 /**
@@ -22,9 +22,9 @@ class CreateDomain extends CreateRecord
     protected static string $resource = DomainResource::class;
     protected static bool $canCreateAnother = false;
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form->schema([
+        return $schema->components([
             TextInput::make("name")
                 ->rules([
                     static fn() => static function (

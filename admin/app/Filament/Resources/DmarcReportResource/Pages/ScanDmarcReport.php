@@ -6,14 +6,14 @@ use App\Filament\Resources\DmarcReportResource;
 use App\Mail\Dmarc\Scanner;
 use Elastic\Elasticsearch\ClientBuilder;
 use Filament\Actions\Action;
-use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Webklex\PHPIMAP\ClientManager;
 
@@ -41,9 +41,9 @@ class ScanDmarcReport extends CreateRecord
         return __("Scan DMARC Report");
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form->schema([
+        return $schema->components([
             Fieldset::make(__("IMAP Mailbox"))->schema([
                 Grid::make(5)->schema([
                     TextInput::make("host")

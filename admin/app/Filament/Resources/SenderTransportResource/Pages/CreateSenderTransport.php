@@ -8,8 +8,8 @@ use App\Models\SenderTransport;
 use App\Models\Transport;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Form;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Schemas\Schema;
 
 /**
  * Create sender transport record class
@@ -23,9 +23,9 @@ class CreateSenderTransport extends CreateRecord
     protected static string $resource = SenderTransportResource::class;
     protected static bool $canCreateAnother = false;
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form->schema([
+        return $schema->components([
             Select::make("client_id")
                 ->options(
                     Client::whereNotIn(

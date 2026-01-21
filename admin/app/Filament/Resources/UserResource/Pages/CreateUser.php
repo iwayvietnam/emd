@@ -4,9 +4,9 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
 use App\Models\Domain;
-use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -21,10 +21,10 @@ class CreateUser extends CreateRecord
     protected static string $resource = UserResource::class;
     protected static bool $canCreateAnother = false;
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
         $domains = [];
-        return $form->schema([
+        return $schema->components([
             TextInput::make("name")->required()->label(__("Name")),
             TextInput::make("email")
                 ->email()

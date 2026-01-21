@@ -8,11 +8,11 @@ use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Set;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Filters\TernaryFilter;
@@ -36,9 +36,9 @@ class PassportClientResource extends Resource
     protected static string | BackedEnum | null $navigationIcon = "heroicon-o-computer-desktop";
     protected static ?string $slug = "passport-client";
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form->schema([
+        return $schema->components([
             TextInput::make("name")->required()->label(__("Client Name")),
             Select::make("provider")
                 ->required()

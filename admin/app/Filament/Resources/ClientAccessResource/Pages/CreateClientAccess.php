@@ -6,12 +6,12 @@ use App\Filament\Resources\ClientAccessResource;
 use App\Models\Client;
 use App\Models\ClientAccess;
 use App\Models\Policy;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Form;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Schema;
 use Filament\Support\Exceptions\Halt;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,9 +27,9 @@ class CreateClientAccess extends CreateRecord
     protected static string $resource = ClientAccessResource::class;
     protected static bool $canCreateAnother = false;
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form->schema([
+        return $schema->components([
             Grid::make(2)->schema([
                 Select::make("client_id")
                     ->options(Client::all()->pluck("name", "id"))

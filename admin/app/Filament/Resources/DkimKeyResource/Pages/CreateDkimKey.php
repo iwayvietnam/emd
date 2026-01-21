@@ -6,14 +6,14 @@ use App\Filament\Resources\DkimKeyResource;
 use App\Models\Domain;
 use App\Models\DkimKey;
 use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Crypt\RSA;
 
@@ -34,9 +34,9 @@ class CreateDkimKey extends CreateRecord
         return __("Create DKIM Key");
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form->schema([
+        return $schema->components([
             Grid::make(3)->schema([
                 Select::make("domain_id")
                     ->options(

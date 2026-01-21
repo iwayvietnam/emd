@@ -3,9 +3,9 @@
 namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
-use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -19,9 +19,9 @@ class EditUser extends EditRecord
 {
     protected static string $resource = UserResource::class;
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form->schema([
+        return $schema->components([
             TextInput::make("name")->required()->label(__("Name")),
             TextInput::make("email")->readonly()->label(__("Email Address")),
             TextInput::make("password")
