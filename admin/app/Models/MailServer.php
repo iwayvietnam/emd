@@ -197,29 +197,29 @@ class MailServer extends Model
                         ),
                     ]),
                 );
-                $remoteServer->runCommand(
-                    implode([
-                        sprintf(self::ECHO_CMD, $this->sudo_password),
-                        " | ",
-                        sprintf(
-                            self::CHOWN_CMD,
-                            "opendkim:",
-                            config("emd.opendkim.keys_directory"),
-                        ),
-                    ]),
-                );
-                $remoteServer->runCommand(
-                    implode([
-                        sprintf(self::ECHO_CMD, $this->sudo_password),
-                        " | ",
-                        sprintf(
-                            self::CHMOD_CMD,
-                            "600",
-                            config("emd.opendkim.keys_directory"),
-                        ),
-                    ]),
-                );
             }
+            $remoteServer->runCommand(
+                implode([
+                    sprintf(self::ECHO_CMD, $this->sudo_password),
+                    " | ",
+                    sprintf(
+                        self::CHOWN_CMD,
+                        "opendkim:",
+                        config("emd.opendkim.keys_directory"),
+                    ),
+                ]),
+            );
+            $remoteServer->runCommand(
+                implode([
+                    sprintf(self::ECHO_CMD, $this->sudo_password),
+                    " | ",
+                    sprintf(
+                        self::CHMOD_CMD,
+                        "600",
+                        config("emd.opendkim.keys_directory"),
+                    ),
+                ]),
+            );
         }
     }
 
