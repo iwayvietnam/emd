@@ -3,9 +3,9 @@
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
 use App\Models\PassportToken;
-use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Schema;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Filters\TernaryFilter;
@@ -23,9 +23,9 @@ class AccessTokensRelationManager extends RelationManager
     protected static string $relationship = "tokens";
     protected static ?string $title = "Passport Access Tokens";
 
-    public function infolist(Infolist $infolist): Infolist
+    public function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
+        return $schema->components([
             TextEntry::make("client.name")->label(__("Client Name")),
             TextEntry::make("name")->label(__("Token Name")),
             TextEntry::make("expires_at")->label(__("Expires At")),

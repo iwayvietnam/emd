@@ -6,11 +6,10 @@ use App\Models\PassportClient;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Set;
-use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Filters\TernaryFilter;
@@ -29,9 +28,9 @@ class PassportClientsRelationManager extends RelationManager
     protected static string $relationship = "clients";
     protected static ?string $title = "Passport Clients";
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form->schema([
+        return $schema->components([
             TextInput::make("name")->required()->label(__("Client Name")),
             TextInput::make("secret")
                 ->hintActions([
@@ -58,9 +57,9 @@ class PassportClientsRelationManager extends RelationManager
         ]);
     }
 
-    public function infolist(Infolist $infolist): Infolist
+    public function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
+        return $schema->components([
             TextEntry::make("name")->label(__("Client Name")),
             TextEntry::make("id")->label(__("Client Id")),
             TextEntry::make("encrypted_secret")->label(__("Client Secret")),
