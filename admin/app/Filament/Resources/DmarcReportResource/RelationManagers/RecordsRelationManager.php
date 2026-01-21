@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\DmarcReportResource\RelationManagers;
 
-use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Schema;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Table;
@@ -20,9 +20,9 @@ class RecordsRelationManager extends RelationManager
 {
     protected static string $relationship = "records";
 
-    public function infolist(Infolist $infolist): Infolist
+    public function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
+        return $schema->components([
             TextEntry::make("source_ip")->label(__("Source Ip")),
             TextEntry::make("count")->label(__("Message Count")),
             TextEntry::make("header_from")->label(__("Header From")),

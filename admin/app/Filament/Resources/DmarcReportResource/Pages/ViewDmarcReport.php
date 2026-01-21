@@ -5,8 +5,8 @@ namespace App\Filament\Resources\DmarcReportResource\Pages;
 use App\Filament\Resources\DmarcReportResource;
 use Filament\Infolists\Components\Fieldset;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Schemas\Schema;
 
 /**
  * View DMARC report class
@@ -24,9 +24,9 @@ class ViewDmarcReport extends ViewRecord
         return __("View DMARC Report");
     }
 
-    public function infolist(Infolist $infolist): Infolist
+    public function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
+        return $schema->components([
             Fieldset::make(__("Metadata"))->schema([
                 TextEntry::make("report_id")->label(__("Report Id")),
                 TextEntry::make("org_name")->label(__("Org Name")),

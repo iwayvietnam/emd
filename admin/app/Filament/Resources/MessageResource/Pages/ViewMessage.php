@@ -5,9 +5,9 @@ namespace App\Filament\Resources\MessageResource\Pages;
 use App\Filament\Resources\MessageResource;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
-use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Schemas\Schema;
 
 /**
  * View message page.
@@ -21,9 +21,9 @@ class ViewMessage extends ViewRecord
     protected static string $resource = MessageResource::class;
     protected ?string $previousUrl = null;
 
-    public function infolist(Infolist $infolist): Infolist
+    public function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
+        return $schema->components([
             TextEntry::make("from_name")->label(__("From Name")),
             TextEntry::make("from_email")->label(__("From Email")),
             TextEntry::make("reply_to")->label(__("Reply To")),

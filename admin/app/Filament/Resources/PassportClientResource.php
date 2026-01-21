@@ -8,7 +8,6 @@ use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Utilities\Set;
@@ -70,9 +69,9 @@ class PassportClientResource extends Resource
         ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
+        return $schema->components([
             TextEntry::make("name")->label(__("Client Name")),
             TextEntry::make("id")->label(__("Client Id")),
             TextEntry::make("encrypted_secret")->label(__("Client Secret")),

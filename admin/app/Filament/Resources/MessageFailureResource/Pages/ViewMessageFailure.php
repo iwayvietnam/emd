@@ -5,9 +5,9 @@ namespace App\Filament\Resources\MessageFailureResource\Pages;
 use App\Filament\Resources\MessageFailureResource;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
-use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Schemas\Schema;
 
 /**
  * View message failure page.
@@ -21,9 +21,9 @@ class ViewMessageFailure extends ViewRecord
     protected static string $resource = MessageFailureResource::class;
     protected ?string $previousUrl = null;
 
-    public function infolist(Infolist $infolist): Infolist
+    public function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
+        return $schema->components([
             TextEntry::make("message_subject")->label(__("Message Subject")),
             TextEntry::make("message_id")->label(__("Message ID")),
             TextEntry::make("from_email")->label(__("Sender")),
