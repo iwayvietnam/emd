@@ -13,12 +13,14 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Symfony\Component\Mailer\Exception\ExceptionInterface as MailerException;
+use BackedEnum;
+use UnitEnum;
 
 /**
  * Send email test page class
@@ -32,10 +34,10 @@ class SendEmail extends Page
     const QUEUE_NAME = "default";
     const UPLOAD_DIR = "attachments";
 
-    protected static ?string $navigationGroup = "Email";
-    protected static ?string $navigationIcon = "heroicon-o-inbox";
+    protected static string | UnitEnum | null $navigationGroup = "Email";
+    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-inbox";
     protected static ?string $slug = "send-email";
-    protected static string $view = "filament.pages.send-email";
+    protected string $view = "filament.pages.send-email";
 
     /**
      * @var array<string, mixed> | null
@@ -52,36 +54,35 @@ class SendEmail extends Page
         $this->form->fill();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                TextInput::make("sender")
-                    ->label(__("Sender"))
-                    ->email()
-                    ->required(),
-                Textarea::make("recipients")
-                    ->label(__("Recipients"))
-                    ->required(),
-                TextInput::make("subject")->label(__("Subject"))->required(),
-                RichEditor::make("content")
-                    ->label(__("Content"))
-                    ->required()
-                    ->disableToolbarButtons(["attachFiles"]),
-                FileUpload::make("attachments")
-                    ->label(__("Attachments"))
-                    ->multiple()
-                    ->previewable(false)
-                    ->moveFiles()
-                    ->disk("local")
-                    ->directory(
-                        config("emd.api.upload_dir", self::UPLOAD_DIR) .
-                            "/" .
-                            request()->user()->email
-                    ),
-                Toggle::make("should_queue")->label(__("Should Queue")),
-            ])
-            ->statePath("data");
+        return $schema->components([
+            TextInput::make("sender")
+                ->label(__("Sender"))
+                ->email()
+                ->required(),
+            Textarea::make("recipients")
+                ->label(__("Recipients"))
+                ->required(),
+            TextInput::make("subject")->label(__("Subject"))->required(),
+            RichEditor::make("content")
+                ->label(__("Content"))
+                ->required()
+                ->disableToolbarButtons(["attachFiles"]),
+            FileUpload::make("attachments")
+                ->label(__("Attachments"))
+                ->multiple()
+                ->previewable(false)
+                ->moveFiles()
+                ->disk("local")
+                ->directory(
+                    config("emd.api.upload_dir", self::UPLOAD_DIR) .
+                        "/" .
+                        request()->user()->email
+                ),
+            Toggle::make("should_queue")->label(__("Should Queue")),
+        ])
+        ->statePath("data");
     }
 
     protected function getFormActions(): array

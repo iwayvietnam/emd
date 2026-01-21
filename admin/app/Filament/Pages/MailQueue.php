@@ -5,11 +5,11 @@ namespace App\Filament\Pages;
 use App\Models\MailServer;
 use App\Models\MailServerQueue;
 use Filament\Forms\Components\Actions\Action as FormAction;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Schema;
 use Filament\Tables\Actions\Action as TableAction;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\BulkAction;
@@ -19,6 +19,8 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Support\Number;
 use Symfony\Component\HttpFoundation\Response;
+use BackedEnum;
+use UnitEnum;
 
 /**
  * Mail queue page class
@@ -31,10 +33,10 @@ class MailQueue extends Page implements HasTable
 {
     use InteractsWithTable;
 
-    protected static ?string $navigationGroup = "System";
-    protected static ?string $navigationIcon = "heroicon-o-queue-list";
+    protected static string | UnitEnum | null $navigationGroup = "System";
+    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-queue-list";
     protected static ?string $slug = "mail-queue";
-    protected static string $view = "filament.pages.mail-queue";
+    protected string $view = "filament.pages.mail-queue";
 
     /**
      * @var array<string, mixed> | null
@@ -51,20 +53,19 @@ class MailQueue extends Page implements HasTable
         $this->form->fill(session()->get(MailServerQueue::class));
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Grid::make(2)->schema([
-                    Select::make("mail_server")
-                        ->options(MailServer::all()->pluck("name", "id"))
-                        ->label(__("Mail Server")),
-                    TextInput::make("config_dir")
-                        ->default(MailServer::CONFIG_DIR)
-                        ->label(__("Config Dir")),
-                ]),
-            ])
-            ->statePath("data");
+        return $schema->components([
+            Grid::make(2)->schema([
+                Select::make("mail_server")
+                    ->options(MailServer::all()->pluck("name", "id"))
+                    ->label(__("Mail Server")),
+                TextInput::make("config_dir")
+                    ->default(MailServer::CONFIG_DIR)
+                    ->label(__("Config Dir")),
+            ]),
+        ])
+        ->statePath("data");
     }
 
     protected function getFormActions(): array

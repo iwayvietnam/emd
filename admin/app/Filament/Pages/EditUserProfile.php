@@ -2,8 +2,8 @@
 
 namespace App\Filament\Pages;
 
-use Filament\Forms\Components\Component;
-use Filament\Pages\Auth\EditProfile;
+use Filament\Auth\Pages\EditProfile;
+use Filament\Schemas\Components\Component;
 
 /**
  * Edit user profile class
