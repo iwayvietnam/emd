@@ -18,6 +18,8 @@ class MailServer extends Model
     const POSTMAP_CMD = "sudo -S postmap lmdb:%s";
     const COPY_CMD = "sudo -S cp -f %s %s";
     const ECHO_CMD = "echo '%s'";
+    const CHMOD_CMD = "sudo -S chmod -R %s %s";
+    const CHOWN_CMD = "sudo -S chown -R %s %s";
     const CONFIG_DIR = "/etc/postfix";
 
     /**
@@ -192,6 +194,28 @@ class MailServer extends Model
                             self::COPY_CMD,
                             $tempFile,
                             $file,
+                        ),
+                    ]),
+                );
+                $remoteServer->runCommand(
+                    implode([
+                        sprintf(self::ECHO_CMD, $this->sudo_password),
+                        " | ",
+                        sprintf(
+                            self::CHOWN_CMD,
+                            "opendkim:",
+                            config("emd.opendkim.keys_directory"),
+                        ),
+                    ]),
+                );
+                $remoteServer->runCommand(
+                    implode([
+                        sprintf(self::ECHO_CMD, $this->sudo_password),
+                        " | ",
+                        sprintf(
+                            self::CHMOD_CMD,
+                            "600",
+                            config("emd.opendkim.keys_directory"),
                         ),
                     ]),
                 );
