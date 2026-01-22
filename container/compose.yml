@@ -63,7 +63,6 @@ services:
             - FORCE_HTTPS=false
             - PANEL_ID=admin
             - PANEL_PATH=admin
-            - SENDER_TRANSPORT=/etc/postfix/sender_transport
             - DB_CONNECTION=mysql
             - DB_HOST=emd-mariadb
             - DB_PORT=3306
@@ -99,6 +98,15 @@ services:
             - ACCCESS_TOKENS_EXPIRY=30
             - REFRESH_TOKENS_EXPIRY=180
             - PERSONAL_TOKENS_EXPIRY=365
+            - POSTFIX_CLIENT_IP_ACCESS=/etc/postfix/client_ip_access
+            - POSTFIX_SENDER_ACCESS=/etc/postfix/sender_access
+            - POSTFIX_RECIPIENT_RESTRICTION=/etc/postfix/recipient_restriction
+            - POSTFIX_SENDER_TRANSPORT=/etc/postfix/sender_transport
+            - POSTFIX_SENDER_BCC=/etc/postfix/sender_bcc
+            - OPENDKIM_SIGNING_TABLE=/etc/opendkim/SigningTable
+            - OPENDKIM_KEY_TABLE=/etc/opendkim/KeyTable
+            - OPENDKIM_TRUSTED_HOSTS=/etc/opendkim/TrustedHosts
+            - OPENDKIM_KEYS_DIRECTORY=/etc/opendkim/keys
             - TZ=Asia/Ho_Chi_Minh
         volumes:
             - ../admin:/var/www/html
