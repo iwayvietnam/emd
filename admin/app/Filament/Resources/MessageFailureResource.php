@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\MessageFailureResource\Pages;
 use App\Models\MessageFailure;
 use Filament\Resources\Resource;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\ViewAction;
@@ -23,7 +24,7 @@ class MessageFailureResource extends Resource
 {
     protected static ?string $model = MessageFailure::class;
     protected static string | UnitEnum | null $navigationGroup = "Email";
-    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-ticket";
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedTicket;
     protected static ?string $slug = "message-failure";
 
     public static function table(Table $table): Table

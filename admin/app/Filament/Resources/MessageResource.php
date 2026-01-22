@@ -7,6 +7,7 @@ use App\Filament\Resources\MessageResource\RelationManagers;
 use App\Models\Message;
 use App\Models\User;
 use Filament\Resources\Resource;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\ViewAction;
@@ -26,7 +27,7 @@ class MessageResource extends Resource
 {
     protected static ?string $model = Message::class;
     protected static string | UnitEnum | null $navigationGroup = "Email";
-    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-envelope";
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedEnvelope;
     protected static ?string $slug = "message";
 
     public static function table(Table $table): Table

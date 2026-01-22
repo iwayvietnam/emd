@@ -10,6 +10,7 @@ use App\Models\Domain;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Table;
@@ -30,7 +31,7 @@ class DomainResource extends Resource
 
     protected static ?string $model = Domain::class;
     protected static string | UnitEnum | null $navigationGroup = "System";
-    protected static string | BackedEnum | null $navigationIcon = "heroicon-s-cog";
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedCog;
     protected static ?string $slug = "domain";
 
     public static function getNavigationLabel(): string

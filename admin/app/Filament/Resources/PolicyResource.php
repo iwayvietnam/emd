@@ -13,6 +13,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -33,7 +34,7 @@ class PolicyResource extends Resource
 
     protected static ?string $model = Policy::class;
     protected static string | UnitEnum | null $navigationGroup = "Access Control";
-    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-shield-check";
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedShieldCheck;
     protected static ?string $slug = "policy";
 
     public static function getNavigationLabel(): string

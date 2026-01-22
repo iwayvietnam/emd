@@ -10,6 +10,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Actions\Action as TableAction;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\BulkAction;
@@ -34,7 +35,7 @@ class MailQueue extends Page implements HasTable
     use InteractsWithTable;
 
     protected static string | UnitEnum | null $navigationGroup = "System";
-    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-queue-list";
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedQueueList;
     protected static ?string $slug = "mail-queue";
     protected string $view = "filament.pages.mail-queue";
 

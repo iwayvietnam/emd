@@ -6,6 +6,7 @@ use App\Filament\Resources\RestrictedRecipientResource\Pages;
 use App\Models\RestrictedRecipient;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -24,7 +25,7 @@ class RestrictedRecipientResource extends Resource
 {
     protected static ?string $model = RestrictedRecipient::class;
     protected static string | UnitEnum | null $navigationGroup = "Access Control";
-    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-lock-closed";
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedLockClosed;
     protected static ?string $slug = "restricted";
 
     public static function getNavigationLabel(): string

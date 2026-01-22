@@ -6,6 +6,7 @@ use App\Filament\Resources\ClientResource\Pages;
 use App\Models\Client;
 use App\Models\Domain;
 use Filament\Resources\Resource;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -24,7 +25,7 @@ class ClientResource extends Resource
 {
     protected static ?string $model = Client::class;
     protected static string | UnitEnum | null $navigationGroup = "Access Control";
-    protected static string | BackedEnum | null $navigationIcon = "heroicon-m-computer-desktop";
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedComputerDesktop;
     protected static ?string $slug = "client";
 
     public static function getNavigationLabel(): string

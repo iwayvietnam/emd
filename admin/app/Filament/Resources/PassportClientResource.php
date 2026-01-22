@@ -12,6 +12,7 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Filters\TernaryFilter;
@@ -32,7 +33,7 @@ class PassportClientResource extends Resource
 {
     protected static ?string $model = PassportClient::class;
     protected static string | UnitEnum | null $navigationGroup = "System";
-    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-computer-desktop";
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedComputerDesktop;
     protected static ?string $slug = "passport-client";
 
     public static function form(Schema $schema): Schema

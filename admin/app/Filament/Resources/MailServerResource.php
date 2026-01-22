@@ -15,6 +15,7 @@ use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -35,7 +36,7 @@ class MailServerResource extends Resource
 {
     protected static ?string $model = MailServer::class;
     protected static string | UnitEnum | null $navigationGroup = "System";
-    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-server-stack";
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedServerStack;
     protected static ?string $slug = "mail-server";
 
     private static array $rsaKeySizes = [

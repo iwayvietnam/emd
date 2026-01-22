@@ -8,6 +8,7 @@ use App\Models\Policy;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -27,7 +28,7 @@ class ClientAccessResource extends Resource
 {
     protected static ?string $model = ClientAccess::class;
     protected static string | UnitEnum | null $navigationGroup = "Access Control";
-    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-lock-open";
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedLockOpen;
     protected static ?string $slug = "client-access";
 
     public static function getNavigationLabel(): string

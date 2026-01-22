@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SenderTransportResource\Pages;
 use App\Models\SenderTransport;
 use Filament\Resources\Resource;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -22,7 +23,7 @@ class SenderTransportResource extends Resource
 {
     protected static ?string $model = SenderTransport::class;
     protected static string | UnitEnum | null $navigationGroup = "Access Control";
-    protected static string | BackedEnum | null $navigationIcon = "heroicon-m-list-bullet";
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedListBullet;
     protected static ?string $slug = "sender-transport";
 
     public static function getNavigationLabel(): string

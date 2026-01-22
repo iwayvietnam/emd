@@ -16,6 +16,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Symfony\Component\Mailer\Exception\ExceptionInterface as MailerException;
@@ -35,7 +36,7 @@ class SendEmail extends Page
     const UPLOAD_DIR = "attachments";
 
     protected static string | UnitEnum | null $navigationGroup = "Email";
-    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-inbox";
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedInbox;
     protected static ?string $slug = "send-email";
     protected string $view = "filament.pages.send-email";
 

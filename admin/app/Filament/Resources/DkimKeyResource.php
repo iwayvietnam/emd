@@ -8,6 +8,7 @@ use App\Filament\Resources\DkimKeyResource\Pages;
 use App\Models\DkimKey;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\DeleteAction;
@@ -29,7 +30,7 @@ class DkimKeyResource extends Resource
 {
     protected static ?string $model = DkimKey::class;
     protected static string | UnitEnum | null $navigationGroup = "Domain";
-    protected static string | BackedEnum | null $navigationIcon = "heroicon-o-key";
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedKey;
     protected static ?string $slug = "dkim";
 
     public static function getNavigationLabel(): string

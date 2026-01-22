@@ -10,6 +10,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Actions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -27,7 +28,7 @@ class TransportResource extends Resource
 {
     protected static ?string $model = Transport::class;
     protected static string | UnitEnum | null $navigationGroup = "System";
-    protected static string | BackedEnum | null $navigationIcon = "heroicon-m-list-bullet";
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedListBullet;
     protected static ?string $slug = "transport";
 
     public static function getNavigationLabel(): string
