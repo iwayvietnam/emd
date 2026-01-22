@@ -44,7 +44,9 @@ services:
     emd-web-app:
         container_name: emd-web-app
         image: php:emd-web-app
-        build: php
+        build:
+            context: postfix
+            dockerfile: Containerfile
         hostname: emd-web-app
         restart: unless-stopped
         working_dir: /var/www/html
@@ -133,7 +135,9 @@ services:
     emd-postfix:
         container_name: emd-postfix
         image: postfix:emd
-        build: postfix
+        build:
+            context: postfix
+            dockerfile: Containerfile
         hostname: emd-postfix
         restart: unless-stopped
         environment:
