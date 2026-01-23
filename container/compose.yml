@@ -46,13 +46,13 @@ services:
             timeout: 5s
 
     # web admin service
-    emd-web-app:
-        container_name: emd-web-app
-        image: php:emd-web-app
+    emd-web-admin:
+        container_name: emd-web-admin
+        image: php:emd-web-admin
         build:
             context: postfix
             dockerfile: Containerfile
-        hostname: emd-web-app
+        hostname: emd-web-admin
         restart: unless-stopped
         working_dir: /var/www/html
         command: php -d variables_order=EGPCS /var/www/html/artisan serve --host=0.0.0.0 --port=80
@@ -149,10 +149,10 @@ services:
             - DKIM_ENABLE=true
             - DKIM_SERVICE=inet:emd-opendkim:8891
             - POLICY_ENABLE=true
-            - POLICY_SERVICE=inet:emd-web-app:54321
+            - POLICY_SERVICE=inet:emd-web-admin:1403
             - TZ=Asia/Ho_Chi_Minh
         depends_on:
-            - emd-web-app
+            - emd-web-admin
             - emd-opendkim
         volumes:
             - ./postfix/master.cf:/etc/postfix/master.cf:ro
