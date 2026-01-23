@@ -1,6 +1,11 @@
 networks:
     emd-network:
         name: emd-network
+volumes:
+  mariadb_data: {}
+  mariadb_log: {}
+  valkey_log: {}
+  postfix_spool: {}
 
 services:
     # mariadb service
@@ -16,8 +21,8 @@ services:
             - MARIADB_PASSWORD=emdPassw0rd
             - TZ=Asia/Ho_Chi_Minh
         volumes:
-            - ./volumes/mariadb:/var/lib/mysql
-            - ./volumes/mariadb:/var/log/mysql
+            - mariadb_data:/var/lib/mysql
+            - mariadb_log:/var/log/mysql
         networks:
             - emd-network
         healthcheck:
@@ -32,7 +37,7 @@ services:
         hostname: emd-valkey
         restart: unless-stopped
         volumes:
-            - ./volumes/valkey:/data
+            - valkey_log:/data
         networks:
             - emd-network
         healthcheck:
@@ -151,8 +156,6 @@ services:
             - emd-opendkim
         volumes:
             - ./postfix/master.cf:/etc/postfix/master.cf:ro
-            - ./volumes/postfix/log:/var/log
-            - ./volumes/postfix/mail:/var/mail
-            - ./volumes/postfix/spool:/var/spool/postfix
+            - postfix_spool:/var/spool/postfix
         networks:
             - emd-network
