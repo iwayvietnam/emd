@@ -55,7 +55,6 @@ services:
         hostname: emd-web-admin
         restart: unless-stopped
         working_dir: /var/www/html
-        command: php -d variables_order=EGPCS /var/www/html/artisan serve --host=0.0.0.0 --port=80
         depends_on:
             - emd-mariadb
             - emd-valkey
