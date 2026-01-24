@@ -10,3 +10,10 @@ RUN docker-php-ext-configure opcache --enable-opcache \
     && docker-php-source delete
 
 WORKDIR /var/www/html
+VOLUME ["/var/www/html"]
+
+EXPOSE 80 1403
+
+COPY ./entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
