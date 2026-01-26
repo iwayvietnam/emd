@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PassportClientResource\Pages;
 use App\Models\PassportClient;
 use Filament\Actions;
-use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -51,7 +50,7 @@ class PassportClientResource extends Resource
                 ->label(__("Provider")),
             TextInput::make("secret")
                 ->hintActions([
-                    Action::make("genarate")
+                    Actions\Action::make("genarate")
                         ->label(__("Genarate Client Secret"))
                         ->action(
                             static fn(Set $set) => $set(
