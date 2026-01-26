@@ -40,20 +40,19 @@ class TransportResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Grid::make([
-                'default' => 3,
-                'sm' => 1,
-                'md' => 2,
-            ])->schema([
+            Grid::make()->columns(3)->schema([
                 TextInput::make("name")
                     ->required()
                     ->unique(ignoreRecord: true)
+                    ->columnSpan(1)
                     ->label(__("Name")),
                 TextInput::make("transport")
                     ->required()
+                    ->columnSpan(1)
                     ->label(__("Transport"))
                     ->helperText(__("The message delivery transport.")),
                 TextInput::make("nexthop")
+                    ->columnSpan(1)
                     ->label(__("Nexthop"))
                     ->helperText(__("The next-hop destination.")),
             ]),
