@@ -6,6 +6,7 @@ use App\Filament\Resources\UserResource;
 use App\Models\Domain;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
 
@@ -25,25 +26,27 @@ class CreateUser extends CreateRecord
     {
         $domains = [];
         return $schema->components([
-            TextInput::make("name")->required()->label(__("Name")),
-            TextInput::make("email")
-                ->email()
-                ->required()
-                ->unique()
-                ->endsWith(Domain::all()->pluck("name", "id"))
-                ->validationMessages([
-                    "unique" => __("The email address has already been taken."),
-                    "ends_with" => __(
-                        "The email address does not belong to any domains."
-                    ),
-                ])
-                ->label(__("Email Address")),
-            TextInput::make("password")
-                ->password()
-                ->dehydrateStateUsing(fn($state) => Hash::make($state))
-                ->dehydrated(fn($state) => filled($state))
-                ->required()
-                ->label(__("Password")),
+            Grid::make(3)->schema([
+                TextInput::make("name")->required()->label(__("Name")),
+                TextInput::make("email")
+                    ->email()
+                    ->required()
+                    ->unique()
+                    ->endsWith(Domain::all()->pluck("name", "id"))
+                    ->validationMessages([
+                        "unique" => __("The email address has already been taken."),
+                        "ends_with" => __(
+                            "The email address does not belong to any domains."
+                        ),
+                    ])
+                    ->label(__("Email Address")),
+                TextInput::make("password")
+                    ->password()
+                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                    ->dehydrated(fn($state) => filled($state))
+                    ->required()
+                    ->label(__("Password")),
+            ])->columnSpan(2),
         ]);
     }
 

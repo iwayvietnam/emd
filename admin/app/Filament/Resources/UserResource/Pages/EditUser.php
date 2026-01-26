@@ -5,6 +5,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
 
@@ -22,14 +23,16 @@ class EditUser extends EditRecord
     public function form(Schema $schema): Schema
     {
         return $schema->components([
-            TextInput::make("name")->required()->label(__("Name")),
-            TextInput::make("email")->readonly()->label(__("Email Address")),
-            TextInput::make("password")
-                ->password()
-                ->dehydrateStateUsing(fn($state) => Hash::make($state))
-                ->dehydrated(fn($state) => filled($state))
-                ->required(false)
-                ->label(__("Password")),
+            Grid::make(3)->schema([
+                TextInput::make("name")->required()->label(__("Name")),
+                TextInput::make("email")->readonly()->label(__("Email Address")),
+                TextInput::make("password")
+                    ->password()
+                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                    ->dehydrated(fn($state) => filled($state))
+                    ->required(false)
+                    ->label(__("Password")),
+            ])->columnSpan(2),
         ]);
     }
 
