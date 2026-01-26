@@ -39,7 +39,7 @@ class TransportResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Grid::make(3)->schema([
+            Grid::make()->schema([
                 TextInput::make("name")
                     ->required()
                     ->unique(ignoreRecord: true)
