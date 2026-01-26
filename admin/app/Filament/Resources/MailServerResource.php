@@ -47,13 +47,7 @@ class MailServerResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Grid::make()->columns([
-                    "sm" => 1,
-                    "md" => 2,
-                    "lg" => 5,
-                    "xl" => 5,
-                    "2xl" => 5,
-                ])->schema([
+            Grid::make()->columns(1)->schema([
                     TextInput::make("name")
                         ->required()
                         ->unique(ignoreRecord: true)
