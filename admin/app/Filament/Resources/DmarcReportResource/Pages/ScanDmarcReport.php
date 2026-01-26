@@ -76,7 +76,7 @@ class ScanDmarcReport extends CreateRecord
                         ->required()
                         ->label(__("Archive Folder")),
                 ]),
-            ]),
+            ])->columnSpan(2),
             Toggle::make("index_report")
                 ->inline(false)
                 ->live()
@@ -95,7 +95,7 @@ class ScanDmarcReport extends CreateRecord
                             ->required()
                             ->label(__("API Id")),
                     ]),
-                ])
+                ])->columnSpan(2)
                 ->hidden(static fn(Get $get) => !$get("index_report")),
         ]);
     }
