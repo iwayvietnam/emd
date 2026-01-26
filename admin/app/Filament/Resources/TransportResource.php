@@ -39,7 +39,7 @@ class TransportResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Flex::make()->schema([
+            Flex::make([
                 TextInput::make("name")
                     ->required()
                     ->unique(ignoreRecord: true)
