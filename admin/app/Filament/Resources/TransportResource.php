@@ -9,7 +9,7 @@ use Filament\Actions;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
-use Filament\Schemas\Components\Flex;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -40,24 +40,25 @@ class TransportResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Flex::make([
-                Section::make([
-                    TextInput::make("name")
-                        ->required()
-                        ->unique(ignoreRecord: true)
-                        ->label(__("Name")),
-                ]),
-                Section::make([
-                    TextInput::make("transport")
-                        ->required()
-                        ->label(__("Transport"))
-                        ->helperText(__("The message delivery transport.")),
-                ]),
-                Section::make([
-                    TextInput::make("nexthop")
-                        ->label(__("Nexthop"))
-                        ->helperText(__("The next-hop destination.")),
-                ]),
+            Grid::make([
+                'default' => 1,
+                'sm' => 2,
+                'md' => 3,
+                'lg' => 4,
+                'xl' => 6,
+                '2xl' => 8,
+            ])->schema([
+                TextInput::make("name")
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->label(__("Name")),
+                TextInput::make("transport")
+                    ->required()
+                    ->label(__("Transport"))
+                    ->helperText(__("The message delivery transport.")),
+                TextInput::make("nexthop")
+                    ->label(__("Nexthop"))
+                    ->helperText(__("The next-hop destination.")),
             ]),
         ]);
     }
