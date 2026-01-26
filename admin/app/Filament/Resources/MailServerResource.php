@@ -76,7 +76,7 @@ class MailServerResource extends Resource
                 ->hintActions([
                     Actions\Action::make("genarate")
                         ->label(__("Genarate SSH Keys"))
-                        ->form([
+                        ->schema([
                             Fieldset::make(__("Key Settings"))->schema([
                                 Select::make("key_algorithm")
                                     ->options(SSHKeyAlgorithm::class)
@@ -143,9 +143,7 @@ class MailServerResource extends Resource
 
     private static function genarateSSHKeys(Set $set, array $data): void
     {
-        $keyAlgo =
-            SSHKeyAlgorithm::tryFrom((int) $data["key_algorithm"]) ??
-            SSHKeyAlgorithm::Ed25519;
+        $keyAlgo = $data["key_algorithm"] ?? SSHKeyAlgorithm::Ed25519;
         $privateKey = self::createKey($keyAlgo, (int) $data["rsa_key_size"]);
         $set("ssh_private_key", $privateKey->toString("OpenSSH"));
         $set(
