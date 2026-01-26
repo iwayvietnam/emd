@@ -45,7 +45,7 @@ class ScanDmarcReport extends CreateRecord
     {
         return $schema->components([
             Fieldset::make(__("IMAP Mailbox"))->schema([
-                Grid::make(5)->schema([
+                Grid::make(5)->columnSpan(2)->schema([
                     TextInput::make("host")
                         ->required()
                         ->columnSpan(3)
@@ -61,7 +61,7 @@ class ScanDmarcReport extends CreateRecord
                         ->default("starttls")
                         ->label(__("Encryption")),
                 ]),
-                Grid::make(4)->schema([
+                Grid::make(4)->columnSpan(2)->schema([
                     TextInput::make("username")
                         ->required()
                         ->label(__("User Name")),
@@ -83,7 +83,7 @@ class ScanDmarcReport extends CreateRecord
                 ->label(__("Index Report")),
             Fieldset::make(__("Elastic Search API"))
                 ->schema([
-                    Grid::make(3)->schema([
+                    Grid::make(3)->columnSpan(2)->schema([
                         TextInput::make("elastic_host")
                             ->required()
                             ->url()
