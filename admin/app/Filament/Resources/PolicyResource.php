@@ -65,9 +65,9 @@ class PolicyResource extends Resource
                     )
                 ),
             Select::make("quota_period")
+                ->default(LimitPeriod::PerMinute)
                 ->options(LimitPeriod::class)
                 ->required(static fn(Get $get) => $get("quota_limit") > 0)
-                ->notIn([])
                 ->label(__("Quota Time Unit")),
             TextInput::make("rate_limit")
                 ->required()
@@ -82,9 +82,9 @@ class PolicyResource extends Resource
                     )
                 ),
             Select::make("rate_period")
+                ->default(LimitPeriod::PerMinute)
                 ->options(LimitPeriod::class)
                 ->required(static fn(Get $get) => $get("rate_limit") > 0)
-                ->notIn([])
                 ->label(__("Rate Time Unit")),
         ]);
     }
