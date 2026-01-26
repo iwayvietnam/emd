@@ -47,26 +47,34 @@ class MailServerResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Grid::make()->columns(2)->schema([
-                    TextInput::make("name")
-                        ->required()
-                        ->unique(ignoreRecord: true)
-                        ->label(__("Name")),
-                    TextInput::make("ip_address")
-                        ->required()
-                        ->ipv4()
-                        ->label(__("Ip Address")),
-                    TextInput::make("ssh_user")->required()->label(__("SSH User")),
-                    TextInput::make("ssh_port")
-                        ->required()
-                        ->integer()
-                        ->minValue(0)
-                        ->default(22)
-                        ->label(__("SSH Port")),
-                    TextInput::make("sudo_password")
-                        ->required()
-                        ->password()
-                        ->label(__("Sudo Password")),
+            Grid::make()->schema([
+                TextInput::make("name")
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->label(__("Name")),
+            ]),
+            Grid::make()->schema([
+                TextInput::make("ip_address")
+                    ->required()
+                    ->ipv4()
+                    ->label(__("Ip Address")),
+            ]),
+            Grid::make()->schema([
+                TextInput::make("ssh_user")->required()->label(__("SSH User")),
+            ]),
+            Grid::make()->schema([
+                TextInput::make("ssh_port")
+                    ->required()
+                    ->integer()
+                    ->minValue(0)
+                    ->default(22)
+                    ->label(__("SSH Port")),
+            ]),
+            Grid::make()->schema([
+                TextInput::make("sudo_password")
+                    ->required()
+                    ->password()
+                    ->label(__("Sudo Password")),
             ]),
             Textarea::make("ssh_private_key")
                 ->columnSpan(2)
