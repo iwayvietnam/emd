@@ -26,7 +26,7 @@ class ListClients extends ListRecords
         return [
             Actions\CreateAction::make()->label(__("New Client")),
             Actions\Action::make("sync")
-                ->form([
+                ->schema([
                     Select::make("mail_server")
                         ->options(MailServer::all()->pluck("name", "id"))
                         ->required()

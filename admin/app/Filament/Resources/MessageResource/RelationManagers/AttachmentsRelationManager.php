@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\MessageResource\RelationManagers;
 
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Actions\Action;
 use Filament\Tables\Table;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Facades\Storage;
 

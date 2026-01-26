@@ -28,7 +28,7 @@ class ListRestrictedRecipients extends ListRecords
                 __("Create Restrict Recipients")
             ),
             Actions\Action::make("sync")
-                ->form([
+                ->schema([
                     Select::make("mail_server")
                         ->options(MailServer::all()->pluck("name", "id"))
                         ->required()

@@ -4,8 +4,8 @@ namespace App\Filament\Resources\DmarcReportResource\RelationManagers;
 
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Actions;
 use Filament\Schemas\Schema;
-use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Table;
 

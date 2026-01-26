@@ -26,7 +26,7 @@ class ListClientAccesses extends ListRecords
         return [
             Actions\CreateAction::make()->label(__("New Client Access")),
             Actions\Action::make("syncClientAccess")
-                ->form([
+                ->schema([
                     Select::make("mail_server")
                         ->options(MailServer::all()->pluck("name", "id"))
                         ->required()
