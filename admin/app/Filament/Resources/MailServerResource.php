@@ -78,7 +78,7 @@ class MailServerResource extends Resource
                             Fieldset::make(__("Key Settings"))->schema([
                                 Select::make("key_algorithm")
                                     ->options(SSHKeyAlgorithm::class)
-                                    ->default(SSHKeyAlgorithm::Ed25519->value)
+                                    ->default(SSHKeyAlgorithm::Ed25519)
                                     ->selectablePlaceholder(false)
                                     ->label(__("Key Algorithm")),
                                 Select::make("rsa_key_size")
