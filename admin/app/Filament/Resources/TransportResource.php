@@ -44,9 +44,9 @@ class TransportResource extends Resource
                 'default' => 1,
                 'sm' => 2,
                 'md' => 3,
-                'lg' => 4,
-                'xl' => 6,
-                '2xl' => 8,
+                'lg' => 3,
+                'xl' => 3,
+                '2xl' => 3,
             ])->schema([
                 TextInput::make("name")
                     ->required()
