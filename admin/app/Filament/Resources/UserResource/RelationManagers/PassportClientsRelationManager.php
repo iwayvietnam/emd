@@ -3,14 +3,13 @@
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
 use App\Models\PassportClient;
-use Filament\Forms\Components\Actions\Action;
+use Filament\Actions;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
-use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -34,7 +33,7 @@ class PassportClientsRelationManager extends RelationManager
             TextInput::make("name")->required()->label(__("Client Name")),
             TextInput::make("secret")
                 ->hintActions([
-                    Action::make("genarate")
+                    Actions\Action::make("genarate")
                         ->label(__("Genarate Client Secret"))
                         ->action(
                             static fn(Set $set) => $set(

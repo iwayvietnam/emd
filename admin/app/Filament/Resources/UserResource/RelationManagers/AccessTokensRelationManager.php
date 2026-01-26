@@ -3,10 +3,10 @@
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
 use App\Models\PassportToken;
+use Filament\Actions;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
-use Filament\Tables\Actions;
 use Filament\Tables\Columns;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
