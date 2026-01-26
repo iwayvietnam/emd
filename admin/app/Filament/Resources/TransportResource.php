@@ -10,6 +10,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Flex;
+use Filament\Schemas\Components\Flex;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
@@ -40,17 +41,23 @@ class TransportResource extends Resource
     {
         return $schema->components([
             Flex::make([
-                TextInput::make("name")
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->label(__("Name")),
-                TextInput::make("transport")
-                    ->required()
-                    ->label(__("Transport"))
-                    ->helperText(__("The message delivery transport.")),
-                TextInput::make("nexthop")
-                    ->label(__("Nexthop"))
-                    ->helperText(__("The next-hop destination.")),
+                Section::make([
+                    TextInput::make("name")
+                        ->required()
+                        ->unique(ignoreRecord: true)
+                        ->label(__("Name")),
+                ]),
+                Section::make([
+                    TextInput::make("transport")
+                        ->required()
+                        ->label(__("Transport"))
+                        ->helperText(__("The message delivery transport.")),
+                ]),
+                Section::make([
+                    TextInput::make("nexthop")
+                        ->label(__("Nexthop"))
+                        ->helperText(__("The next-hop destination.")),
+                ]),
             ]),
         ]);
     }
