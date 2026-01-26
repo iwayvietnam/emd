@@ -10,7 +10,6 @@ use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Resources\Pages\CreateRecord;
-use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Filament\Support\Exceptions\Halt;
 use Illuminate\Database\Eloquent\Model;
@@ -30,18 +29,16 @@ class CreateClientAccess extends CreateRecord
     public function form(Schema $schema): Schema
     {
         return $schema->components([
-            Grid::make(2)->schema([
-                Select::make("client_id")
-                    ->options(Client::all()->pluck("name", "id"))
-                    ->required()
-                    ->searchable()
-                    ->label(__("Client")),
-                Select::make("policy_id")
-                    ->options(Policy::all()->pluck("name", "id"))
-                    ->required()
-                    ->searchable()
-                    ->label(__("Policy")),
-            ]),
+            Select::make("client_id")
+                ->options(Client::all()->pluck("name", "id"))
+                ->required()
+                ->searchable()
+                ->label(__("Client")),
+            Select::make("policy_id")
+                ->options(Policy::all()->pluck("name", "id"))
+                ->required()
+                ->searchable()
+                ->label(__("Policy")),
             Textarea::make("ip_addresses")
                 ->required()
                 ->columnSpan(2)
