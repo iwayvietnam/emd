@@ -5,7 +5,7 @@ namespace App\Filament\Resources\DkimKeyResource\Pages;
 use App\Filament\Resources\DkimKeyResource;
 use App\Models\Domain;
 use App\Models\DkimKey;
-use Filament\Forms\Components\Actions\Action;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -37,7 +37,7 @@ class CreateDkimKey extends CreateRecord
     public function form(Schema $schema): Schema
     {
         return $schema->components([
-            Grid::make(3)->schema([
+            Grid::make(3)->columnSpan(2)->schema([
                 Select::make("domain_id")
                     ->options(
                         Domain::whereNotIn(
