@@ -4,6 +4,9 @@ namespace App\Filament\Pages;
 
 use App\Models\MailServer;
 use App\Models\MailServerQueue;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\BulkAction;
 use Filament\Forms\Components\Actions\Action as FormAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -11,9 +14,6 @@ use Filament\Pages\Page;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Actions\Action as TableAction;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -134,7 +134,7 @@ class MailQueue extends Page implements HasTable
             ])
             ->actions([
                 ActionGroup::make([
-                    TableAction::make("export")
+                    Action::make("export")
                         ->icon("heroicon-m-arrow-down-circle")
                         ->color("primary")
                         ->action(
@@ -143,7 +143,7 @@ class MailQueue extends Page implements HasTable
                             ) => self::exportQueueContent($record)
                         )
                         ->label(__("Export Content")),
-                    TableAction::make("flush")
+                    Action::make("flush")
                         ->icon("heroicon-m-arrow-up-circle")
                         ->color("primary")
                         ->action(function (MailServerQueue $record) {
@@ -152,7 +152,7 @@ class MailQueue extends Page implements HasTable
                             redirect($this->getUrl());
                         })
                         ->label(__("Flush")),
-                    TableAction::make("delete")
+                    Action::make("delete")
                         ->icon("heroicon-m-trash")
                         ->color("danger")
                         ->action(function (MailServerQueue $record) {
