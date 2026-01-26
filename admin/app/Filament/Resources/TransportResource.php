@@ -41,12 +41,9 @@ class TransportResource extends Resource
     {
         return $schema->components([
             Grid::make([
-                'default' => 1,
-                'sm' => 2,
-                'md' => 3,
-                'lg' => 3,
-                'xl' => 3,
-                '2xl' => 3,
+                'default' => 3,
+                'sm' => 1,
+                'md' => 2,
             ])->schema([
                 TextInput::make("name")
                     ->required()
