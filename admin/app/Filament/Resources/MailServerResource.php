@@ -56,8 +56,6 @@ class MailServerResource extends Resource
                     ->required()
                     ->ipv4()
                     ->label(__("Ip Address")),
-            ]),
-            Grid::make()->columns(3)->schema([
                 TextInput::make("ssh_user")->required()->label(__("SSH User")),
                 TextInput::make("ssh_port")
                     ->required()
@@ -69,7 +67,7 @@ class MailServerResource extends Resource
                     ->required()
                     ->password()
                     ->label(__("Sudo Password")),
-            ]),
+            ])->columnSpan(2),
             Textarea::make("ssh_private_key")
                 ->columnSpan(2)
                 ->required()
