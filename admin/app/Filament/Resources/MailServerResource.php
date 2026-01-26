@@ -6,7 +6,6 @@ use App\Enums\SSHKeyAlgorithm;
 use App\Filament\Resources\MailServerResource\Pages;
 use App\Models\MailServer;
 use Filament\Actions;
-use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -73,7 +72,7 @@ class MailServerResource extends Resource
                 ->columnSpan(2)
                 ->required()
                 ->hintActions([
-                    Action::make("genarate")
+                    Actions\Action::make("genarate")
                         ->label(__("Genarate SSH Keys"))
                         ->form([
                             Fieldset::make(__("Key Settings"))->schema([
