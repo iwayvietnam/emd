@@ -1,7 +1,7 @@
 <x-filament-panels::page>
     <x-filament-panels::form wire:submit="listMailQueue">
         {{ $this->form }}
-        <x-filament-panels::form.actions
+        <x-filament-panels::actions
             :actions="$this->getFormActions()"
         />
     </x-filament-panels::form>
