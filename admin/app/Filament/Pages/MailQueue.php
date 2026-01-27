@@ -7,7 +7,6 @@ use App\Models\MailServerQueue;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
-use Filament\Forms\Components\Actions\Action as FormAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
@@ -81,7 +80,7 @@ class MailQueue extends Page implements HasTable
     protected function getFormActions(): array
     {
         return [
-            FormAction::make("list")
+            Action::make("list")
                 ->submit("listMailQueue")
                 ->label(__("List Mail Queue")),
         ];
