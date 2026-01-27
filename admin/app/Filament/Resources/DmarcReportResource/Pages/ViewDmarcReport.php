@@ -3,9 +3,9 @@
 namespace App\Filament\Resources\DmarcReportResource\Pages;
 
 use App\Filament\Resources\DmarcReportResource;
-use Filament\Infolists\Components\Fieldset;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Schema;
 
 /**
