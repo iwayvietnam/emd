@@ -40,6 +40,9 @@ class MailQueue extends Page implements HasTable
 {
     use InteractsWithTable;
 
+    const MAIL_QUEUE_FORM_AFTER = 'panels::mail.queue.form.after';
+    const MAIL_QUEUE_FORM_BEFORE = 'panels::mail.queue.form.before';
+
     protected static string | UnitEnum | null $navigationGroup = "System";
     protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedQueueList;
     protected static ?string $slug = "mail-queue";
@@ -175,9 +178,9 @@ class MailQueue extends Page implements HasTable
     {
         return $schema
             ->components([
-                RenderHook::make(self::SEND_EMAIL_FORM_AFTER),
+                RenderHook::make(self::MAIL_QUEUE_FORM_AFTER),
                 $this->getFormContentComponent(),
-                RenderHook::make(self::SEND_EMAIL_FORM_BEFORE),
+                RenderHook::make(self::MAIL_QUEUE_FORM_BEFORE),
             ]);
     }
 
