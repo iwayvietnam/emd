@@ -12,7 +12,13 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\EmbeddedSchema;
+use Filament\Schemas\Components\Form;
+use Filament\Schemas\Components\RenderHook;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\Alignment;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -162,6 +168,29 @@ class MailQueue extends Page implements HasTable
                         })
                         ->label(__("Delete")),
                 ]),
+            ]);
+    }
+
+    public function content(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                RenderHook::make(self::SEND_EMAIL_FORM_AFTER),
+                $this->getFormContentComponent(),
+                RenderHook::make(self::SEND_EMAIL_FORM_BEFORE),
+            ]);
+    }
+
+    public function getFormContentComponent(): Component
+    {
+        return Form::make([EmbeddedSchema::make('form')])
+            ->id('form')
+            ->livewireSubmitHandler('listMailQueue')
+            ->footer([
+                Actions::make($this->getFormActions())
+                    ->alignment(Alignment::Start)
+                    ->fullWidth(false)
+                    ->key('form-actions'),
             ]);
     }
 
