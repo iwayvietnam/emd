@@ -59,11 +59,9 @@ class PolicyResource extends Resource
                 ->default(0)
                 ->live()
                 ->label(__("Quota"))
-                ->helperText(
-                    __(
-                        "Maximum capacity in megabytes that client can send per time unit.",
-                    ),
-                ),
+                ->helperText(__(
+                    "Maximum capacity in megabytes that client can send per time unit.",
+                )),
             Select::make("quota_period")
                 ->default(LimitPeriod::PerMinute)
                 ->options(LimitPeriod::class)
@@ -76,11 +74,9 @@ class PolicyResource extends Resource
                 ->default(0)
                 ->live()
                 ->label(__("Rate"))
-                ->helperText(
-                    __(
-                        "Maximum amount of message that client can send per time unit.",
-                    ),
-                ),
+                ->helperText(__(
+                    "Maximum amount of message that client can send per time unit.",
+                )),
             Select::make("rate_period")
                 ->default(LimitPeriod::PerMinute)
                 ->options(LimitPeriod::class)
@@ -152,12 +148,9 @@ class PolicyResource extends Resource
         Notification::make()
             ->warning()
             ->title(__("Unable to delete policy"))
-            ->body(
-                __(
-                    "You must delete all client accesses belongs to the policy.",
-                ),
-            )
-            ->send();
+            ->body(__(
+                "You must delete all client accesses belongs to the policy.",
+            ))->send();
         $action->cancel();
     }
 }

@@ -99,12 +99,9 @@ class TransportResource extends Resource
         Notification::make()
             ->warning()
             ->title(__("Unable to delete transport"))
-            ->body(
-                __(
-                    "You must delete all sender transports belongs to the transport.",
-                ),
-            )
-            ->send();
+            ->body(__(
+                "You must delete all sender transports belongs to the transport.",
+            ))->send();
         $action->cancel();
     }
 }

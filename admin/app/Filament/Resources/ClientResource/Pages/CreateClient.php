@@ -43,11 +43,9 @@ class CreateClient extends CreateRecord
                     ) use ($get) {
                         $domain = Domain::find($get("domain_id"));
                         if (!Str::endsWith($value, $domain->name)) {
-                            $fail(
-                                __(
-                                    "The sender address must match the domain name.",
-                                ),
-                            );
+                            $fail(__(
+                                "The sender address must match the domain name.",
+                            ));
                         }
                     },
                 ])

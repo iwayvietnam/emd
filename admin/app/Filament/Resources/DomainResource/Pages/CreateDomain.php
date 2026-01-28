@@ -48,11 +48,9 @@ class CreateDomain extends CreateRecord
                         \Closure $fail,
                     ) use ($get) {
                         if (!Str::endsWith($value, $get("name"))) {
-                            $fail(
-                                __(
-                                    "The email address must match the domain name.",
-                                ),
-                            );
+                            $fail(__(
+                                "The email address must match the domain name.",
+                            ));
                         }
                     },
                 ])
