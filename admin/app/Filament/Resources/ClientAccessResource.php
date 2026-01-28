@@ -87,7 +87,7 @@ class ClientAccessResource extends Resource
                         ])
                         ->modalHeading(__("Rate Limit Info"))
                         ->modalSubmitAction(false)
-                        ->icon("heroicon-m-eye")
+                        ->icon(Heroicon::OutlinedEye)
                         ->color("info")
                         ->label("View Rate Limit"),
                     Actions\Action::make("view_quota")
@@ -126,7 +126,7 @@ class ClientAccessResource extends Resource
                         ])
                         ->modalHeading(__("Quota Limit Info"))
                         ->modalSubmitAction(false)
-                        ->icon("heroicon-m-eye")
+                        ->icon(Heroicon::OutlinedEye)
                         ->color("info")
                         ->label("View Quota Limit"),
                     Actions\Action::make("clear_rate")
@@ -136,7 +136,7 @@ class ClientAccessResource extends Resource
                                 ClientAccess $record,
                             ) => self::clearRateCounter($record),
                         )
-                        ->icon("heroicon-m-check-badge")
+                        ->icon(Heroicon::OutlinedCheckBadge)
                         ->color("primary")
                         ->label("Clear Rate Limit"),
                     Actions\Action::make("clear_quota")
@@ -146,7 +146,7 @@ class ClientAccessResource extends Resource
                                 ClientAccess $record,
                             ) => self::clearQuotaCounter($record),
                         )
-                        ->icon("heroicon-m-check-badge")
+                        ->icon(Heroicon::OutlinedCheckBadge)
                         ->color("primary")
                         ->label("Clear Quota Limit"),
                     Actions\DeleteAction::make(),
