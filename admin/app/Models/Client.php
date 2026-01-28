@@ -54,7 +54,7 @@ class Client extends Model
     public static function senderBccMaps(): array
     {
         $addresses = [];
-        $senders = static::all()->pluck('bcc_address', 'sender_address');
+        $senders = static::all()->pluck("bcc_address", "sender_address");
         foreach ($senders as $sender => $bcc) {
             if (!empty($bcc)) {
                 $addresses[$sender] = $sender . " " . $bcc;

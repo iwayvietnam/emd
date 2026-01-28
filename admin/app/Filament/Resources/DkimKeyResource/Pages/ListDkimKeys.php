@@ -40,8 +40,8 @@ class ListDkimKeys extends ListRecords
                 ])
                 ->action(
                     static fn(array $data) => self::syncOpenDkimKeys(
-                        (int) $data["mail_server"]
-                    )
+                        (int) $data["mail_server"],
+                    ),
                 )
                 ->label(__("Sync To Mail Server")),
         ];
@@ -53,9 +53,17 @@ class ListDkimKeys extends ListRecords
         $keyTable = DkimKey::keyTable();
         $privateKeys = DkimKey::privateKeys();
 
-        if (!empty($signingTable) || !empty($keyTable) || !empty($privateKeys)) {
+        if (
+            !empty($signingTable) ||
+            !empty($keyTable) ||
+            !empty($privateKeys)
+        ) {
             try {
-                MailServer::find($id)->syncOpenDkimKeys($signingTable, $keyTable, $privateKeys);
+                MailServer::find($id)->syncOpenDkimKeys(
+                    $signingTable,
+                    $keyTable,
+                    $privateKeys,
+                );
             } catch (\Throwable $th) {
                 logger()->error($th);
                 Notification::make()

@@ -102,7 +102,11 @@ class ClientAccess extends Model
                     "verdict" => $model->verdict,
                 ];
             }
-            Cache::store($cacheStore)->put($cacheKey, $accesses, self::CACHE_EXPIRES);
+            Cache::store($cacheStore)->put(
+                $cacheKey,
+                $accesses,
+                self::CACHE_EXPIRES,
+            );
         }
         return $accesses;
     }

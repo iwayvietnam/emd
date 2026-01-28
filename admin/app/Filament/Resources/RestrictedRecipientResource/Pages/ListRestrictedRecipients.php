@@ -25,7 +25,7 @@ class ListRestrictedRecipients extends ListRecords
     {
         return [
             Actions\CreateAction::make()->label(
-                __("Create Restrict Recipients")
+                __("Create Restrict Recipients"),
             ),
             Actions\Action::make("sync")
                 ->schema([
@@ -36,8 +36,8 @@ class ListRestrictedRecipients extends ListRecords
                 ])
                 ->action(
                     static fn(array $data) => self::syncRecipientRestrictions(
-                        (int) $data["mail_server"]
-                    )
+                        (int) $data["mail_server"],
+                    ),
                 )
                 ->label(__("Sync To Mail Server")),
         ];

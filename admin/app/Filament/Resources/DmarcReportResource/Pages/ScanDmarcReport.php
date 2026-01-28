@@ -44,58 +44,67 @@ class ScanDmarcReport extends CreateRecord
     public function form(Schema $schema): Schema
     {
         return $schema->components([
-            Fieldset::make(__("IMAP Mailbox"))->schema([
-                Grid::make(5)->columnSpan(2)->schema([
-                    TextInput::make("host")
-                        ->required()
-                        ->columnSpan(3)
-                        ->label(__("IMAP Host")),
-                    TextInput::make("port")
-                        ->required()
-                        ->numeric()
-                        ->default(143)
-                        ->label(__("IMAP Port")),
-                    Select::make("encryption")
-                        ->required()
-                        ->options(self::$imapEncryptions)
-                        ->default("starttls")
-                        ->label(__("Encryption")),
-                ]),
-                Grid::make(4)->columnSpan(2)->schema([
-                    TextInput::make("username")
-                        ->required()
-                        ->label(__("User Name")),
-                    TextInput::make("password")
-                        ->required()
-                        ->password()
-                        ->label(__("Password")),
-                    TextInput::make("report_folder")
-                        ->required()
-                        ->label(__("Report Folder")),
-                    TextInput::make("archive_folder")
-                        ->required()
-                        ->label(__("Archive Folder")),
-                ]),
-            ])->columnSpan(2),
+            Fieldset::make(__("IMAP Mailbox"))
+                ->schema([
+                    Grid::make(5)
+                        ->columnSpan(2)
+                        ->schema([
+                            TextInput::make("host")
+                                ->required()
+                                ->columnSpan(3)
+                                ->label(__("IMAP Host")),
+                            TextInput::make("port")
+                                ->required()
+                                ->numeric()
+                                ->default(143)
+                                ->label(__("IMAP Port")),
+                            Select::make("encryption")
+                                ->required()
+                                ->options(self::$imapEncryptions)
+                                ->default("starttls")
+                                ->label(__("Encryption")),
+                        ]),
+                    Grid::make(4)
+                        ->columnSpan(2)
+                        ->schema([
+                            TextInput::make("username")
+                                ->required()
+                                ->label(__("User Name")),
+                            TextInput::make("password")
+                                ->required()
+                                ->password()
+                                ->label(__("Password")),
+                            TextInput::make("report_folder")
+                                ->required()
+                                ->label(__("Report Folder")),
+                            TextInput::make("archive_folder")
+                                ->required()
+                                ->label(__("Archive Folder")),
+                        ]),
+                ])
+                ->columnSpan(2),
             Toggle::make("index_report")
                 ->inline(false)
                 ->live()
                 ->label(__("Index Report")),
             Fieldset::make(__("Elastic Search API"))
                 ->schema([
-                    Grid::make(3)->columnSpan(2)->schema([
-                        TextInput::make("elastic_host")
-                            ->required()
-                            ->url()
-                            ->label(__("Host")),
-                        TextInput::make("elastic_api_key")
-                            ->required()
-                            ->label(__("API Key")),
-                        TextInput::make("elastic_api_id")
-                            ->required()
-                            ->label(__("API Id")),
-                    ]),
-                ])->columnSpan(2)
+                    Grid::make(3)
+                        ->columnSpan(2)
+                        ->schema([
+                            TextInput::make("elastic_host")
+                                ->required()
+                                ->url()
+                                ->label(__("Host")),
+                            TextInput::make("elastic_api_key")
+                                ->required()
+                                ->label(__("API Key")),
+                            TextInput::make("elastic_api_id")
+                                ->required()
+                                ->label(__("API Id")),
+                        ]),
+                ])
+                ->columnSpan(2)
                 ->hidden(static fn(Get $get) => !$get("index_report")),
         ]);
     }
@@ -126,7 +135,7 @@ class ScanDmarcReport extends CreateRecord
                     "password" => $data["password"],
                 ])
                 ->connect(),
-            $esClient
+            $esClient,
         );
         $scanner->scan($data["report_folder"], $data["archive_folder"]);
         $model = self::getResource()::getModel();

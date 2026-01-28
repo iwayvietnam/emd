@@ -33,8 +33,8 @@ class PolicyResource extends Resource
     const MB = 1048576;
 
     protected static ?string $model = Policy::class;
-    protected static string | UnitEnum | null $navigationGroup = "Access Control";
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedShieldCheck;
+    protected static string|UnitEnum|null $navigationGroup = "Access Control";
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShieldCheck;
     protected static ?string $slug = "policy";
 
     public static function getNavigationLabel(): string
@@ -61,8 +61,8 @@ class PolicyResource extends Resource
                 ->label(__("Quota"))
                 ->helperText(
                     __(
-                        "Maximum capacity in megabytes that client can send per time unit."
-                    )
+                        "Maximum capacity in megabytes that client can send per time unit.",
+                    ),
                 ),
             Select::make("quota_period")
                 ->default(LimitPeriod::PerMinute)
@@ -78,8 +78,8 @@ class PolicyResource extends Resource
                 ->label(__("Rate"))
                 ->helperText(
                     __(
-                        "Maximum amount of message that client can send per time unit."
-                    )
+                        "Maximum amount of message that client can send per time unit.",
+                    ),
                 ),
             Select::make("rate_period")
                 ->default(LimitPeriod::PerMinute)
@@ -100,9 +100,9 @@ class PolicyResource extends Resource
                             Number::fileSize($policy->quota_limit),
                             " ",
                             LimitPeriod::tryFrom(
-                                $policy->quota_period
+                                $policy->quota_period,
                             )?->getLabel(),
-                        ])
+                        ]),
                     )
                     ->label(__("Quota")),
                 TextColumn::make("rate_limit")
@@ -111,9 +111,9 @@ class PolicyResource extends Resource
                             $policy->rate_limit,
                             " Message ",
                             LimitPeriod::tryFrom(
-                                $policy->rate_period
+                                $policy->rate_period,
                             )?->getLabel(),
-                        ])
+                        ]),
                     )
                     ->label(__("Rate")),
                 TextColumn::make("created_at")
@@ -124,7 +124,7 @@ class PolicyResource extends Resource
             ->actions([
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make()->before(static function (
-                    Actions\DeleteAction $action
+                    Actions\DeleteAction $action,
                 ) {
                     if (self::haveClientAccess([$action->getRecord()->id])) {
                         self::cancelDelete($action);
@@ -153,7 +153,9 @@ class PolicyResource extends Resource
             ->warning()
             ->title(__("Unable to delete policy"))
             ->body(
-                __("You must delete all client accesses belongs to the policy.")
+                __(
+                    "You must delete all client accesses belongs to the policy.",
+                ),
             )
             ->send();
         $action->cancel();

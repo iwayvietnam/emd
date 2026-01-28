@@ -19,21 +19,16 @@ class LocalQueue implements QueueInterface
      * @param string $configDir
      * @return self
      */
-    public function __construct(
-        private readonly string $configDir
-    ) {}
+    public function __construct(private readonly string $configDir) {}
 
     /**
      * {@inheritdoc}
      */
     public function listQueue(): array
     {
-        $result = Process::run(implode([
-            self::POSTQUEUE_CMD,
-            " -c ",
-            $this->configDir,
-            ' -j',
-        ]));
+        $result = Process::run(
+            implode([self::POSTQUEUE_CMD, " -c ", $this->configDir, " -j"]),
+        );
         if ($result->failed()) {
             logger()->error($result->errorOutput());
         }
@@ -47,21 +42,19 @@ class LocalQueue implements QueueInterface
     public function flushQueue(?string $queueId = null): bool
     {
         if (empty($queueId)) {
-            $result = Process::run(implode([
-                self::POSTQUEUE_CMD,
-                " -c ",
-                $this->configDir,
-                " -f",
-            ]));
-        }
-        else {
-            $result = Process::run(implode([
-                self::POSTQUEUE_CMD,
-                " -c ",
-                $this->configDir,
-                " -i ",
-                $queueId,
-            ]));
+            $result = Process::run(
+                implode([self::POSTQUEUE_CMD, " -c ", $this->configDir, " -f"]),
+            );
+        } else {
+            $result = Process::run(
+                implode([
+                    self::POSTQUEUE_CMD,
+                    " -c ",
+                    $this->configDir,
+                    " -i ",
+                    $queueId,
+                ]),
+            );
         }
         if ($result->failed()) {
             logger()->error($result->errorOutput());
@@ -74,13 +67,15 @@ class LocalQueue implements QueueInterface
      */
     public function reQueue(string $queueId): bool
     {
-        $result = Process::run(implode([
-            self::POSTQUEUE_CMD,
-            " -c ",
-            $this->configDir,
-            " -r ",
-            $queueId,
-        ]));
+        $result = Process::run(
+            implode([
+                self::POSTQUEUE_CMD,
+                " -c ",
+                $this->configDir,
+                " -r ",
+                $queueId,
+            ]),
+        );
         if ($result->failed()) {
             logger()->error($result->errorOutput());
         }
@@ -92,13 +87,15 @@ class LocalQueue implements QueueInterface
      */
     public function holdQueue(string $queueId): bool
     {
-        $result = Process::run(implode([
-            self::POSTSUPER_CMD,
-            " -c ",
-            $this->configDir,
-            " -h ",
-            $queueId,
-        ]));
+        $result = Process::run(
+            implode([
+                self::POSTSUPER_CMD,
+                " -c ",
+                $this->configDir,
+                " -h ",
+                $queueId,
+            ]),
+        );
         if ($result->failed()) {
             logger()->error($result->errorOutput());
         }
@@ -110,13 +107,15 @@ class LocalQueue implements QueueInterface
      */
     public function unholdQueue(string $queueId): bool
     {
-        $result = Process::run(implode([
-            self::POSTSUPER_CMD,
-            " -c ",
-            $this->configDir,
-            " -H ",
-            $queueId
-        ]));
+        $result = Process::run(
+            implode([
+                self::POSTSUPER_CMD,
+                " -c ",
+                $this->configDir,
+                " -H ",
+                $queueId,
+            ]),
+        );
         if ($result->failed()) {
             logger()->error($result->errorOutput());
         }
@@ -128,13 +127,15 @@ class LocalQueue implements QueueInterface
      */
     public function deleteQueue(array $queueIds = []): void
     {
-        $result = Process::run(implode([
-            self::POSTSUPER_CMD,
-            " -c ",
-            $this->configDir,
-             " -d ",
-            implode(" -d ", $queueIds),
-        ]));
+        $result = Process::run(
+            implode([
+                self::POSTSUPER_CMD,
+                " -c ",
+                $this->configDir,
+                " -d ",
+                implode(" -d ", $queueIds),
+            ]),
+        );
         if ($result->failed()) {
             logger()->error($result->errorOutput());
         }
@@ -145,13 +146,15 @@ class LocalQueue implements QueueInterface
      */
     public function queueDetails(string $queueId): array
     {
-        $result = Process::run(implode([
-            self::POSTCAT_CMD,
-            " -c ",
-            $this->configDir,
-            " -q ",
-            $queueId,
-        ]));
+        $result = Process::run(
+            implode([
+                self::POSTCAT_CMD,
+                " -c ",
+                $this->configDir,
+                " -q ",
+                $queueId,
+            ]),
+        );
         if ($result->failed()) {
             logger()->error($result->errorOutput());
         }
@@ -190,13 +193,15 @@ class LocalQueue implements QueueInterface
      */
     public function queueContent(string $queueId): string
     {
-        $result = Process::run(implode([
-            self::POSTCAT_CMD,
-            " -c ",
-            $this->configDir,
-            " -qb ",
-            $queueId,
-        ]));
+        $result = Process::run(
+            implode([
+                self::POSTCAT_CMD,
+                " -c ",
+                $this->configDir,
+                " -qb ",
+                $queueId,
+            ]),
+        );
         if ($result->failed()) {
             logger()->error($result->errorOutput());
         }

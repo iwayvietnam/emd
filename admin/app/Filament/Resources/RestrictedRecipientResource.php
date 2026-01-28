@@ -24,8 +24,8 @@ use UnitEnum;
 class RestrictedRecipientResource extends Resource
 {
     protected static ?string $model = RestrictedRecipient::class;
-    protected static string | UnitEnum | null $navigationGroup = "Access Control";
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedLockClosed;
+    protected static string|UnitEnum|null $navigationGroup = "Access Control";
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedLockClosed;
     protected static ?string $slug = "restricted";
 
     public static function getNavigationLabel(): string
@@ -51,8 +51,8 @@ class RestrictedRecipientResource extends Resource
                     ->infolist([
                         TextEntry::make("verify")->state(
                             static fn($record) => self::verifyRecipient(
-                                $record->recipient
-                            )
+                                $record->recipient,
+                            ),
                         ),
                     ])
                     ->modalSubmitAction(false)

@@ -28,7 +28,7 @@ final class Scanner
      */
     public function __construct(
         private readonly ImapClient $imapClient,
-        private readonly ?ElasticClient $elasticClient = null
+        private readonly ?ElasticClient $elasticClient = null,
     ) {}
 
     /**
@@ -40,7 +40,7 @@ final class Scanner
      */
     public function scan(
         string $reportFolder = "INBOX",
-        string $archiveFolder = "Archive"
+        string $archiveFolder = "Archive",
     ): array {
         $models = [];
 
@@ -52,7 +52,7 @@ final class Scanner
         if (!empty($folder)) {
             $dmarcReports = [];
             $canMove = collect(
-                $this->imapClient->getConnection()->getCapabilities()->array()
+                $this->imapClient->getConnection()->getCapabilities()->array(),
             )->contains("MOVE");
             $messages = $folder->messages()->all()->get();
             foreach ($messages as $message) {
@@ -64,7 +64,7 @@ final class Scanner
                             ["report_id", $report->report_metadata->report_id],
                             ["org_name", $report->report_metadata->org_name],
                         ])->firstOr(
-                            static fn() => self::createDmarcReport($report)
+                            static fn() => self::createDmarcReport($report),
                         );
 
                         if ($canMove) {
@@ -99,10 +99,10 @@ final class Scanner
             "org_email" => $metadata?->email ?? null,
             "extra_contact" => $metadata?->xtra_contact_info ?? null,
             "date_begin" => Carbon::createFromTimestampUTC(
-                (int) $metadata?->date_range?->begin
+                (int) $metadata?->date_range?->begin,
             ),
             "date_end" => Carbon::createFromTimestampUTC(
-                (int) $metadata?->date_range?->end
+                (int) $metadata?->date_range?->end,
             ),
             "domain" => $policy?->domain ?? "",
             "adkim" => $policy?->adkim ?? "",
@@ -160,10 +160,10 @@ final class Scanner
                     $metadata = $report->report_metadata;
                     $policy = $report->policy_published;
                     $begin = Carbon::createFromTimestampUTC(
-                        (int) $metadata?->date_range?->begin
+                        (int) $metadata?->date_range?->begin,
                     );
                     $end = Carbon::createFromTimestampUTC(
-                        (int) $metadata?->date_range?->end
+                        (int) $metadata?->date_range?->end,
                     );
 
                     $params["body"][] = [

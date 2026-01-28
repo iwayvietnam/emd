@@ -30,8 +30,8 @@ class CreateSenderTransport extends CreateRecord
                 ->options(
                     Client::whereNotIn(
                         "id",
-                        SenderTransport::all()->pluck("client_id")
-                    )->pluck("name", "id")
+                        SenderTransport::all()->pluck("client_id"),
+                    )->pluck("name", "id"),
                 )
                 ->required()
                 ->unique()

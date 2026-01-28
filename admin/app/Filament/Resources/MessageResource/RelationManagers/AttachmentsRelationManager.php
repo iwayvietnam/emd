@@ -32,8 +32,8 @@ class AttachmentsRelationManager extends RelationManager
                     ->label(__("Download"))
                     ->action(
                         static fn($record) => Storage::download(
-                            $record->file_path
-                        )
+                            $record->file_path,
+                        ),
                     ),
             ]);
     }

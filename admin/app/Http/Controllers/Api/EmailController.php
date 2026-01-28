@@ -45,7 +45,7 @@ class EmailController extends Controller
         return JsonResource::collection(
             Message::where([
                 "user_id" => $request->user()->id,
-            ])->paginate()
+            ])->paginate(),
         );
     }
 
@@ -62,7 +62,7 @@ class EmailController extends Controller
             Message::firstWhere([
                 "id" => $id,
                 "user_id" => $request->user()->id,
-            ])
+            ]),
         );
     }
 
@@ -107,7 +107,7 @@ class EmailController extends Controller
         if (is_array($uploads)) {
             $uploads = array_map(
                 static fn($upload) => Cache::get($upload),
-                $uploads
+                $uploads,
             );
         }
 
@@ -132,13 +132,13 @@ class EmailController extends Controller
             $trackClick = (bool) config("emd.mail.track_click", false);
             if ($shouldQueue) {
                 Mail::to($message->recipient)->queue(
-                    (new SendMessage($message, $trackClick))->onQueue(
-                        config("emd.mail.queue_name", self::QUEUE_NAME)
-                    )
+                    new SendMessage($message, $trackClick)->onQueue(
+                        config("emd.mail.queue_name", self::QUEUE_NAME),
+                    ),
                 );
             } else {
                 Mail::to($message->recipient)->send(
-                    new SendMessage($message, $trackClick)
+                    new SendMessage($message, $trackClick),
                 );
             }
             $message->sent_at = now();
@@ -155,7 +155,7 @@ class EmailController extends Controller
                     "severity" => __("Send message failed"),
                     "description" => $failed->getMessage(),
                     "failed_at" => now(),
-                ])
+                ]),
             );
         }
 

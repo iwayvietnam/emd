@@ -42,13 +42,13 @@ class Workerman extends Base
                 config("emd.policy.listen_host", self::LISTEN_HOST),
                 ":",
                 config("emd.policy.listen_port", self::LISTEN_PORT),
-            ])
+            ]),
         );
 
         $this->worker->name = self::WORKER_NAME;
         $this->worker->count = (int) config(
             "emd.policy.server_worker",
-            self::POLICY_WORKER
+            self::POLICY_WORKER,
         );
         Worker::$logFile = storage_path("logs") . "/" . self::LOG_FILE;
         Worker::$pidFile = storage_path() . "/" . self::PID_FILE;
@@ -60,20 +60,20 @@ class Workerman extends Base
     public function handle(): void
     {
         $this->worker->onConnect = fn(
-            Connection $connection
+            Connection $connection,
         ) => $this->onConnect(
             $connection->getRemoteAddress(),
-            $connection->getRemotePort()
+            $connection->getRemotePort(),
         );
 
         $this->worker->onMessage = fn(
             Connection $connection,
-            string $data
+            string $data,
         ) => $connection->close($this->response($data) . PHP_EOL . PHP_EOL);
 
         $this->worker->onClose = fn(Connection $connection) => $this->onClose(
             $connection->getRemoteAddress(),
-            $connection->getRemotePort()
+            $connection->getRemotePort(),
         );
 
         Worker::runAll();

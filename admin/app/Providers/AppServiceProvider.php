@@ -38,8 +38,8 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for(
             "api",
             static fn(Request $request) => Limit::perMinute(
-                (int) config("emd.api.request_rate", 600)
-            )->by($request->user()?->id ?: $request->ip())
+                (int) config("emd.api.request_rate", 600),
+            )->by($request->user()?->id ?: $request->ip()),
         );
 
         if ((bool) config("emd.api.hash_secret")) {
@@ -48,18 +48,18 @@ class AppServiceProvider extends ServiceProvider
         if ((bool) config("emd.api.password_grant")) {
             Passport::enablePasswordGrant();
         }
- 
+
         Passport::useClientModel(PassportClient::class);
         Passport::useTokenModel(PassportToken::class);
 
         Passport::tokensExpireIn(
-            now()->addDays((int) config("emd.api.acccess_tokens_expiry"))
+            now()->addDays((int) config("emd.api.acccess_tokens_expiry")),
         );
         Passport::refreshTokensExpireIn(
-            now()->addDays((int) config("emd.api.refresh_tokens_expiry"))
+            now()->addDays((int) config("emd.api.refresh_tokens_expiry")),
         );
         Passport::personalAccessTokensExpireIn(
-            now()->addDays((int) config("emd.api.personal_tokens_expiry"))
+            now()->addDays((int) config("emd.api.personal_tokens_expiry")),
         );
     }
 }

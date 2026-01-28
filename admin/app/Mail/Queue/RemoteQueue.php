@@ -24,7 +24,7 @@ class RemoteQueue implements QueueInterface
     public function __construct(
         private readonly RemoteServer $remoteServer,
         private readonly string $sudoPassword,
-        private readonly string $configDir
+        private readonly string $configDir,
     ) {}
 
     /**
@@ -33,24 +33,29 @@ class RemoteQueue implements QueueInterface
     public function listQueue(): array
     {
         $result = [];
-        $lines = explode(PHP_EOL, $this->runCommand(implode([
-            sprintf(self::ECHO_CMD, $this->sudoPassword),
-            " | ",
-            self::SUDO_CMD,
-            " ",
-            self::POSTQUEUE_CMD,
-            " -c ",
-            $this->configDir,
-            " -j",
-        ])));
+        $lines = explode(
+            PHP_EOL,
+            $this->runCommand(
+                implode([
+                    sprintf(self::ECHO_CMD, $this->sudoPassword),
+                    " | ",
+                    self::SUDO_CMD,
+                    " ",
+                    self::POSTQUEUE_CMD,
+                    " -c ",
+                    $this->configDir,
+                    " -j",
+                ]),
+            ),
+        );
         foreach ($lines as $line) {
             $queue = json_decode($line, true);
             if ($queue) {
                 $recipients = [];
-                foreach ($queue['recipients'] as $recipient) {
-                    $recipients[] = $recipient['address'];
+                foreach ($queue["recipients"] as $recipient) {
+                    $recipients[] = $recipient["address"];
                 }
-                $queue['recipients'] = implode(', ', $recipients);
+                $queue["recipients"] = implode(", ", $recipients);
                 $result[] = $queue;
             }
         }
@@ -63,29 +68,36 @@ class RemoteQueue implements QueueInterface
     public function flushQueue(?string $queueId = null): bool
     {
         if (empty($queueId)) {
-            return !empty($this->runCommand(implode([
-                sprintf(self::ECHO_CMD, $this->sudoPassword),
-                " | ",
-                self::SUDO_CMD,
-                " ",
-                self::POSTQUEUE_CMD,
-                " -c ",
-                $this->configDir,
-                " -f",
-            ])));
-        }
-        else {
-            return !empty($this->runCommand(implode([
-                sprintf(self::ECHO_CMD, $this->sudoPassword),
-                " | ",
-                self::SUDO_CMD,
-                " ",
-                self::POSTQUEUE_CMD,
-                " -c ",
-                $this->configDir,
-                " -i ",
-                $queueId,
-            ])));
+            return !empty(
+                $this->runCommand(
+                    implode([
+                        sprintf(self::ECHO_CMD, $this->sudoPassword),
+                        " | ",
+                        self::SUDO_CMD,
+                        " ",
+                        self::POSTQUEUE_CMD,
+                        " -c ",
+                        $this->configDir,
+                        " -f",
+                    ]),
+                )
+            );
+        } else {
+            return !empty(
+                $this->runCommand(
+                    implode([
+                        sprintf(self::ECHO_CMD, $this->sudoPassword),
+                        " | ",
+                        self::SUDO_CMD,
+                        " ",
+                        self::POSTQUEUE_CMD,
+                        " -c ",
+                        $this->configDir,
+                        " -i ",
+                        $queueId,
+                    ]),
+                )
+            );
         }
     }
 
@@ -94,17 +106,21 @@ class RemoteQueue implements QueueInterface
      */
     public function reQueue(string $queueId): bool
     {
-        return !empty($this->runCommand(implode([
-            sprintf(self::ECHO_CMD, $this->sudoPassword),
-            " | ",
-            self::SUDO_CMD,
-            " ",
-            self::POSTSUPER_CMD,
-            " -c ",
-            $this->configDir,
-            " -r ",
-            $queueId,
-        ])));
+        return !empty(
+            $this->runCommand(
+                implode([
+                    sprintf(self::ECHO_CMD, $this->sudoPassword),
+                    " | ",
+                    self::SUDO_CMD,
+                    " ",
+                    self::POSTSUPER_CMD,
+                    " -c ",
+                    $this->configDir,
+                    " -r ",
+                    $queueId,
+                ]),
+            )
+        );
     }
 
     /**
@@ -112,17 +128,21 @@ class RemoteQueue implements QueueInterface
      */
     public function holdQueue(string $queueId): bool
     {
-        return !empty($this->runCommand(implode([
-            sprintf(self::ECHO_CMD, $this->sudoPassword),
-            " | ",
-            self::SUDO_CMD,
-            " ",
-            self::POSTSUPER_CMD,
-            " -c ",
-            $this->configDir,
-            " -h ",
-            $queueId,
-        ])));
+        return !empty(
+            $this->runCommand(
+                implode([
+                    sprintf(self::ECHO_CMD, $this->sudoPassword),
+                    " | ",
+                    self::SUDO_CMD,
+                    " ",
+                    self::POSTSUPER_CMD,
+                    " -c ",
+                    $this->configDir,
+                    " -h ",
+                    $queueId,
+                ]),
+            )
+        );
     }
 
     /**
@@ -130,17 +150,21 @@ class RemoteQueue implements QueueInterface
      */
     public function unholdQueue(string $queueId): bool
     {
-        return !empty($this->runCommand(implode([
-            sprintf(self::ECHO_CMD, $this->sudoPassword),
-            " | ",
-            self::SUDO_CMD,
-            " ",
-            self::POSTSUPER_CMD,
-            " -c ",
-            $this->configDir,
-            " -H ",
-            $queueId,
-        ])));
+        return !empty(
+            $this->runCommand(
+                implode([
+                    sprintf(self::ECHO_CMD, $this->sudoPassword),
+                    " | ",
+                    self::SUDO_CMD,
+                    " ",
+                    self::POSTSUPER_CMD,
+                    " -c ",
+                    $this->configDir,
+                    " -H ",
+                    $queueId,
+                ]),
+            )
+        );
     }
 
     /**
@@ -149,17 +173,19 @@ class RemoteQueue implements QueueInterface
     public function deleteQueue(array $queueIds = []): void
     {
         if (!empty($queueIds)) {
-            $this->runCommand(implode([
-                sprintf(self::ECHO_CMD, $this->sudoPassword),
-                " | ",
-                self::SUDO_CMD,
-                " ",
-                self::POSTSUPER_CMD,
-                " -c ",
-                $this->configDir,
-                " -d ",
-                implode(" -d ", $queueIds),
-            ]));
+            $this->runCommand(
+                implode([
+                    sprintf(self::ECHO_CMD, $this->sudoPassword),
+                    " | ",
+                    self::SUDO_CMD,
+                    " ",
+                    self::POSTSUPER_CMD,
+                    " -c ",
+                    $this->configDir,
+                    " -d ",
+                    implode(" -d ", $queueIds),
+                ]),
+            );
         }
     }
 
@@ -168,17 +194,19 @@ class RemoteQueue implements QueueInterface
      */
     public function queueDetails(string $queueId): array
     {
-        $output = $this->runCommand(implode([
-            sprintf(self::ECHO_CMD, $this->sudoPassword),
-            " | ",
-            self::SUDO_CMD,
-            " ",
-            self::POSTCAT_CMD,
-            " -c ",
-            $this->configDir,
-            " -q ",
-            $queueId,
-        ]));
+        $output = $this->runCommand(
+            implode([
+                sprintf(self::ECHO_CMD, $this->sudoPassword),
+                " | ",
+                self::SUDO_CMD,
+                " ",
+                self::POSTCAT_CMD,
+                " -c ",
+                $this->configDir,
+                " -q ",
+                $queueId,
+            ]),
+        );
 
         $details = [];
         $pattern = implode([
@@ -212,17 +240,19 @@ class RemoteQueue implements QueueInterface
      */
     public function queueContent(string $queueId): string
     {
-        return $this->runCommand(implode([
-            sprintf(self::ECHO_CMD, $this->sudoPassword),
-            " | ",
-            self::SUDO_CMD,
-            " ",
-            self::POSTCAT_CMD,
-            " -c ",
-            $this->configDir,
-            " -qb ",
-            $queueId,
-        ]));
+        return $this->runCommand(
+            implode([
+                sprintf(self::ECHO_CMD, $this->sudoPassword),
+                " | ",
+                self::SUDO_CMD,
+                " ",
+                self::POSTCAT_CMD,
+                " -c ",
+                $this->configDir,
+                " -qb ",
+                $queueId,
+            ]),
+        );
     }
 
     /**

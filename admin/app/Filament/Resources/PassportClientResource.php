@@ -31,8 +31,8 @@ use UnitEnum;
 class PassportClientResource extends Resource
 {
     protected static ?string $model = PassportClient::class;
-    protected static string | UnitEnum | null $navigationGroup = "System";
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedComputerDesktop;
+    protected static string|UnitEnum|null $navigationGroup = "System";
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedComputerDesktop;
     protected static ?string $slug = "passport-client";
 
     public static function form(Schema $schema): Schema
@@ -44,8 +44,8 @@ class PassportClientResource extends Resource
                 ->options(
                     array_combine(
                         array_keys(config("auth.providers")),
-                        array_keys(config("auth.providers"))
-                    )
+                        array_keys(config("auth.providers")),
+                    ),
                 )
                 ->label(__("Provider")),
             TextInput::make("secret")
@@ -55,8 +55,8 @@ class PassportClientResource extends Resource
                         ->action(
                             static fn(Set $set) => $set(
                                 "secret",
-                                Str::random(40)
-                            )
+                                Str::random(40),
+                            ),
                         ),
                 ])
                 ->readonly()
@@ -96,10 +96,10 @@ class PassportClientResource extends Resource
                 Actions\ViewAction::make(),
                 Actions\Action::make("revoke")
                     ->action(
-                        static fn(PassportClient $client) => $client->revoke()
+                        static fn(PassportClient $client) => $client->revoke(),
                     )
                     ->disabled(
-                        static fn(PassportClient $client) => $client->revoked
+                        static fn(PassportClient $client) => $client->revoked,
                     )
                     ->requiresConfirmation()
                     ->label(__("Revoke")),
@@ -107,8 +107,8 @@ class PassportClientResource extends Resource
             ->modifyQueryUsing(
                 static fn(Builder $query) => $query->where(
                     "password_client",
-                    true
-                )
+                    true,
+                ),
             );
     }
 

@@ -24,8 +24,8 @@ use UnitEnum;
 class ClientResource extends Resource
 {
     protected static ?string $model = Client::class;
-    protected static string | UnitEnum | null $navigationGroup = "Access Control";
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedComputerDesktop;
+    protected static string|UnitEnum|null $navigationGroup = "Access Control";
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedComputerDesktop;
     protected static ?string $slug = "client";
 
     public static function getNavigationLabel(): string

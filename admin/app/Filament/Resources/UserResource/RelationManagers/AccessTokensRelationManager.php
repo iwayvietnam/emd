@@ -40,7 +40,7 @@ class AccessTokensRelationManager extends RelationManager
             ->recordTitleAttribute("name")
             ->columns([
                 Columns\TextColumn::make("client.name")->label(
-                    __("Client Name")
+                    __("Client Name"),
                 ),
                 Columns\TextColumn::make("name")->label(__("Token Name")),
                 Columns\TextColumn::make("expires_at")->label(__("Expires At")),
@@ -55,10 +55,10 @@ class AccessTokensRelationManager extends RelationManager
                 Actions\ViewAction::make(),
                 Actions\Action::make("revoke")
                     ->action(
-                        static fn(PassportToken $token) => $token->revoke()
+                        static fn(PassportToken $token) => $token->revoke(),
                     )
                     ->disabled(
-                        static fn(PassportToken $token) => $token->revoked
+                        static fn(PassportToken $token) => $token->revoked,
                     )
                     ->requiresConfirmation()
                     ->label(__("Revoke")),

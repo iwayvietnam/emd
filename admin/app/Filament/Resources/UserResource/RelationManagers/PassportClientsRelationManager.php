@@ -38,8 +38,8 @@ class PassportClientsRelationManager extends RelationManager
                         ->action(
                             static fn(Set $set) => $set(
                                 "secret",
-                                Str::random(40)
-                            )
+                                Str::random(40),
+                            ),
                         ),
                 ])
                 ->readonly()
@@ -87,10 +87,10 @@ class PassportClientsRelationManager extends RelationManager
                 Actions\ViewAction::make(),
                 Actions\Action::make("revoke")
                     ->action(
-                        static fn(PassportClient $client) => $client->revoke()
+                        static fn(PassportClient $client) => $client->revoke(),
                     )
                     ->disabled(
-                        static fn(PassportClient $client) => $client->revoked
+                        static fn(PassportClient $client) => $client->revoked,
                     )
                     ->requiresConfirmation()
                     ->label(__("Revoke")),

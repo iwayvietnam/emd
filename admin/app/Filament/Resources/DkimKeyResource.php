@@ -29,8 +29,8 @@ use UnitEnum;
 class DkimKeyResource extends Resource
 {
     protected static ?string $model = DkimKey::class;
-    protected static string | UnitEnum | null $navigationGroup = "Domain";
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedKey;
+    protected static string|UnitEnum|null $navigationGroup = "Domain";
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedKey;
     protected static ?string $slug = "dkim";
 
     public static function getNavigationLabel(): string
@@ -57,8 +57,8 @@ class DkimKeyResource extends Resource
                             TextEntry::make("dkim_record")
                                 ->state(
                                     static fn($record) => self::queryDkimRecord(
-                                        $record
-                                    )
+                                        $record,
+                                    ),
                                 )
                                 ->html()
                                 ->label(__("Result")),
@@ -72,14 +72,16 @@ class DkimKeyResource extends Resource
                         ->icon("heroicon-m-arrow-down-tray")
                         ->action(
                             static fn($record) => self::exportPrivateKey(
-                                $record
-                            )
+                                $record,
+                            ),
                         ),
                     Action::make("export_csr")
                         ->label(__("Export Dns Record"))
                         ->icon("heroicon-m-arrow-down-tray")
                         ->action(
-                            static fn($record) => self::exportDnsRecord($record)
+                            static fn($record) => self::exportDnsRecord(
+                                $record,
+                            ),
                         ),
                     DeleteAction::make(),
                 ]),
@@ -124,8 +126,8 @@ class DkimKeyResource extends Resource
                 fn($record) => $record->getValue(),
                 \Amp\Dns\query(
                     $dkim->selector . "._domainkey." . $dkim->domain,
-                    DnsRecord::TXT
-                )
+                    DnsRecord::TXT,
+                ),
             );
             return implode("<br />", $records);
         } catch (DnsException $e) {

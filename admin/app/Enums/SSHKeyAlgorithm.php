@@ -22,11 +22,11 @@ enum SSHKeyAlgorithm: int implements HasLabel
     public function getLabel(): string
     {
         return match ($this) {
-            self::Rsa => 'RSA',
-            self::NistP256  => 'NIST Curve P-256',
-            self::NistP384  => 'NIST Curve P-384',
-            self::NistP521  => 'NIST Curve P-521',
-            self::Ed25519  => 'Edwards Curve 25519',
+            self::Rsa => "RSA",
+            self::NistP256 => "NIST Curve P-256",
+            self::NistP384 => "NIST Curve P-384",
+            self::NistP521 => "NIST Curve P-521",
+            self::Ed25519 => "Edwards Curve 25519",
         };
     }
 }

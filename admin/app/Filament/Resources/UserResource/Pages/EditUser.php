@@ -23,16 +23,20 @@ class EditUser extends EditRecord
     public function form(Schema $schema): Schema
     {
         return $schema->components([
-            Grid::make(3)->schema([
-                TextInput::make("name")->required()->label(__("Name")),
-                TextInput::make("email")->readonly()->label(__("Email Address")),
-                TextInput::make("password")
-                    ->password()
-                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
-                    ->dehydrated(fn($state) => filled($state))
-                    ->required(false)
-                    ->label(__("Password")),
-            ])->columnSpan(2),
+            Grid::make(3)
+                ->schema([
+                    TextInput::make("name")->required()->label(__("Name")),
+                    TextInput::make("email")
+                        ->readonly()
+                        ->label(__("Email Address")),
+                    TextInput::make("password")
+                        ->password()
+                        ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                        ->dehydrated(fn($state) => filled($state))
+                        ->required(false)
+                        ->label(__("Password")),
+                ])
+                ->columnSpan(2),
         ]);
     }
 

@@ -23,8 +23,8 @@ use UnitEnum;
 class MessageFailureResource extends Resource
 {
     protected static ?string $model = MessageFailure::class;
-    protected static string | UnitEnum | null $navigationGroup = "Email";
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedTicket;
+    protected static string|UnitEnum|null $navigationGroup = "Email";
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTicket;
     protected static ?string $slug = "message-failure";
 
     public static function table(Table $table): Table

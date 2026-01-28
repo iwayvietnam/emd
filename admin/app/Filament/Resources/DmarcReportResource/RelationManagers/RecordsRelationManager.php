@@ -47,10 +47,10 @@ class RecordsRelationManager extends RelationManager
                 Columns\TextColumn::make("source_ip")->label(__("Source Ip")),
                 Columns\TextColumn::make("count")->label(__("Message Count")),
                 Columns\TextColumn::make("header_from")->label(
-                    __("Header From")
+                    __("Header From"),
                 ),
                 Columns\TextColumn::make("disposition")->label(
-                    __("Disposition")
+                    __("Disposition"),
                 ),
                 Columns\TextColumn::make("dkim")->label(__("Dkim Aligned")),
                 Columns\TextColumn::make("spf")->label(__("Spf Aligned")),

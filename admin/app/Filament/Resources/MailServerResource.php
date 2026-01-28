@@ -34,8 +34,8 @@ use UnitEnum;
 class MailServerResource extends Resource
 {
     protected static ?string $model = MailServer::class;
-    protected static string | UnitEnum | null $navigationGroup = "System";
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedServerStack;
+    protected static string|UnitEnum|null $navigationGroup = "System";
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedServerStack;
     protected static ?string $slug = "mail-server";
 
     private static array $rsaKeySizes = [
@@ -47,27 +47,31 @@ class MailServerResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Grid::make(5)->schema([
-                TextInput::make("name")
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->label(__("Name")),
-                TextInput::make("ip_address")
-                    ->required()
-                    ->ipv4()
-                    ->label(__("Ip Address")),
-                TextInput::make("ssh_user")->required()->label(__("SSH User")),
-                TextInput::make("ssh_port")
-                    ->required()
-                    ->integer()
-                    ->minValue(0)
-                    ->default(22)
-                    ->label(__("SSH Port")),
-                TextInput::make("sudo_password")
-                    ->required()
-                    ->password()
-                    ->label(__("Sudo Password")),
-            ])->columnSpan(2),
+            Grid::make(5)
+                ->schema([
+                    TextInput::make("name")
+                        ->required()
+                        ->unique(ignoreRecord: true)
+                        ->label(__("Name")),
+                    TextInput::make("ip_address")
+                        ->required()
+                        ->ipv4()
+                        ->label(__("Ip Address")),
+                    TextInput::make("ssh_user")
+                        ->required()
+                        ->label(__("SSH User")),
+                    TextInput::make("ssh_port")
+                        ->required()
+                        ->integer()
+                        ->minValue(0)
+                        ->default(22)
+                        ->label(__("SSH Port")),
+                    TextInput::make("sudo_password")
+                        ->required()
+                        ->password()
+                        ->label(__("Sudo Password")),
+                ])
+                ->columnSpan(2),
             Textarea::make("ssh_private_key")
                 ->columnSpan(2)
                 ->required()
@@ -91,8 +95,8 @@ class MailServerResource extends Resource
                         ->action(
                             static fn(
                                 Set $set,
-                                array $data
-                            ) => self::genarateSSHKeys($set, $data)
+                                array $data,
+                            ) => self::genarateSSHKeys($set, $data),
                         ),
                 ])
                 ->label(__("SSH Private Key")),
@@ -146,13 +150,13 @@ class MailServerResource extends Resource
         $set("ssh_private_key", $privateKey->toString("OpenSSH"));
         $set(
             "ssh_public_key",
-            $privateKey->getPublicKey()->toString("OpenSSH")
+            $privateKey->getPublicKey()->toString("OpenSSH"),
         );
     }
 
     private static function createKey(
         SSHKeyAlgorithm $keyAlgo,
-        int $rsaKeySize = 2048
+        int $rsaKeySize = 2048,
     ): PrivateKey {
         if (!in_array($rsaKeySize, array_keys(self::$rsaKeySizes))) {
             $rsaKeySize = 2048;

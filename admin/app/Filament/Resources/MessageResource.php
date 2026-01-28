@@ -26,8 +26,8 @@ use UnitEnum;
 class MessageResource extends Resource
 {
     protected static ?string $model = Message::class;
-    protected static string | UnitEnum | null $navigationGroup = "Email";
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedEnvelope;
+    protected static string|UnitEnum|null $navigationGroup = "Email";
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedEnvelope;
     protected static ?string $slug = "message";
 
     public static function table(Table $table): Table

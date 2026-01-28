@@ -33,23 +33,20 @@ class CreateClient extends CreateRecord
                 ->required()
                 ->searchable()
                 ->label(__("Domain")),
-            TextInput::make("name")
-                ->required()
-                ->unique()
-                ->label(__("Name")),
+            TextInput::make("name")->required()->unique()->label(__("Name")),
             TextInput::make("sender_address")
                 ->rules([
                     static fn(Get $get) => static function (
                         string $attribute,
                         $value,
-                        \Closure $fail
+                        \Closure $fail,
                     ) use ($get) {
                         $domain = Domain::find($get("domain_id"));
                         if (!Str::endsWith($value, $domain->name)) {
                             $fail(
                                 __(
-                                    "The sender address must match the domain name."
-                                )
+                                    "The sender address must match the domain name.",
+                                ),
                             );
                         }
                     },
@@ -58,9 +55,7 @@ class CreateClient extends CreateRecord
                 ->required()
                 ->unique()
                 ->label(__("Sender Address")),
-            TextInput::make("bcc_address")
-                ->email()
-                ->label(__("Bcc Address")),
+            TextInput::make("bcc_address")->email()->label(__("Bcc Address")),
             Textarea::make("description")
                 ->columnSpan(2)
                 ->label(__("Description")),

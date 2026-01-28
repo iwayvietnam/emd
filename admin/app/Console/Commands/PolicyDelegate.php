@@ -37,7 +37,8 @@ class PolicyDelegate extends Command
     public function handle(): int
     {
         $policy = new Policy();
-        echo $policy->check(PolicyRequest::fromData(self::readInput()))
+        echo $policy
+            ->check(PolicyRequest::fromData(self::readInput()))
             ->getAction() .
             PHP_EOL .
             PHP_EOL;

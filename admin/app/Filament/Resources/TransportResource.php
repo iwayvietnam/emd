@@ -28,8 +28,8 @@ use UnitEnum;
 class TransportResource extends Resource
 {
     protected static ?string $model = Transport::class;
-    protected static string | UnitEnum | null $navigationGroup = "System";
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedListBullet;
+    protected static string|UnitEnum|null $navigationGroup = "System";
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedListBullet;
     protected static ?string $slug = "transport";
 
     public static function getNavigationLabel(): string
@@ -40,19 +40,21 @@ class TransportResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Grid::make(3)->schema([
-                TextInput::make("name")
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->label(__("Name")),
-                TextInput::make("transport")
-                    ->required()
-                    ->label(__("Transport"))
-                    ->helperText(__("The message delivery transport.")),
-                TextInput::make("nexthop")
-                    ->label(__("Nexthop"))
-                    ->helperText(__("The next-hop destination.")),
-            ])->columnSpan(2),
+            Grid::make(3)
+                ->schema([
+                    TextInput::make("name")
+                        ->required()
+                        ->unique(ignoreRecord: true)
+                        ->label(__("Name")),
+                    TextInput::make("transport")
+                        ->required()
+                        ->label(__("Transport"))
+                        ->helperText(__("The message delivery transport.")),
+                    TextInput::make("nexthop")
+                        ->label(__("Nexthop"))
+                        ->helperText(__("The next-hop destination.")),
+                ])
+                ->columnSpan(2),
         ]);
     }
 
@@ -71,7 +73,7 @@ class TransportResource extends Resource
             ->actions([
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make()->before(static function (
-                    Actions\DeleteAction $action
+                    Actions\DeleteAction $action,
                 ) {
                     if (self::haveSenderTransport([$action->getRecord()->id])) {
                         self::cancelDelete($action);
@@ -99,8 +101,8 @@ class TransportResource extends Resource
             ->title(__("Unable to delete transport"))
             ->body(
                 __(
-                    "You must delete all sender transports belongs to the transport."
-                )
+                    "You must delete all sender transports belongs to the transport.",
+                ),
             )
             ->send();
         $action->cancel();

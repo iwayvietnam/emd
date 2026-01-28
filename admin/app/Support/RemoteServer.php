@@ -34,30 +34,30 @@ class RemoteServer
         private readonly string $remoteHost = "0.0.0.0",
         private readonly int $remotePort = 22,
         private readonly string $remoteUser = "root",
-        private readonly string $privateKey = ""
+        private readonly string $privateKey = "",
     ) {
         if (!empty($this->privateKey)) {
             $this->ssh = new SFTP(
                 $this->remoteHost,
                 $this->remotePort,
-                self::SSH_CONNECT_TIMEOUT
+                self::SSH_CONNECT_TIMEOUT,
             );
             if (
                 !$this->ssh->login(
                     $this->remoteUser,
-                    PublicKeyLoader::load($this->privateKey)
+                    PublicKeyLoader::load($this->privateKey),
                 )
             ) {
                 throw new \RuntimeException(
                     strtr("SSH login error with server: {user}@{host}", [
                         "{user}" => $this->remoteUser,
                         "{host}" => $this->remoteHost,
-                    ])
+                    ]),
                 );
             }
         } else {
             throw new \UnexpectedValueException(
-                "The SSH private key is empty."
+                "The SSH private key is empty.",
             );
         }
     }
@@ -94,8 +94,8 @@ class RemoteServer
                             "{command}" => $command,
                             "{host}" => $this->remoteHost,
                             "{message}" => $errorStr,
-                        ]
-                    )
+                        ],
+                    ),
                 );
             } else {
                 logger()->error($errorStr);
@@ -139,8 +139,8 @@ class RemoteServer
                         "{file}" => $remoteFile,
                         "{host}" => $this->remoteHost,
                         "{message}" => $th->getMessage(),
-                    ]
-                )
+                    ],
+                ),
             );
         }
         return $this;
@@ -164,7 +164,7 @@ class RemoteServer
                     "{file}" => $remoteFile,
                     "{host}" => $this->remoteHost,
                     "{message}" => $th->getMessage(),
-                ])
+                ]),
             );
         }
         return $this;

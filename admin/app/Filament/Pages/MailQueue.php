@@ -39,11 +39,11 @@ class MailQueue extends Page implements HasTable
 {
     use InteractsWithTable;
 
-    const MAIL_QUEUE_FORM_AFTER = 'panels::mail.queue.form.after';
-    const MAIL_QUEUE_FORM_BEFORE = 'panels::mail.queue.form.before';
+    const MAIL_QUEUE_FORM_AFTER = "panels::mail.queue.form.after";
+    const MAIL_QUEUE_FORM_BEFORE = "panels::mail.queue.form.before";
 
-    protected static string | UnitEnum | null $navigationGroup = "System";
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedQueueList;
+    protected static string|UnitEnum|null $navigationGroup = "System";
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedQueueList;
     protected static ?string $slug = "mail-queue";
     protected string $view = "filament.pages.mail-queue";
 
@@ -64,17 +64,18 @@ class MailQueue extends Page implements HasTable
 
     public function form(Schema $schema): Schema
     {
-        return $schema->components([
-            Grid::make(2)->schema([
-                Select::make("mail_server")
-                    ->options(MailServer::all()->pluck("name", "id"))
-                    ->label(__("Mail Server")),
-                TextInput::make("config_dir")
-                    ->default(MailServer::CONFIG_DIR)
-                    ->label(__("Config Dir")),
-            ]),
-        ])
-        ->statePath("data");
+        return $schema
+            ->components([
+                Grid::make(2)->schema([
+                    Select::make("mail_server")
+                        ->options(MailServer::all()->pluck("name", "id"))
+                        ->label(__("Mail Server")),
+                    TextInput::make("config_dir")
+                        ->default(MailServer::CONFIG_DIR)
+                        ->label(__("Config Dir")),
+                ]),
+            ])
+            ->statePath("data");
     }
 
     protected function getFormActions(): array
@@ -101,19 +102,21 @@ class MailQueue extends Page implements HasTable
                     ->state(
                         static fn(MailServerQueue $record) => date(
                             "Y-m-d H:i:s",
-                            (int) $record->arrival_time
-                        )
+                            (int) $record->arrival_time,
+                        ),
                     )
                     ->label(__("Arrival Time")),
                 TextColumn::make("queue_name")->label(__("Queue Name")),
                 TextColumn::make("queue_id")->label(__("Queue Id")),
                 TextColumn::make("sender")->searchable()->label(__("Sender")),
-                TextColumn::make("recipients")->searchable()->label(__("Recipients")),
+                TextColumn::make("recipients")
+                    ->searchable()
+                    ->label(__("Recipients")),
                 TextColumn::make("message_size")
                     ->state(
                         static fn(MailServerQueue $record) => Number::fileSize(
-                            $record->message_size
-                        )
+                            $record->message_size,
+                        ),
                     )
                     ->label(__("Message Size")),
             ])
@@ -124,17 +127,17 @@ class MailQueue extends Page implements HasTable
                     ->action(function ($records) {
                         $formState = session()->get(MailServerQueue::class);
                         $server = MailServer::find(
-                            $formState["mail_server"] ?? 0
+                            $formState["mail_server"] ?? 0,
                         );
                         $server?->deleteQueue(
                             $records
                                 ->map(
                                     fn(
-                                        MailServerQueue $record
-                                    ) => $record->queue_id
+                                        MailServerQueue $record,
+                                    ) => $record->queue_id,
                                 )
                                 ->toArray(),
-                            $formState["config_dir"] ?? MailServer::CONFIG_DIR
+                            $formState["config_dir"] ?? MailServer::CONFIG_DIR,
                         );
                         redirect($this->getUrl());
                     })
@@ -147,8 +150,8 @@ class MailQueue extends Page implements HasTable
                         ->color("primary")
                         ->action(
                             static fn(
-                                MailServerQueue $record
-                            ) => self::exportQueueContent($record)
+                                MailServerQueue $record,
+                            ) => self::exportQueueContent($record),
                         )
                         ->label(__("Export Content")),
                     Action::make("flush")
@@ -175,29 +178,28 @@ class MailQueue extends Page implements HasTable
 
     public function content(Schema $schema): Schema
     {
-        return $schema
-            ->components([
-                RenderHook::make(self::MAIL_QUEUE_FORM_AFTER),
-                $this->getFormContentComponent(),
-                RenderHook::make(self::MAIL_QUEUE_FORM_BEFORE),
-            ]);
+        return $schema->components([
+            RenderHook::make(self::MAIL_QUEUE_FORM_AFTER),
+            $this->getFormContentComponent(),
+            RenderHook::make(self::MAIL_QUEUE_FORM_BEFORE),
+        ]);
     }
 
     public function getFormContentComponent(): Component
     {
-        return Form::make([EmbeddedSchema::make('form')])
-            ->id('form')
-            ->livewireSubmitHandler('listMailQueue')
+        return Form::make([EmbeddedSchema::make("form")])
+            ->id("form")
+            ->livewireSubmitHandler("listMailQueue")
             ->footer([
                 Actions::make($this->getFormActions())
                     ->alignment(Alignment::Start)
                     ->fullWidth(false)
-                    ->key('form-actions'),
+                    ->key("form-actions"),
             ]);
     }
 
     private static function exportQueueContent(
-        MailServerQueue $record
+        MailServerQueue $record,
     ): Response {
         $server = MailServer::find($record->mail_server);
         $content = $server->queueContent($record->queue_id);

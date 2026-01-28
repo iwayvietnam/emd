@@ -30,8 +30,8 @@ class DomainResource extends Resource
     const RECORD_FORMAT = "%-10s %-56s\r\n";
 
     protected static ?string $model = Domain::class;
-    protected static string | UnitEnum | null $navigationGroup = "System";
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedCog;
+    protected static string|UnitEnum|null $navigationGroup = "System";
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog;
     protected static ?string $slug = "domain";
 
     public static function getNavigationLabel(): string
@@ -57,7 +57,7 @@ class DomainResource extends Resource
                 Actions\ActionGroup::make([
                     Actions\EditAction::make(),
                     Actions\DeleteAction::make()->before(static function (
-                        Actions\DeleteAction $action
+                        Actions\DeleteAction $action,
                     ) {
                         if (self::haveClient([$action->getRecord()->id])) {
                             self::cancelDelete($action);
@@ -68,8 +68,8 @@ class DomainResource extends Resource
                             TextEntry::make("mx_records")
                                 ->state(
                                     static fn($record) => self::queryMxRecords(
-                                        $record
-                                    )
+                                        $record,
+                                    ),
                                 )
                                 ->html()
                                 ->label(__("Result")),
@@ -83,8 +83,8 @@ class DomainResource extends Resource
                             TextEntry::make("txt_records")
                                 ->state(
                                     static fn($record) => self::queryTxtRecords(
-                                        $record
-                                    )
+                                        $record,
+                                    ),
                                 )
                                 ->html()
                                 ->label(__("Result")),
@@ -98,8 +98,8 @@ class DomainResource extends Resource
                             TextEntry::make("dmarc_record")
                                 ->state(
                                     static fn(
-                                        $record
-                                    ) => self::queryDmarcRecord($record)
+                                        $record,
+                                    ) => self::queryDmarcRecord($record),
                                 )
                                 ->html()
                                 ->label(__("Result")),
@@ -142,7 +142,7 @@ class DomainResource extends Resource
         try {
             $records = array_map(
                 static fn($record) => self::prettyPrint($record),
-                \Amp\Dns\query($domain->name, DnsRecord::MX)
+                \Amp\Dns\query($domain->name, DnsRecord::MX),
             );
             return implode("<br />", $records);
         } catch (DnsException $e) {
@@ -155,7 +155,7 @@ class DomainResource extends Resource
         try {
             $records = array_map(
                 static fn($record) => self::prettyPrint($record),
-                \Amp\Dns\query($domain->name, DnsRecord::TXT)
+                \Amp\Dns\query($domain->name, DnsRecord::TXT),
             );
             return implode("<br />", $records);
         } catch (DnsException $e) {
@@ -168,7 +168,7 @@ class DomainResource extends Resource
         try {
             $records = array_map(
                 static fn($record) => self::prettyPrint($record),
-                \Amp\Dns\query("_dmarc." . $domain->name, DnsRecord::TXT)
+                \Amp\Dns\query("_dmarc." . $domain->name, DnsRecord::TXT),
             );
             return implode("<br />", $records);
         } catch (DnsException $e) {
@@ -181,7 +181,7 @@ class DomainResource extends Resource
         return sprintf(
             self::RECORD_FORMAT,
             DnsRecord::getName($record->getType()),
-            $record->getValue()
+            $record->getValue(),
         );
     }
 }

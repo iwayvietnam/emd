@@ -55,13 +55,17 @@ class ResetLimitCounter extends Command implements Isolatable
                 case LimitPeriod::PerWeek:
                     if ($day === "Mon") {
                         $record->clearQuotaCounter();
-                        $this->info("Clear quota counter of {$record->sender}!");
+                        $this->info(
+                            "Clear quota counter of {$record->sender}!",
+                        );
                     }
                     break;
                 case LimitPeriod::PerMonth:
                     if ($date === 1) {
                         $record->clearQuotaCounter();
-                        $this->info("Clear quota counter of {$record->sender}!");
+                        $this->info(
+                            "Clear quota counter of {$record->sender}!",
+                        );
                     }
                     break;
                 default:

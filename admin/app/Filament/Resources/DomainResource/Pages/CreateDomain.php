@@ -30,7 +30,7 @@ class CreateDomain extends CreateRecord
                     static fn() => static function (
                         string $attribute,
                         $value,
-                        \Closure $fail
+                        \Closure $fail,
                     ) {
                         if (!filter_var($value, FILTER_VALIDATE_DOMAIN)) {
                             $fail(__("The domain name is invalid."));
@@ -45,13 +45,13 @@ class CreateDomain extends CreateRecord
                     static fn(Get $get) => static function (
                         string $attribute,
                         $value,
-                        \Closure $fail
+                        \Closure $fail,
                     ) use ($get) {
                         if (!Str::endsWith($value, $get("name"))) {
                             $fail(
                                 __(
-                                    "The email address must match the domain name."
-                                )
+                                    "The email address must match the domain name.",
+                                ),
                             );
                         }
                     },

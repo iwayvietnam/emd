@@ -70,7 +70,7 @@ class DkimKey extends Model
                 $keyDir,
                 DIRECTORY_SEPARATOR,
                 $item->domain,
-                '-',
+                "-",
                 $item->selector,
             ]);
         }
@@ -88,7 +88,7 @@ class DkimKey extends Model
                 $keyDir,
                 DIRECTORY_SEPARATOR,
                 $item->domain,
-                '-',
+                "-",
                 $item->selector,
             ]);
             $rows[$keyFile] = $item->private_key;

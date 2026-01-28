@@ -34,8 +34,8 @@ class ListClientAccesses extends ListRecords
                 ])
                 ->action(
                     static fn(array $data) => self::syncClientAccesses(
-                        (int) $data["mail_server"]
-                    )
+                        (int) $data["mail_server"],
+                    ),
                 )
                 ->label(__("Sync To Mail Server")),
         ];

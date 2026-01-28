@@ -36,13 +36,13 @@ class Swoole extends Base
 
         $this->server = new Server(
             config("emd.policy.listen_host", self::LISTEN_HOST),
-            (int) config("emd.policy.listen_port", self::LISTEN_PORT)
+            (int) config("emd.policy.listen_port", self::LISTEN_PORT),
         );
 
         $this->server->set([
             "worker_num" => (int) config(
                 "emd.policy.server_worker",
-                self::POLICY_WORKER
+                self::POLICY_WORKER,
             ),
             "debug_mode" => (bool) config("app.debug"),
             "log_file" => storage_path("logs") . "/" . self::LOG_FILE,
@@ -68,7 +68,7 @@ class Swoole extends Base
             Server $server,
             int $fd,
             int $reactorId,
-            string $data
+            string $data,
         ) {
             $server->send($fd, $this->response($data) . PHP_EOL . PHP_EOL);
             $server->close($fd);

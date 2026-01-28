@@ -52,7 +52,7 @@ class CreateClientAccess extends CreateRecord
     {
         $addresses = array_filter(
             explode(PHP_EOL, trim($data["ip_addresses"])),
-            static fn($ip) => filter_var($ip, FILTER_VALIDATE_IP)
+            static fn($ip) => filter_var($ip, FILTER_VALIDATE_IP),
         );
         if (!empty($addresses)) {
             $client = Client::find($data["client_id"]);

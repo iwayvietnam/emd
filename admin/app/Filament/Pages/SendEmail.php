@@ -40,11 +40,11 @@ class SendEmail extends Page
 {
     const QUEUE_NAME = "default";
     const UPLOAD_DIR = "attachments";
-    const SEND_EMAIL_FORM_AFTER = 'panels::send.email.form.after';
-    const SEND_EMAIL_FORM_BEFORE = 'panels::send.email.form.before';
+    const SEND_EMAIL_FORM_AFTER = "panels::send.email.form.after";
+    const SEND_EMAIL_FORM_BEFORE = "panels::send.email.form.before";
 
-    protected static string | UnitEnum | null $navigationGroup = "Email";
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedInbox;
+    protected static string|UnitEnum|null $navigationGroup = "Email";
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedInbox;
     protected static ?string $slug = "send-email";
 
     /**
@@ -64,33 +64,34 @@ class SendEmail extends Page
 
     public function form(Schema $schema): Schema
     {
-        return $schema->components([
-            TextInput::make("sender")
-                ->label(__("Sender"))
-                ->email()
-                ->required(),
-            Textarea::make("recipients")
-                ->label(__("Recipients"))
-                ->required(),
-            TextInput::make("subject")->label(__("Subject"))->required(),
-            RichEditor::make("content")
-                ->label(__("Content"))
-                ->required()
-                ->disableToolbarButtons(["attachFiles"]),
-            FileUpload::make("attachments")
-                ->label(__("Attachments"))
-                ->multiple()
-                ->previewable(false)
-                ->moveFiles()
-                ->disk("local")
-                ->directory(
-                    config("emd.api.upload_dir", self::UPLOAD_DIR) .
-                        "/" .
-                        request()->user()->email
-                ),
-            Toggle::make("should_queue")->label(__("Should Queue")),
-        ])
-        ->statePath("data");
+        return $schema
+            ->components([
+                TextInput::make("sender")
+                    ->label(__("Sender"))
+                    ->email()
+                    ->required(),
+                Textarea::make("recipients")
+                    ->label(__("Recipients"))
+                    ->required(),
+                TextInput::make("subject")->label(__("Subject"))->required(),
+                RichEditor::make("content")
+                    ->label(__("Content"))
+                    ->required()
+                    ->disableToolbarButtons(["attachFiles"]),
+                FileUpload::make("attachments")
+                    ->label(__("Attachments"))
+                    ->multiple()
+                    ->previewable(false)
+                    ->moveFiles()
+                    ->disk("local")
+                    ->directory(
+                        config("emd.api.upload_dir", self::UPLOAD_DIR) .
+                            "/" .
+                            request()->user()->email,
+                    ),
+                Toggle::make("should_queue")->label(__("Should Queue")),
+            ])
+            ->statePath("data");
     }
 
     protected function getFormActions(): array
@@ -107,7 +108,7 @@ class SendEmail extends Page
         $shouldQueue = (bool) $data["should_queue"];
 
         $recipients = Helper::explodeRecipients($data["recipients"]);
-        $client = Client::firstWhere('sender_address', $data["sender"]);
+        $client = Client::firstWhere("sender_address", $data["sender"]);
         foreach ($recipients as $recipient) {
             $message = new Message([
                 "user_id" => $user->id,
@@ -131,13 +132,13 @@ class SendEmail extends Page
                 $this->form->fill();
                 if ($shouldQueue) {
                     Mail::to($message->recipient)->queue(
-                        (new SendMessage($message))->onQueue(
-                            config("emd.mail.queue_name", self::QUEUE_NAME)
-                        )
+                        new SendMessage($message)->onQueue(
+                            config("emd.mail.queue_name", self::QUEUE_NAME),
+                        ),
                     );
                 } else {
                     Mail::to($message->recipient)->send(
-                        new SendMessage($message)
+                        new SendMessage($message),
                     );
                 }
                 $message->sent_at = now();
@@ -167,24 +168,23 @@ class SendEmail extends Page
 
     public function content(Schema $schema): Schema
     {
-        return $schema
-            ->components([
-                RenderHook::make(self::SEND_EMAIL_FORM_AFTER),
-                $this->getFormContentComponent(),
-                RenderHook::make(self::SEND_EMAIL_FORM_BEFORE),
-            ]);
+        return $schema->components([
+            RenderHook::make(self::SEND_EMAIL_FORM_AFTER),
+            $this->getFormContentComponent(),
+            RenderHook::make(self::SEND_EMAIL_FORM_BEFORE),
+        ]);
     }
 
     public function getFormContentComponent(): Component
     {
-        return Form::make([EmbeddedSchema::make('form')])
-            ->id('form')
-            ->livewireSubmitHandler('send')
+        return Form::make([EmbeddedSchema::make("form")])
+            ->id("form")
+            ->livewireSubmitHandler("send")
             ->footer([
                 Actions::make($this->getFormActions())
                     ->alignment(Alignment::Start)
                     ->fullWidth(false)
-                    ->key('form-actions'),
+                    ->key("form-actions"),
             ]);
     }
 }

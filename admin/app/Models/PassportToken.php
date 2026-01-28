@@ -11,6 +11,4 @@ use Laravel\Passport\Token;
  * @category Models
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
-class PassportToken extends Token
-{
-}
+class PassportToken extends Token {}

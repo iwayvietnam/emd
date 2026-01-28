@@ -41,20 +41,20 @@ class ViewDmarcReport extends ViewRecord
                 TextEntry::make("adkim")
                     ->state(
                         static fn($record) => static::getResource()::alignment(
-                            $record->aspf
-                        )
+                            $record->aspf,
+                        ),
                     )
                     ->label(__("Dkim Alignment")),
                 TextEntry::make("aspf")
                     ->state(
                         static fn($record) => static::getResource()::alignment(
-                            $record->aspf
-                        )
+                            $record->aspf,
+                        ),
                     )
                     ->label(__("Spf Alignment")),
                 TextEntry::make("policy")->label(__("Policy")),
                 TextEntry::make("subdomain_policy")->label(
-                    __("Subdomain Policy")
+                    __("Subdomain Policy"),
                 ),
             ]),
         ]);

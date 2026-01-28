@@ -34,8 +34,8 @@ class ListClients extends ListRecords
                 ])
                 ->action(
                     static fn(array $data) => self::syncSenderBccMaps(
-                        (int) $data["mail_server"]
-                    )
+                        (int) $data["mail_server"],
+                    ),
                 )
                 ->label(__("Sync Bcc Maps")),
         ];

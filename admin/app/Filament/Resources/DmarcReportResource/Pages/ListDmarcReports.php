@@ -39,15 +39,15 @@ class ListDmarcReports extends ListRecords
                 TextColumn::make("adkim")
                     ->state(
                         static fn($record) => static::getResource()::alignment(
-                            $record->adkim
-                        )
+                            $record->adkim,
+                        ),
                     )
                     ->label(__("Dkim Alignment")),
                 TextColumn::make("aspf")
                     ->state(
                         static fn($record) => static::getResource()::alignment(
-                            $record->aspf
-                        )
+                            $record->aspf,
+                        ),
                     )
                     ->label(__("Spf Alignment")),
                 TextColumn::make("percentage")->label(__("Percentage")),
@@ -70,24 +70,24 @@ class ListDmarcReports extends ListRecords
                                 $data["org_name"],
                                 static fn(
                                     Builder $query,
-                                    string $org
+                                    string $org,
                                 ) => $query->where(
                                     "org_name",
                                     "like",
-                                    "%" . trim($org) . "%"
-                                )
+                                    "%" . trim($org) . "%",
+                                ),
                             )
                             ->when(
                                 $data["domain"],
                                 static fn(
                                     Builder $query,
-                                    string $domain
+                                    string $domain,
                                 ) => $query->where(
                                     "domain",
                                     "like",
-                                    "%" . trim($domain) . "%"
-                                )
-                            )
+                                    "%" . trim($domain) . "%",
+                                ),
+                            ),
                     ),
             ])
             ->defaultSort("date_begin", "desc");

@@ -37,45 +37,47 @@ class CreateDkimKey extends CreateRecord
     public function form(Schema $schema): Schema
     {
         return $schema->components([
-            Grid::make(3)->columnSpan(2)->schema([
-                Select::make("domain_id")
-                    ->options(
-                        Domain::whereNotIn(
-                            "id",
-                            DkimKey::all()->pluck("domain_id")
-                        )->pluck("name", "id")
-                    )
-                    ->required()
-                    ->unique()
-                    ->label(__("Domain")),
-                TextInput::make("selector")
-                    ->rules([
-                        static fn(Get $get) => function (
-                            string $attribute,
-                            $value,
-                            \Closure $fail
-                        ) use ($get) {
-                            $exist = DkimKey::where("selector", $value)
-                                ->where("domain_id", $get("domain_id"))
-                                ->count();
-                            if ($exist > 0) {
-                                $fail(__("The selector already exist."));
-                            }
-                        },
-                    ])
-                    ->required()
-                    ->label(__("Selector")),
-                Select::make("key_bits")
-                    ->required()
-                    ->options([
-                        1024 => "1024 bits",
-                        1536 => "1536 bits",
-                        2048 => "2048 bits",
-                    ])
-                    ->default(1024)
-                    ->selectablePlaceholder(false)
-                    ->label(__("Key Bits")),
-            ]),
+            Grid::make(3)
+                ->columnSpan(2)
+                ->schema([
+                    Select::make("domain_id")
+                        ->options(
+                            Domain::whereNotIn(
+                                "id",
+                                DkimKey::all()->pluck("domain_id"),
+                            )->pluck("name", "id"),
+                        )
+                        ->required()
+                        ->unique()
+                        ->label(__("Domain")),
+                    TextInput::make("selector")
+                        ->rules([
+                            static fn(Get $get) => function (
+                                string $attribute,
+                                $value,
+                                \Closure $fail,
+                            ) use ($get) {
+                                $exist = DkimKey::where("selector", $value)
+                                    ->where("domain_id", $get("domain_id"))
+                                    ->count();
+                                if ($exist > 0) {
+                                    $fail(__("The selector already exist."));
+                                }
+                            },
+                        ])
+                        ->required()
+                        ->label(__("Selector")),
+                    Select::make("key_bits")
+                        ->required()
+                        ->options([
+                            1024 => "1024 bits",
+                            1536 => "1536 bits",
+                            2048 => "2048 bits",
+                        ])
+                        ->default(1024)
+                        ->selectablePlaceholder(false)
+                        ->label(__("Key Bits")),
+                ]),
             Textarea::make("private_key")
                 ->required()
                 ->columnSpan(2)
@@ -85,8 +87,10 @@ class CreateDkimKey extends CreateRecord
                         ->action(
                             static fn(Get $get, Set $set) => $set(
                                 "private_key",
-                                self::generatePrivateKey((int) $get("key_bits"))
-                            )
+                                self::generatePrivateKey(
+                                    (int) $get("key_bits"),
+                                ),
+                            ),
                         ),
                 ])
                 ->label(__("Private Key")),
@@ -96,12 +100,12 @@ class CreateDkimKey extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $publicKey = PublicKeyLoader::loadPrivateKey(
-            $data["private_key"]
+            $data["private_key"],
         )->getPublicKey();
 
         $selector = $data["selector"];
         $dnsLines = [
-            "$selector._domainkey\tIN\tTXT\t ( \"v=DKIM1; k=rsa; h=sha256; t=s; p="
+            "$selector._domainkey\tIN\tTXT\t ( \"v=DKIM1; k=rsa; h=sha256; t=s; p=",
         ];
         $pubLines = explode("\n", $publicKey->toString("PKCS8"));
         foreach ($pubLines as $line) {

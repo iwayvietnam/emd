@@ -182,19 +182,12 @@ class MailServer extends Model
         }
         if (!empty($privateKeys)) {
             foreach ($privateKeys as $file => $content) {
-                $remoteServer->uploadContent(
-                    $tempFile,
-                    $content,
-                );
+                $remoteServer->uploadContent($tempFile, $content);
                 $remoteServer->runCommand(
                     implode([
                         sprintf(self::ECHO_CMD, $this->sudo_password),
                         " | ",
-                        sprintf(
-                            self::COPY_CMD,
-                            $tempFile,
-                            $file,
-                        ),
+                        sprintf(self::COPY_CMD, $tempFile, $file),
                     ]),
                 );
             }
@@ -257,10 +250,7 @@ class MailServer extends Model
             $clientIps,
             config("emd.postfix.client_ip_access"),
         );
-        $this->syncLmdbTable(
-            $senders,
-            config("emd.postfix.sender_access"),
-        );
+        $this->syncLmdbTable($senders, config("emd.postfix.sender_access"));
     }
 
     public function syncRecipientRestrictions(array $restrictions): void
@@ -281,16 +271,11 @@ class MailServer extends Model
 
     public function syncSenderBccMaps(array $bccMaps): void
     {
-        $this->syncLmdbTable(
-            $bccMaps,
-            config("emd.postfix.sender_bcc"),
-        );
+        $this->syncLmdbTable($bccMaps, config("emd.postfix.sender_bcc"));
     }
 
-    private function syncLmdbTable(
-        array $table,
-        string $file,
-    ): void {
+    private function syncLmdbTable(array $table, string $file): void
+    {
         if (!empty($table)) {
             $tempFile = tempnam(sys_get_temp_dir(), "lmdb-");
             $remoteServer = new RemoteServer(
@@ -299,10 +284,7 @@ class MailServer extends Model
                 $this->ssh_user,
                 $this->ssh_private_key,
             );
-            $remoteServer->uploadContent(
-                $tempFile,
-                implode(PHP_EOL, $table),
-            );
+            $remoteServer->uploadContent($tempFile, implode(PHP_EOL, $table));
             $remoteServer->runCommand(
                 implode([
                     sprintf(self::ECHO_CMD, $this->sudo_password),

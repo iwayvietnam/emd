@@ -22,8 +22,8 @@ use UnitEnum;
 class SenderTransportResource extends Resource
 {
     protected static ?string $model = SenderTransport::class;
-    protected static string | UnitEnum | null $navigationGroup = "Access Control";
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedListBullet;
+    protected static string|UnitEnum|null $navigationGroup = "Access Control";
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedListBullet;
     protected static ?string $slug = "sender-transport";
 
     public static function getNavigationLabel(): string
@@ -37,7 +37,7 @@ class SenderTransportResource extends Resource
             ->columns([
                 TextColumn::make("client.name")->label(__("Client")),
                 TextColumn::make("mailTransport.name")->label(
-                    __("Transport Name")
+                    __("Transport Name"),
                 ),
                 TextColumn::make("sender")
                     ->searchable()

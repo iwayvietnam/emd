@@ -20,8 +20,8 @@ use UnitEnum;
 class DmarcReportResource extends Resource
 {
     protected static ?string $model = DmarcReport::class;
-    protected static string | UnitEnum | null $navigationGroup = "Domain";
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedChartBarSquare;
+    protected static string|UnitEnum|null $navigationGroup = "Domain";
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChartBarSquare;
     protected static ?string $slug = "dmarc";
 
     public static function getNavigationLabel(): string

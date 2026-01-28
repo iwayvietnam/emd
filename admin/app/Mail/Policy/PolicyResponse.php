@@ -23,21 +23,16 @@ class PolicyResponse implements ResponseInterface
      */
     public function __construct(
         private readonly AccessVerdict $verdict,
-        private readonly string $message = ""
-    )
-    {
-    }
+        private readonly string $message = "",
+    ) {}
 
     /**
      * {@inheritdoc}
      */
     public function getAction(): string
     {
-        return trim(implode([
-            "action=",
-            $this->verdict->value,
-            " ",
-            $this->message,
-        ]));
+        return trim(
+            implode(["action=", $this->verdict->value, " ", $this->message]),
+        );
     }
 }

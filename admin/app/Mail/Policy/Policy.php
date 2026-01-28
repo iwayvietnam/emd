@@ -39,7 +39,7 @@ class Policy implements PolicyInterface
                     ]);
                     return new PolicyResponse(
                         AccessVerdict::Reject,
-                        "Client access is not allowed!"
+                        "Client access is not allowed!",
                     );
                 }
                 if (self::rateIsExceeded($request, $clientAccesses)) {
@@ -48,11 +48,11 @@ class Policy implements PolicyInterface
                         [
                             "sender" => $request->getSender(),
                             "address" => $request->getClientAddress(),
-                        ]
+                        ],
                     );
                     return new PolicyResponse(
                         AccessVerdict::Reject,
-                        "Rate limit is exceeded. Retry later!"
+                        "Rate limit is exceeded. Retry later!",
                     );
                 }
                 // if (self::recipientIsRestricted($request)) {
@@ -77,11 +77,11 @@ class Policy implements PolicyInterface
                         [
                             "sender" => $request->getSender(),
                             "address" => $request->getClientAddress(),
-                        ]
+                        ],
                     );
                     return new PolicyResponse(
                         AccessVerdict::Reject,
-                        "Quota limit is exceeded. Retry later!"
+                        "Quota limit is exceeded. Retry later!",
                     );
                 }
                 return new PolicyResponse(AccessVerdict::Ok);
@@ -91,14 +91,14 @@ class Policy implements PolicyInterface
                 ]);
                 return new PolicyResponse(
                     AccessVerdict::Reject,
-                    "Invalid protocol state!"
+                    "Invalid protocol state!",
                 );
         }
     }
 
     private static function isRejected(
         RequestInterface $request,
-        array $clientAccesses = []
+        array $clientAccesses = [],
     ): bool {
         $address = $request->getClientAddress();
         $sender = $request->getSender();
@@ -112,7 +112,7 @@ class Policy implements PolicyInterface
 
     private static function rateIsExceeded(
         RequestInterface $request,
-        array $clientAccesses = []
+        array $clientAccesses = [],
     ): bool {
         $address = $request->getClientAddress();
         $sender = $request->getSender();
@@ -122,12 +122,12 @@ class Policy implements PolicyInterface
                 $counterKey = self::limitCounterKey(
                     $policy["name"],
                     $sender,
-                    ClientAccess::RATE_LIMIT_SUFFIX
+                    ClientAccess::RATE_LIMIT_SUFFIX,
                 );
                 if (
                     RateLimiter::tooManyAttempts(
                         $counterKey,
-                        $policy["rate_limit"]
+                        $policy["rate_limit"],
                     )
                 ) {
                     return true;
@@ -140,7 +140,7 @@ class Policy implements PolicyInterface
 
     private static function quotaIsExceeded(
         RequestInterface $request,
-        array $clientAccesses = []
+        array $clientAccesses = [],
     ): bool {
         $address = $request->getClientAddress();
         $sender = $request->getSender();
@@ -150,12 +150,12 @@ class Policy implements PolicyInterface
                 $counterKey = self::limitCounterKey(
                     $policy["name"],
                     $sender,
-                    ClientAccess::QUOTA_LIMIT_SUFFIX
+                    ClientAccess::QUOTA_LIMIT_SUFFIX,
                 );
                 if (
                     RateLimiter::tooManyAttempts(
                         $counterKey,
-                        $policy["quota_limit"]
+                        $policy["quota_limit"],
                     )
                 ) {
                     return true;
@@ -163,7 +163,7 @@ class Policy implements PolicyInterface
                 RateLimiter::increment(
                     $counterKey,
                     $policy["quota_period"],
-                    $request->getSize()
+                    $request->getSize(),
                 );
             }
         }
@@ -172,18 +172,18 @@ class Policy implements PolicyInterface
     }
 
     private static function recipientIsRestricted(
-        RequestInterface $request
+        RequestInterface $request,
     ): bool {
         $recipients = RestrictedRecipient::cachedRecipients(self::CACHE_STORE);
         return AccessVerdict::tryFrom(
-            $recipients[$request->getRecipient()] ?? ""
+            $recipients[$request->getRecipient()] ?? "",
         ) === AccessVerdict::Reject;
     }
 
     private static function limitCounterKey(
         string $policy,
         string $sender,
-        string $suffix
+        string $suffix,
     ) {
         return sha1(implode([$policy, $sender, $suffix]));
     }

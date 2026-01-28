@@ -27,8 +27,8 @@ use UnitEnum;
 class ClientAccessResource extends Resource
 {
     protected static ?string $model = ClientAccess::class;
-    protected static string | UnitEnum | null $navigationGroup = "Access Control";
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedLockOpen;
+    protected static string|UnitEnum|null $navigationGroup = "Access Control";
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedLockOpen;
     protected static ?string $slug = "client-access";
 
     public static function getNavigationLabel(): string
@@ -60,15 +60,17 @@ class ClientAccessResource extends Resource
                             TextEntry::make("attempts")
                                 ->state(
                                     static fn(
-                                        ClientAccess $record
-                                    ) => $record->viewRateCounter()["attempts"]
+                                        ClientAccess $record,
+                                    ) => $record->viewRateCounter()["attempts"],
                                 )
                                 ->label(__("Attempts")),
                             TextEntry::make("remaining")
                                 ->state(
                                     static fn(
-                                        ClientAccess $record
-                                    ) => $record->viewRateCounter()["remaining"]
+                                        ClientAccess $record,
+                                    ) => $record->viewRateCounter()[
+                                        "remaining"
+                                    ],
                                 )
                                 ->label(__("Remaining")),
                             TextEntry::make("availableAt")
@@ -78,8 +80,8 @@ class ClientAccessResource extends Resource
                                         time() +
                                             $record->viewRateCounter()[
                                                 "availableIn"
-                                            ]
-                                    )
+                                            ],
+                                    ),
                                 )
                                 ->label(__("Available At")),
                         ])
@@ -93,19 +95,21 @@ class ClientAccessResource extends Resource
                             TextEntry::make("attempts")
                                 ->state(
                                     static fn(
-                                        ClientAccess $record
+                                        ClientAccess $record,
                                     ) => Number::fileSize(
-                                        $record->viewQuotaCounter()["attempts"]
-                                    )
+                                        $record->viewQuotaCounter()["attempts"],
+                                    ),
                                 )
                                 ->label(__("Attempts")),
                             TextEntry::make("remaining")
                                 ->state(
                                     static fn(
-                                        ClientAccess $record
+                                        ClientAccess $record,
                                     ) => Number::fileSize(
-                                        $record->viewQuotaCounter()["remaining"]
-                                    )
+                                        $record->viewQuotaCounter()[
+                                            "remaining"
+                                        ],
+                                    ),
                                 )
                                 ->label(__("Remaining")),
                             TextEntry::make("availableAt")
@@ -115,8 +119,8 @@ class ClientAccessResource extends Resource
                                         time() +
                                             $record->viewQuotaCounter()[
                                                 "availableIn"
-                                            ]
-                                    )
+                                            ],
+                                    ),
                                 )
                                 ->label(__("Available At")),
                         ])
@@ -129,8 +133,8 @@ class ClientAccessResource extends Resource
                         ->requiresConfirmation()
                         ->action(
                             static fn(
-                                ClientAccess $record
-                            ) => self::clearRateCounter($record)
+                                ClientAccess $record,
+                            ) => self::clearRateCounter($record),
                         )
                         ->icon("heroicon-m-check-badge")
                         ->color("primary")
@@ -139,8 +143,8 @@ class ClientAccessResource extends Resource
                         ->requiresConfirmation()
                         ->action(
                             static fn(
-                                ClientAccess $record
-                            ) => self::clearQuotaCounter($record)
+                                ClientAccess $record,
+                            ) => self::clearQuotaCounter($record),
                         )
                         ->icon("heroicon-m-check-badge")
                         ->color("primary")

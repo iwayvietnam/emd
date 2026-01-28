@@ -35,7 +35,7 @@ class SendMessage extends Mailable
      */
     public function __construct(
         private readonly Message $message,
-        private readonly bool $trackClick = false
+        private readonly bool $trackClick = false,
     ) {
         foreach ($message->uploads as $upload) {
             $this->attachments[] = [
@@ -57,11 +57,11 @@ class SendMessage extends Mailable
         return new Envelope(
             from: new Address(
                 $this->message->from_email,
-                $this->message->from_name
+                $this->message->from_name,
             ),
             to: $this->message->recipient,
             replyTo: [$this->message->reply_to],
-            subject: $this->message->subject
+            subject: $this->message->subject,
         );
     }
 
@@ -74,7 +74,7 @@ class SendMessage extends Mailable
     {
         return new Headers(
             messageId: $this->message->message_id,
-            text: $this->message->headers ?? []
+            text: $this->message->headers ?? [],
         );
     }
 
@@ -87,8 +87,8 @@ class SendMessage extends Mailable
     {
         return new Content(
             htmlString: $this->trackingOpen(
-                $this->trackingClick($this->message->content)
-            )
+                $this->trackingClick($this->message->content),
+            ),
         );
     }
 
@@ -125,13 +125,13 @@ class SendMessage extends Mailable
         $trackingImg = str_replace(
             "{tracking_pixel}",
             route("tracking_open", ["idHash" => $this->message->hash]),
-            self::TRACKING_IMG
+            self::TRACKING_IMG,
         );
         if (str_contains($content, "</body>")) {
             $content = str_replace(
                 "</body>",
                 $trackingImg . "</body>",
-                $content
+                $content,
             );
         } else {
             $content .= $trackingImg;

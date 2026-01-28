@@ -19,7 +19,7 @@ final class Service
     {
         $adapter = match (true) {
             class_exists(\OpenSwoole\Server::class) => new OpenSwoole(
-                new Policy()
+                new Policy(),
             ),
             class_exists(\Swoole\Server::class) => new Swoole(new Policy()),
             default => new Workerman(new Policy()),

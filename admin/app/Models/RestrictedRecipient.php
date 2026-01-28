@@ -37,7 +37,11 @@ class RestrictedRecipient extends Model
         $recipients = Cache::store($cacheStore)->get($cacheKey, []);
         if (empty($recipients)) {
             $recipients = static::all()->pluck("verdict", "recipient")->all();
-            Cache::store($cacheStore)->put($cacheKey, $recipients, self::CACHE_EXPIRES);
+            Cache::store($cacheStore)->put(
+                $cacheKey,
+                $recipients,
+                self::CACHE_EXPIRES,
+            );
         }
         return $recipients;
     }

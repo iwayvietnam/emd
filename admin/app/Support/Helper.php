@@ -16,7 +16,7 @@ class Helper
         $addresses = [];
         $lines = array_map(
             static fn($line) => strtolower(trim($line)),
-            explode(PHP_EOL, trim($recipients))
+            explode(PHP_EOL, trim($recipients)),
         );
         foreach ($lines as $line) {
             if (filter_var($line, FILTER_VALIDATE_EMAIL)) {
@@ -24,7 +24,7 @@ class Helper
             } else {
                 $parts = array_map(
                     static fn($part) => trim($part),
-                    explode(",", $line)
+                    explode(",", $line),
                 );
                 foreach ($parts as $part) {
                     if (filter_var($part, FILTER_VALIDATE_EMAIL)) {
