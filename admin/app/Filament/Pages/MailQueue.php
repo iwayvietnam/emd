@@ -122,7 +122,7 @@ class MailQueue extends Page implements HasTable
             ])
             ->bulkActions([
                 BulkAction::make("delete-all")
-                    ->icon("heroicon-m-trash")
+                    ->icon(Heroicon::OutlinedTrash)
                     ->color("danger")
                     ->action(function ($records) {
                         $formState = session()->get(MailServerQueue::class);
@@ -146,7 +146,7 @@ class MailQueue extends Page implements HasTable
             ->actions([
                 ActionGroup::make([
                     Action::make("export")
-                        ->icon("heroicon-m-arrow-down-circle")
+                        ->icon(Heroicon::OutlinedArrowDownCircle)
                         ->color("primary")
                         ->action(
                             static fn(
@@ -155,7 +155,7 @@ class MailQueue extends Page implements HasTable
                         )
                         ->label(__("Export Content")),
                     Action::make("flush")
-                        ->icon("heroicon-m-arrow-up-circle")
+                        ->icon(Heroicon::OutlinedArrowUpCircle)
                         ->color("primary")
                         ->action(function (MailServerQueue $record) {
                             $server = MailServer::find($record->mail_server);
@@ -164,7 +164,7 @@ class MailQueue extends Page implements HasTable
                         })
                         ->label(__("Flush")),
                     Action::make("delete")
-                        ->icon("heroicon-m-trash")
+                        ->icon(Heroicon::OutlinedTrash)
                         ->color("danger")
                         ->action(function (MailServerQueue $record) {
                             $server = MailServer::find($record->mail_server);
