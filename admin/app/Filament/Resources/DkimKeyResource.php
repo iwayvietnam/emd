@@ -65,11 +65,11 @@ class DkimKeyResource extends Resource
                         ])
                         ->modalHeading(__("Query Dkim Record"))
                         ->modalSubmitAction(false)
-                        ->icon("heroicon-m-eye")
+                        ->icon(Heroicon::OutlinedEye)
                         ->label(__("Query Dkim Record")),
                     Action::make("export_key")
                         ->label(__("Export Private Key"))
-                        ->icon("heroicon-m-arrow-down-tray")
+                        ->icon(Heroicon::OutlinedArrowDownTray)
                         ->action(
                             static fn($record) => self::exportPrivateKey(
                                 $record,
@@ -77,7 +77,7 @@ class DkimKeyResource extends Resource
                         ),
                     Action::make("export_csr")
                         ->label(__("Export Dns Record"))
-                        ->icon("heroicon-m-arrow-down-tray")
+                        ->icon(Heroicon::OutlinedArrowDownTray)
                         ->action(
                             static fn($record) => self::exportDnsRecord(
                                 $record,

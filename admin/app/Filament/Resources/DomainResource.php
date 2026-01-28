@@ -76,7 +76,7 @@ class DomainResource extends Resource
                         ])
                         ->modalHeading(__("Query MX Records"))
                         ->modalSubmitAction(false)
-                        ->icon("heroicon-m-eye")
+                        ->icon(Heroicon::OutlinedEye)
                         ->label(__("Query MX Records")),
                     Actions\Action::make("query_txt_records")
                         ->infolist([
@@ -91,7 +91,7 @@ class DomainResource extends Resource
                         ])
                         ->modalHeading(__("Query TXT Records"))
                         ->modalSubmitAction(false)
-                        ->icon("heroicon-m-eye")
+                        ->icon(Heroicon::OutlinedEye)
                         ->label(__("Query TXT Records")),
                     Actions\Action::make("query_dmarc_record")
                         ->infolist([
@@ -106,7 +106,7 @@ class DomainResource extends Resource
                         ])
                         ->modalHeading(__("Query Dmarc Record"))
                         ->modalSubmitAction(false)
-                        ->icon("heroicon-m-eye")
+                        ->icon(Heroicon::OutlinedEye)
                         ->label(__("Query Dmarc Record")),
                 ]),
             ])
