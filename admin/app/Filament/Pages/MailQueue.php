@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use App\Models\MailServer;
-use App\Models\MailServerQueue;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
@@ -63,7 +62,6 @@ class MailQueue extends Page implements HasTable
 
     public function mount(): void
     {
-        // $this->form->fill(session()->get(MailServerQueue::class));
         $this->form->fill();
     }
 
@@ -94,15 +92,13 @@ class MailQueue extends Page implements HasTable
 
     public function listMailQueue(): void
     {
-        session()->put(MailServerQueue::class, $this->form->getState());
+        session()->put(MailQueue::class, $this->form->getState());
         $this->dispatch('refreshTable');
-        // redirect($this->getUrl());
     }
 
     public function table(Table $table): Table
     {
         return $table
-            // ->query(MailServerQueue::query())
             ->records(function (array $columnSearches, int $page, int $recordsPerPage): Paginator {
                 return $this->mailServerQueues($columnSearches, $page, $recordsPerPage);
             })
@@ -134,7 +130,7 @@ class MailQueue extends Page implements HasTable
                     ->icon(Heroicon::OutlinedTrash)
                     ->color("danger")
                     ->action(function ($records) {
-                        $formState = session()->get(MailServerQueue::class);
+                        $formState = session()->get(MailQueue::class);
                         $server = MailServer::find(
                             $formState["mail_server"] ?? 0,
                         );
@@ -149,7 +145,6 @@ class MailQueue extends Page implements HasTable
                             $formState["config_dir"] ?? MailServer::CONFIG_DIR,
                         );
                         $this->dispatch('refreshTable');
-                        // redirect($this->getUrl());
                     })
                     ->label(__("Delete")),
             ])
@@ -171,7 +166,6 @@ class MailQueue extends Page implements HasTable
                             $server = MailServer::find($record["mail_server"]);
                             $server->flushQueue([$record["queue_id"]]);
                             $this->dispatch('refreshTable');
-                            // redirect($this->getUrl());
                         })
                         ->label(__("Flush")),
                     Action::make("delete")
@@ -181,7 +175,6 @@ class MailQueue extends Page implements HasTable
                             $server = MailServer::find($record["mail_server"]);
                             $server->deleteQueue([$record["queue_id"]]);
                             $this->dispatch('refreshTable');
-                            // redirect($this->getUrl());
                         })
                         ->label(__("Delete")),
                 ]),
