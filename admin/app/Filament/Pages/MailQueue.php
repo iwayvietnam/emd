@@ -245,9 +245,9 @@ class MailQueue extends Page implements HasTable
             ),
         );
         return new Paginator(
-            $records->forPage($page, $perPage),
+            $records->forPage($page, $recordsPerPage),
             total: count($records),
-            perPage: $perPage,
+            perPage: $recordsPerPage,
             currentPage: $page,
         );
     }
