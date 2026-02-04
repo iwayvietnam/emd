@@ -99,8 +99,8 @@ class MailQueue extends Page implements HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->records(function (array $columnSearches, int $page, int $recordsPerPage): Paginator {
-                return $this->mailServerQueues($columnSearches, $page, $recordsPerPage);
+            ->records(function (?string $search, int $page, int $recordsPerPage): Paginator {
+                return $this->mailServerQueues($search, $page, $recordsPerPage);
             })
             ->columns([
                 TextColumn::make("arrival_time")
@@ -113,9 +113,9 @@ class MailQueue extends Page implements HasTable
                     ->label(__("Arrival Time")),
                 TextColumn::make("queue_name")->label(__("Queue Name")),
                 TextColumn::make("queue_id")->label(__("Queue Id")),
-                TextColumn::make("sender")->searchable(isIndividual: true)->label(__("Sender")),
+                TextColumn::make("sender")->searchable()->label(__("Sender")),
                 TextColumn::make("recipients")
-                    ->searchable(isIndividual: true)
+                    ->searchable()
                     ->label(__("Recipients")),
                 TextColumn::make("message_size")
                     ->state(
@@ -184,8 +184,8 @@ class MailQueue extends Page implements HasTable
     #[On('refreshTable')]
     public function refreshTable(): void
     {
-        $this->getTable()->records(function (array $columnSearches, int $page, int $recordsPerPage): Paginator {
-            return $this->mailServerQueues($columnSearches, $page, $recordsPerPage);
+        $this->getTable()->records(function (?string $search, int $page, int $recordsPerPage): Paginator {
+            return $this->mailServerQueues($search, $page, $recordsPerPage);
         });
     }
 
@@ -211,7 +211,7 @@ class MailQueue extends Page implements HasTable
             ]);
     }
 
-    private function mailServerQueues(array $columnSearches, int $page, int $recordsPerPage): Paginator
+    private function mailServerQueues(?string $search, int $page, int $recordsPerPage): Paginator
     {
         $formState = $this->form->getState();
         $server = MailServer::find($formState["mail_server"] ?? 0);
@@ -221,19 +221,19 @@ class MailQueue extends Page implements HasTable
             ) ?? [];
 
         $records = collect($queues)->when(
-            filled($columnSearches['sender'] ?? null),
+            filled($search),
             fn (Collection $data) => $data->filter(
                 fn (array $record): bool => str_contains(
                     Str::lower($record['sender']),
-                    Str::lower($columnSearches['sender'])
+                    Str::lower($search)
                 ),
             ),
         )->when(
-            filled($columnSearches['recipients'] ?? null),
+            filled($search),
             fn (Collection $data) => $data->filter(
                 fn (array $record): bool => str_contains(
                     Str::lower($record['recipients']),
-                    Str::lower($columnSearches['recipients'])
+                    Str::lower($search)
                 ),
             ),
         );
