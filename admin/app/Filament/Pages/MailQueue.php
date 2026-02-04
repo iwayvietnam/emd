@@ -23,7 +23,11 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Number;
+use Illuminate\Support\Str;
+use Livewire\Attributes\On;
 use Symfony\Component\HttpFoundation\Response;
 use BackedEnum;
 use UnitEnum;
@@ -59,7 +63,8 @@ class MailQueue extends Page implements HasTable
 
     public function mount(): void
     {
-        $this->form->fill(session()->get(MailServerQueue::class));
+        // $this->form->fill(session()->get(MailServerQueue::class));
+        $this->form->fill();
     }
 
     public function form(Schema $schema): Schema
@@ -82,7 +87,7 @@ class MailQueue extends Page implements HasTable
     {
         return [
             Action::make("list")
-                ->submit("listMailQueue")
+                ->action("listMailQueue")
                 ->label(__("List Mail Queue")),
         ];
     }
@@ -90,19 +95,23 @@ class MailQueue extends Page implements HasTable
     public function listMailQueue(): void
     {
         session()->put(MailServerQueue::class, $this->form->getState());
-        redirect($this->getUrl());
+        $this->dispatch('refreshTable');
+        // redirect($this->getUrl());
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->query(MailServerQueue::query())
+            // ->query(MailServerQueue::query())
+            ->records(function (array $searches, int $page, int $perPage): Paginator {
+                return $this->mailServerQueues($searches, $page, $perPage);
+            })
             ->columns([
                 TextColumn::make("arrival_time")
                     ->state(
-                        static fn(MailServerQueue $record) => date(
+                        static fn(array $record) => date(
                             "Y-m-d H:i:s",
-                            (int) $record->arrival_time,
+                            (int) $record["arrival_time"],
                         ),
                     )
                     ->label(__("Arrival Time")),
@@ -114,8 +123,8 @@ class MailQueue extends Page implements HasTable
                     ->label(__("Recipients")),
                 TextColumn::make("message_size")
                     ->state(
-                        static fn(MailServerQueue $record) => Number::fileSize(
-                            $record->message_size,
+                        static fn(array $record) => Number::fileSize(
+                            $record["message_size"],
                         ),
                     )
                     ->label(__("Message Size")),
@@ -133,13 +142,14 @@ class MailQueue extends Page implements HasTable
                             $records
                                 ->map(
                                     fn(
-                                        MailServerQueue $record,
-                                    ) => $record->queue_id,
+                                        array $record,
+                                    ) => $record["queue_id"],
                                 )
                                 ->toArray(),
                             $formState["config_dir"] ?? MailServer::CONFIG_DIR,
                         );
-                        redirect($this->getUrl());
+                        $this->dispatch('refreshTable');
+                        // redirect($this->getUrl());
                     })
                     ->label(__("Delete")),
             ])
@@ -150,30 +160,40 @@ class MailQueue extends Page implements HasTable
                         ->color("primary")
                         ->action(
                             static fn(
-                                MailServerQueue $record,
+                                array $record,
                             ) => self::exportQueueContent($record),
                         )
                         ->label(__("Export Content")),
                     Action::make("flush")
                         ->icon(Heroicon::OutlinedArrowUpCircle)
                         ->color("primary")
-                        ->action(function (MailServerQueue $record) {
-                            $server = MailServer::find($record->mail_server);
-                            $server->flushQueue([$record->queue_id]);
-                            redirect($this->getUrl());
+                        ->action(function (array $record) {
+                            $server = MailServer::find($record["mail_server"]);
+                            $server->flushQueue([$record["queue_id"]]);
+                            $this->dispatch('refreshTable');
+                            // redirect($this->getUrl());
                         })
                         ->label(__("Flush")),
                     Action::make("delete")
                         ->icon(Heroicon::OutlinedTrash)
                         ->color("danger")
-                        ->action(function (MailServerQueue $record) {
-                            $server = MailServer::find($record->mail_server);
-                            $server->deleteQueue([$record->queue_id]);
-                            redirect($this->getUrl());
+                        ->action(function (array $record) {
+                            $server = MailServer::find($record["mail_server"]);
+                            $server->deleteQueue([$record["queue_id"]]);
+                            $this->dispatch('refreshTable');
+                            // redirect($this->getUrl());
                         })
                         ->label(__("Delete")),
                 ]),
             ]);
+    }
+
+    #[On('refreshTable')]
+    public function refreshTable(): void
+    {
+        $this->getTable()->records(function (array $searches, int $page, int $perPage): Paginator {
+            return $this->mailServerQueues($searches, $page, $perPage);
+        });
     }
 
     public function content(Schema $schema): Schema
@@ -198,16 +218,50 @@ class MailQueue extends Page implements HasTable
             ]);
     }
 
-    private static function exportQueueContent(
-        MailServerQueue $record,
-    ): Response {
-        $server = MailServer::find($record->mail_server);
-        $content = $server->queueContent($record->queue_id);
+    private function mailServerQueues(array $searches, int $page, int $perPage): Paginator
+    {
+        $formState = $this->form->getState();
+        $server = MailServer::find($formState["mail_server"] ?? 0);
+        $queues =
+            $server?->listQueue(
+                $formState["config_dir"] ?? MailServer::CONFIG_DIR,
+            ) ?? [];
 
-        $filePath = tempnam(sys_get_temp_dir(), $record->queue_id);
+        $records = collect($queues)->when(
+            filled($searches['sender'] ?? null),
+            fn (Collection $data) => $data->filter(
+                fn (array $record): bool => str_contains(
+                    Str::lower($record['sender']),
+                    Str::lower($searches['sender'])
+                ),
+            ),
+        )->when(
+            filled($searches['recipients'] ?? null),
+            fn (Collection $data) => $data->filter(
+                fn (array $record): bool => str_contains(
+                    Str::lower($record['recipients']),
+                    Str::lower($searches['recipients'])
+                ),
+            ),
+        );
+        return new Paginator(
+            $records->forPage($page, $perPage),
+            total: count($records),
+            perPage: $perPage,
+            currentPage: $page,
+        );
+    }
+
+    private static function exportQueueContent(
+        array $record,
+    ): Response {
+        $server = MailServer::find($record["mail_server"]);
+        $content = $server->queueContent($record["queue_id"]);
+
+        $filePath = tempnam(sys_get_temp_dir(), $record[""]);
         file_put_contents($filePath, $content);
         return response()
-            ->download($filePath, $record->queue_id . ".eml", [
+            ->download($filePath, $record["queue_id"] . ".eml", [
                 "Content-Type" => "application/octet-stream",
             ])
             ->deleteFileAfterSend(true);
