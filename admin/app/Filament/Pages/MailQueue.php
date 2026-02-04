@@ -103,8 +103,8 @@ class MailQueue extends Page implements HasTable
     {
         return $table
             // ->query(MailServerQueue::query())
-            ->records(function (array $columnSearches, int $page, int $perPage): Paginator {
-                return $this->mailServerQueues($columnSearches, $page, $perPage);
+            ->records(function (array $columnSearches, int $page, int $recordsPerPage): Paginator {
+                return $this->mailServerQueues($columnSearches, $page, $recordsPerPage);
             })
             ->columns([
                 TextColumn::make("arrival_time")
@@ -191,8 +191,8 @@ class MailQueue extends Page implements HasTable
     #[On('refreshTable')]
     public function refreshTable(): void
     {
-        $this->getTable()->records(function (array $columnSearches, int $page, int $perPage): Paginator {
-            return $this->mailServerQueues($columnSearches, $page, $perPage);
+        $this->getTable()->records(function (array $columnSearches, int $page, int $recordsPerPage): Paginator {
+            return $this->mailServerQueues($columnSearches, $page, $recordsPerPage);
         });
     }
 
@@ -218,7 +218,7 @@ class MailQueue extends Page implements HasTable
             ]);
     }
 
-    private function mailServerQueues(array $searches, int $page, int $perPage): Paginator
+    private function mailServerQueues(array $columnSearches, int $page, int $recordsPerPage): Paginator
     {
         $formState = $this->form->getState();
         $server = MailServer::find($formState["mail_server"] ?? 0);
@@ -228,19 +228,19 @@ class MailQueue extends Page implements HasTable
             ) ?? [];
 
         $records = collect($queues)->when(
-            filled($searches['sender'] ?? null),
+            filled($columnSearches['sender'] ?? null),
             fn (Collection $data) => $data->filter(
                 fn (array $record): bool => str_contains(
                     Str::lower($record['sender']),
-                    Str::lower($searches['sender'])
+                    Str::lower($columnSearches['sender'])
                 ),
             ),
         )->when(
-            filled($searches['recipients'] ?? null),
+            filled($columnSearches['recipients'] ?? null),
             fn (Collection $data) => $data->filter(
                 fn (array $record): bool => str_contains(
                     Str::lower($record['recipients']),
-                    Str::lower($searches['recipients'])
+                    Str::lower($columnSearches['recipients'])
                 ),
             ),
         );
