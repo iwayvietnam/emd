@@ -113,9 +113,9 @@ class MailQueue extends Page implements HasTable
                     ->label(__("Arrival Time")),
                 TextColumn::make("queue_name")->label(__("Queue Name")),
                 TextColumn::make("queue_id")->label(__("Queue Id")),
-                TextColumn::make("sender")->searchable()->label(__("Sender")),
+                TextColumn::make("sender")->searchable(isIndividual: true)->label(__("Sender")),
                 TextColumn::make("recipients")
-                    ->searchable()
+                    ->searchable(isIndividual: true)
                     ->label(__("Recipients")),
                 TextColumn::make("message_size")
                     ->state(
