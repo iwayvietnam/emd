@@ -226,12 +226,7 @@ class MailQueue extends Page implements HasTable
                 fn (array $record): bool => str_contains(
                     Str::lower($record['sender']),
                     Str::lower($search)
-                ),
-            ),
-        )->when(
-            filled($search),
-            fn (Collection $data) => $data->filter(
-                fn (array $record): bool => str_contains(
+                ) || str_contains(
                     Str::lower($record['recipients']),
                     Str::lower($search)
                 ),
