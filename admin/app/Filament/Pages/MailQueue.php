@@ -103,8 +103,8 @@ class MailQueue extends Page implements HasTable
     {
         return $table
             // ->query(MailServerQueue::query())
-            ->records(function (array $searches, int $page, int $perPage): Paginator {
-                return $this->mailServerQueues($searches, $page, $perPage);
+            ->records(function (array $columnSearches, int $page, int $perPage): Paginator {
+                return $this->mailServerQueues($columnSearches, $page, $perPage);
             })
             ->columns([
                 TextColumn::make("arrival_time")
@@ -191,8 +191,8 @@ class MailQueue extends Page implements HasTable
     #[On('refreshTable')]
     public function refreshTable(): void
     {
-        $this->getTable()->records(function (array $searches, int $page, int $perPage): Paginator {
-            return $this->mailServerQueues($searches, $page, $perPage);
+        $this->getTable()->records(function (array $columnSearches, int $page, int $perPage): Paginator {
+            return $this->mailServerQueues($columnSearches, $page, $perPage);
         });
     }
 
