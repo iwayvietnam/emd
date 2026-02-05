@@ -170,7 +170,6 @@ class MailQueue extends Page implements HasTable
         $this->getTable()->records(function (?string $search, int $page, int $recordsPerPage): Paginator {
             return $this->mailServerQueues($search, $page, $recordsPerPage);
         });
-        $this->resetTable();
     }
 
     public function content(Schema $schema): Schema
