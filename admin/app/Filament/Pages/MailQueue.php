@@ -92,7 +92,6 @@ class MailQueue extends Page implements HasTable
 
     public function listMailQueue(): void
     {
-        // session()->put(MailQueue::class, $this->form->getState());
         $this->dispatch('refreshTable');
     }
 
@@ -171,6 +170,7 @@ class MailQueue extends Page implements HasTable
         $this->getTable()->records(function (?string $search, int $page, int $recordsPerPage): Paginator {
             return $this->mailServerQueues($search, $page, $recordsPerPage);
         });
+        $this->resetTable();
     }
 
     public function content(Schema $schema): Schema
@@ -226,7 +226,6 @@ class MailQueue extends Page implements HasTable
 
     private function deleteAllQueues($records): void
     {
-        // $formState = session()->get(MailQueue::class);
         $formState = $this->form->getState();
         $server = MailServer::find(
             $formState["mail_server"] ?? 0,
