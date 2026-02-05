@@ -81,20 +81,6 @@ class MailQueue extends Page implements HasTable
             ->statePath("data");
     }
 
-    protected function getFormActions(): array
-    {
-        return [
-            Action::make("list")
-                ->action(fn () => $this->listMailQueue())
-                ->label(__("List Mail Queue")),
-        ];
-    }
-
-    public function listMailQueue(): void
-    {
-        $this->dispatch('refreshTable');
-    }
-
     public function table(Table $table): Table
     {
         return $table
@@ -185,13 +171,7 @@ class MailQueue extends Page implements HasTable
     {
         return Form::make([EmbeddedSchema::make("form")])
             ->id("form")
-            ->livewireSubmitHandler(fn () => $this->listMailQueue())
-            ->footer([
-                Actions::make($this->getFormActions())
-                    ->alignment(Alignment::Start)
-                    ->fullWidth(false)
-                    ->key("form-actions"),
-            ]);
+            ->livewireSubmitHandler(fn () => $this->dispatch('refreshTable'));
     }
 
     private function mailServerQueues(?string $search, int $page, int $recordsPerPage): Paginator
