@@ -81,6 +81,11 @@ class MailQueue extends Page implements HasTable
             ->statePath("data");
     }
 
+    public function listMailQueue(): void
+    {
+        $this->dispatch("refreshTable");
+    }
+
     public function table(Table $table): Table
     {
         return $table
@@ -134,7 +139,7 @@ class MailQueue extends Page implements HasTable
                         ->action(function (array $record) {
                             $server = MailServer::find($record["mail_server"]);
                             $server->flushQueue([$record["queue_id"]]);
-                            $this->dispatch('refreshTable');
+                            $this->dispatch("refreshTable");
                         })
                         ->label(__("Flush")),
                     Action::make("delete")
@@ -143,14 +148,14 @@ class MailQueue extends Page implements HasTable
                         ->action(function (array $record) {
                             $server = MailServer::find($record["mail_server"]);
                             $server->deleteQueue([$record["queue_id"]]);
-                            $this->dispatch('refreshTable');
+                            $this->dispatch("refreshTable");
                         })
                         ->label(__("Delete")),
                 ]),
             ]);
     }
 
-    #[On('refreshTable')]
+    #[On("refreshTable")]
     public function refreshTable(): void
     {
         $this->getTable()->records(function (?string $search, int $page, int $recordsPerPage): Paginator {
@@ -171,7 +176,7 @@ class MailQueue extends Page implements HasTable
     {
         return Form::make([EmbeddedSchema::make("form")])
             ->id("form")
-            ->livewireSubmitHandler(fn () => $this->dispatch('refreshTable'));
+            ->livewireSubmitHandler(fn () => $this->listMailQueue());
     }
 
     private function mailServerQueues(?string $search, int $page, int $recordsPerPage): Paginator
@@ -213,7 +218,7 @@ class MailQueue extends Page implements HasTable
             $records->map(fn (array $record) => $record["queue_id"])->toArray(),
             $formState["config_dir"] ?? MailServer::CONFIG_DIR,
         );
-        $this->dispatch('refreshTable');
+        $this->dispatch("refreshTable");
     }
 
     private static function exportQueueContent(
