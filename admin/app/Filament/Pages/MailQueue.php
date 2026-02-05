@@ -85,14 +85,14 @@ class MailQueue extends Page implements HasTable
     {
         return [
             Action::make("list")
-                ->action("listMailQueue")
+                ->action(fn () => $this->listMailQueue())
                 ->label(__("List Mail Queue")),
         ];
     }
 
     public function listMailQueue(): void
     {
-        session()->put(MailQueue::class, $this->form->getState());
+        // session()->put(MailQueue::class, $this->form->getState());
         $this->dispatch('refreshTable');
     }
 
@@ -129,23 +129,7 @@ class MailQueue extends Page implements HasTable
                 BulkAction::make("delete-all")
                     ->icon(Heroicon::OutlinedTrash)
                     ->color("danger")
-                    ->action(function ($records) {
-                        $formState = session()->get(MailQueue::class);
-                        $server = MailServer::find(
-                            $formState["mail_server"] ?? 0,
-                        );
-                        $server?->deleteQueue(
-                            $records
-                                ->map(
-                                    fn(
-                                        array $record,
-                                    ) => $record["queue_id"],
-                                )
-                                ->toArray(),
-                            $formState["config_dir"] ?? MailServer::CONFIG_DIR,
-                        );
-                        $this->dispatch('refreshTable');
-                    })
+                    ->action(fn ($records) => $this->deleteAllQueues($records))
                     ->label(__("Delete")),
             ])
             ->actions([
@@ -238,6 +222,20 @@ class MailQueue extends Page implements HasTable
             perPage: $recordsPerPage,
             currentPage: $page,
         );
+    }
+
+    private function deleteAllQueues($records): void
+    {
+        // $formState = session()->get(MailQueue::class);
+        $formState = $this->form->getState();
+        $server = MailServer::find(
+            $formState["mail_server"] ?? 0,
+        );
+        $server?->deleteQueue(
+            $records->map(fn (array $record) => $record["queue_id"])->toArray(),
+            $formState["config_dir"] ?? MailServer::CONFIG_DIR,
+        );
+        $this->dispatch('refreshTable');
     }
 
     private static function exportQueueContent(
