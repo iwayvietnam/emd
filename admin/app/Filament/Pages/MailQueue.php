@@ -104,7 +104,7 @@ class MailQueue extends Page implements HasTable
             ->columns([
                 TextColumn::make("arrival_time")
                     ->state(
-                        static fn(array $record) => date(
+                        static fn (array $record) => date(
                             "Y-m-d H:i:s",
                             (int) $record["arrival_time"],
                         ),
@@ -118,7 +118,7 @@ class MailQueue extends Page implements HasTable
                     ->label(__("Recipients")),
                 TextColumn::make("message_size")
                     ->state(
-                        static fn(array $record) => Number::fileSize(
+                        static fn (array $record) => Number::fileSize(
                             $record["message_size"],
                         ),
                     )
@@ -137,7 +137,7 @@ class MailQueue extends Page implements HasTable
                         ->icon(Heroicon::OutlinedArrowDownCircle)
                         ->color("primary")
                         ->action(
-                            static fn(
+                            static fn (
                                 array $record,
                             ) => self::exportQueueContent($record),
                         )
@@ -185,7 +185,7 @@ class MailQueue extends Page implements HasTable
     {
         return Form::make([EmbeddedSchema::make("form")])
             ->id("form")
-            ->livewireSubmitHandler("listMailQueue")
+            ->livewireSubmitHandler(fn () => $this->listMailQueue())
             ->footer([
                 Actions::make($this->getFormActions())
                     ->alignment(Alignment::Start)
