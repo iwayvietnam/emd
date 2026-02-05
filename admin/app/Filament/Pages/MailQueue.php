@@ -81,6 +81,22 @@ class MailQueue extends Page implements HasTable
             ->statePath("data");
     }
 
+    public function content(Schema $schema): Schema
+    {
+        return $schema->components([
+            RenderHook::make(self::MAIL_QUEUE_FORM_AFTER),
+            $this->getFormContentComponent(),
+            RenderHook::make(self::MAIL_QUEUE_FORM_BEFORE),
+        ]);
+    }
+
+    public function getFormContentComponent(): Component
+    {
+        return Form::make([EmbeddedSchema::make("form")])
+            ->id("form")
+            ->livewireSubmitHandler(fn () => $this->listMailQueue());
+    }
+
     public function listMailQueue(): void
     {
         $this->dispatch("refreshTable");
@@ -161,22 +177,6 @@ class MailQueue extends Page implements HasTable
         $this->getTable()->records(function (?string $search, int $page, int $recordsPerPage): Paginator {
             return $this->mailServerQueues($search, $page, $recordsPerPage);
         });
-    }
-
-    public function content(Schema $schema): Schema
-    {
-        return $schema->components([
-            RenderHook::make(self::MAIL_QUEUE_FORM_AFTER),
-            $this->getFormContentComponent(),
-            RenderHook::make(self::MAIL_QUEUE_FORM_BEFORE),
-        ]);
-    }
-
-    public function getFormContentComponent(): Component
-    {
-        return Form::make([EmbeddedSchema::make("form")])
-            ->id("form")
-            ->livewireSubmitHandler(fn () => $this->listMailQueue());
     }
 
     private function mailServerQueues(?string $search, int $page, int $recordsPerPage): Paginator
