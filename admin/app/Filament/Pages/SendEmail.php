@@ -19,6 +19,7 @@ use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\EmbeddedSchema;
 use Filament\Schemas\Components\Form;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\RenderHook;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Alignment;
@@ -66,13 +67,15 @@ class SendEmail extends Page
     {
         return $schema
             ->components([
-                TextInput::make("sender")
-                    ->label(__("Sender"))
-                    ->email()
-                    ->required(),
-                Textarea::make("recipients")
-                    ->label(__("Recipients"))
-                    ->required(),
+                Grid::make(2)->schema([
+                    TextInput::make("sender")
+                        ->label(__("Sender"))
+                        ->email()
+                        ->required(),
+                    Textarea::make("recipients")
+                        ->label(__("Recipients"))
+                        ->required(),
+                ]),
                 TextInput::make("subject")->label(__("Subject"))->required(),
                 RichEditor::make("content")
                     ->label(__("Content"))
@@ -132,7 +135,7 @@ class SendEmail extends Page
                 $this->form->fill();
                 if ($shouldQueue) {
                     Mail::to($message->recipient)->queue(
-                        (new SendMessage($message))->onQueue(
+                        new SendMessage($message)->onQueue(
                             config("emd.mail.queue_name", self::QUEUE_NAME),
                         ),
                     );
