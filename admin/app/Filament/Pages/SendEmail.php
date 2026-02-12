@@ -135,7 +135,7 @@ class SendEmail extends Page
                 $this->form->fill();
                 if ($shouldQueue) {
                     Mail::to($message->recipient)->queue(
-                        new SendMessage($message)->onQueue(
+                        (new SendMessage($message))->onQueue(
                             config("emd.mail.queue_name", self::QUEUE_NAME),
                         ),
                     );
