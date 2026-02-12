@@ -26,7 +26,7 @@ class EditClient extends EditRecord
             Grid::make(3)
                 ->columnSpan(2)
                 ->schema([
-                    TextInput::make("name")->columnSpan(2)->label(__("Name")),
+                    TextInput::make("name")->label(__("Name")),
                     TextInput::make("sender_address")
                         ->readonly()
                         ->label(__("Sender Address")),
