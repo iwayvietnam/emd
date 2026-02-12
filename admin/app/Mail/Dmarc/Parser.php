@@ -25,9 +25,10 @@ final class Parser
                 "application/zip",
                 "application/x-zip-compressed"
                     => self::unzip($attachment->content),
-                "application/gzip", "application/x-gzip" => self::gunzip(
-                    $attachment->content,
-                ),
+                "application/gzip",
+                "application/x-gzip",
+                "application/octet-stream"
+                    => self::gunzip($attachment->content),
                 "application/xml" => $attachment->content,
                 default => false,
             };
