@@ -46,12 +46,12 @@ class ScanDmarcReport extends CreateRecord
         return $schema->components([
             Fieldset::make(__("IMAP Mailbox"))
                 ->schema([
-                    Grid::make(5)
+                    Grid::make(4)
                         ->columnSpan(2)
                         ->schema([
                             TextInput::make("host")
                                 ->required()
-                                ->columnSpan(3)
+                                ->columnSpan(2)
                                 ->label(__("IMAP Host")),
                             TextInput::make("port")
                                 ->required()
