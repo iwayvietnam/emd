@@ -4,8 +4,8 @@ use App\Http\Controllers\Api\EmailController;
 use App\Http\Controllers\Api\UploadController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware("auth:api")
-    ->domain(config("emd.api.domain"))
+Route::domain(config("emd.api.domain"))
+    ->middleware("auth:api")
     ->controller(EmailController::class)
     ->group(static function () {
         Route::get("/email", "index");
@@ -14,6 +14,6 @@ Route::middleware("auth:api")
         Route::post("/send", "send");
     });
 
-Route::post("/upload", UploadController::class)
-    ->domain(config("emd.api.domain"))
+Route::domain(config("emd.api.domain"))
+    ->post("/upload", UploadController::class)
     ->middleware("auth:api");
