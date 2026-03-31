@@ -9,6 +9,7 @@ return [
         "top_navigation" => (bool) env("TOP_NAVIGATION", false),
     ],
     "api" => [
+        "domain" => env("API_DOMAIN", "api.yourdomain.com"),
         "hash_secret" => env("API_HASH_SECRET", true),
         "password_grant" => env("API_PASSWORD_GRANT", false),
         "request_rate" => (int) env("API_REQUEST_RATE", 600),
