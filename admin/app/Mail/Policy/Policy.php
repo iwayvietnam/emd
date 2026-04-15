@@ -117,6 +117,7 @@ class Policy implements PolicyInterface
         $address = $request->getClientAddress();
         $sender = $request->getSender();
         if (isset($clientAccesses[$sender][$address]["policy"])) {
+            $domain = $clientAccesses[$sender][$address]["domain"];
             $policy = $clientAccesses[$sender][$address]["policy"];
             if (!empty($policy) && !empty($policy["rate_limit"])) {
                 $counterKey = self::limitCounterKey(
@@ -134,6 +135,22 @@ class Policy implements PolicyInterface
                 }
                 RateLimiter::hit($counterKey, $policy["rate_period"]);
             }
+            elseif (!empty($domain) && !empty($domain["rate_limit"])) {
+                $counterKey = self::limitCounterKey(
+                    $domain["name"],
+                    $sender,
+                    ClientAccess::RATE_LIMIT_SUFFIX,
+                );
+                if (
+                    RateLimiter::tooManyAttempts(
+                        $counterKey,
+                        $domain["rate_limit"],
+                    )
+                ) {
+                    return true;
+                }
+                RateLimiter::hit($counterKey, $domain["rate_period"]);
+            }
         }
         return false;
     }
@@ -145,6 +162,7 @@ class Policy implements PolicyInterface
         $address = $request->getClientAddress();
         $sender = $request->getSender();
         if (isset($clientAccesses[$sender][$address]["policy"])) {
+            $domain = $clientAccesses[$sender][$address]["domain"];
             $policy = $clientAccesses[$sender][$address]["policy"];
             if (!empty($policy) && !empty($policy["quota_limit"])) {
                 $counterKey = self::limitCounterKey(
@@ -166,6 +184,26 @@ class Policy implements PolicyInterface
                     $request->getSize(),
                 );
             }
+            elseif (!empty($domain) && !empty($domain["quota_limit"])) {
+                $counterKey = self::limitCounterKey(
+                    $domain["name"],
+                    $sender,
+                    ClientAccess::RATE_LIMIT_SUFFIX,
+                );
+                if (
+                    RateLimiter::tooManyAttempts(
+                        $counterKey,
+                        $domain["quota_limit"],
+                    )
+                ) {
+                    return true;
+                }
+                RateLimiter::increment(
+                    $counterKey,
+                    $domain["quota_period"],
+                    $request->getSize(),
+                );
+            }
         }
 
         return false;
@@ -181,10 +219,10 @@ class Policy implements PolicyInterface
     }
 
     private static function limitCounterKey(
-        string $policy,
+        string $key,
         string $sender,
         string $suffix,
     ) {
-        return sha1(implode([$policy, $sender, $suffix]));
+        return sha1(implode([$key, $sender, $suffix]));
     }
 }

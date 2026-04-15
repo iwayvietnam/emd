@@ -99,6 +99,13 @@ class ClientAccess extends Model
                         "rate_period" => $model->policy->rate_period,
                     ],
                     "client" => $model->client->name,
+                    "domain" => [
+                        'name' => $model->client->domain->name,
+                        "quota_limit" => $model->client->domain->quota_limit,
+                        "quota_period" => $model->client->domain->quota_period,
+                        "rate_limit" => $model->client->domain->rate_limit,
+                        "rate_period" => $model->client->domain->rate_period,
+                    ],
                     "verdict" => $model->verdict,
                 ];
             }
