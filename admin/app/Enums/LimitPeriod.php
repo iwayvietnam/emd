@@ -23,7 +23,8 @@ enum LimitPeriod: int implements HasLabel
     public function getLabel(): string
     {
         return match ($this) {
-            self::PerMinute => __("None"),
+            self::None => __("None"),
+            self::PerMinute => __("Per Minute"),
             self::PerHour => __("Per Hour"),
             self::PerDay => __("Per Day"),
             self::PerWeek => __("Per Week"),
