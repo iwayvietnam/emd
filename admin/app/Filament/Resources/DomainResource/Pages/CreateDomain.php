@@ -2,10 +2,13 @@
 
 namespace App\Filament\Resources\DomainResource\Pages;
 
+use App\Enums\LimitPeriod;
 use App\Filament\Resources\DomainResource;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
@@ -64,6 +67,48 @@ class CreateDomain extends CreateRecord
             Textarea::make("description")
                 ->columnSpan(2)
                 ->label(__("Description")),
+            Grid::make(4)
+                ->columnSpan(2)
+                ->schema([
+                    TextInput::make("quota_limit")
+                        ->required()
+                        ->integer()
+                        ->minValue(0)
+                        ->default(0)
+                        ->live()
+                        ->label(__("Quota"))
+                        ->helperText(
+                            __(
+                                "Maximum capacity in megabytes that client can send per time unit.",
+                            ),
+                        ),
+                    Select::make("quota_period")
+                        ->default(LimitPeriod::PerMinute)
+                        ->options(LimitPeriod::class)
+                        ->required(
+                            static fn(Get $get) => $get("quota_limit") > 0,
+                        )
+                        ->label(__("Quota Time Unit")),
+                    TextInput::make("rate_limit")
+                        ->required()
+                        ->integer()
+                        ->minValue(0)
+                        ->default(0)
+                        ->live()
+                        ->label(__("Rate"))
+                        ->helperText(
+                            __(
+                                "Maximum amount of message that client can send per time unit.",
+                            ),
+                        ),
+                    Select::make("rate_period")
+                        ->default(LimitPeriod::PerMinute)
+                        ->options(LimitPeriod::class)
+                        ->required(
+                            static fn(Get $get) => $get("rate_limit") > 0,
+                        )
+                        ->label(__("Rate Time Unit")),
+                ]),
         ]);
     }
 

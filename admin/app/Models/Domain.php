@@ -26,7 +26,31 @@ class Domain extends Model
      *
      * @var list<string>
      */
-    protected $fillable = ["name", "email", "organization", "description"];
+    protected $fillable = [
+        "name",
+        "email",
+        "organization",
+        "description",
+        "quota_limit",
+        "quota_period",
+        "rate_limit",
+        "rate_period",
+    ];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::saving(static function (self $model) {
+            if ($model->quota_limit == 0) {
+                $model->quota_period = 0;
+            }
+
+            if ($model->rate_limit == 0) {
+                $model->rate_period = 0;
+            }
+        });
+    }
 
     public function clients(): HasMany
     {
