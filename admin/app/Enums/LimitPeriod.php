@@ -13,6 +13,7 @@ use Filament\Support\Contracts\HasLabel;
  */
 enum LimitPeriod: int implements HasLabel
 {
+    case None = 0;
     case PerMinute = 60;
     case PerHour = 3600;
     case PerDay = 86400;
@@ -22,7 +23,7 @@ enum LimitPeriod: int implements HasLabel
     public function getLabel(): string
     {
         return match ($this) {
-            self::PerMinute => __("Per Minute"),
+            self::PerMinute => __("None"),
             self::PerHour => __("Per Hour"),
             self::PerDay => __("Per Day"),
             self::PerWeek => __("Per Week"),
