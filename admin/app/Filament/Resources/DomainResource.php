@@ -63,6 +63,100 @@ class DomainResource extends Resource
                             self::cancelDelete($action);
                         }
                     }),
+                    Actions\Action::make("view_rate")
+                        ->infolist([
+                            TextEntry::make("attempts")
+                                ->state(
+                                    static fn(
+                                        Domain $record,
+                                    ) => $record->viewRateCounter()["attempts"],
+                                )
+                                ->label(__("Attempts")),
+                            TextEntry::make("remaining")
+                                ->state(
+                                    static fn(
+                                        Domain $record,
+                                    ) => $record->viewRateCounter()[
+                                        "remaining"
+                                    ],
+                                )
+                                ->label(__("Remaining")),
+                            TextEntry::make("availableAt")
+                                ->state(
+                                    static fn(Domain $record) => date(
+                                        "Y-m-d H:i:s",
+                                        time() +
+                                            $record->viewRateCounter()[
+                                                "availableIn"
+                                            ],
+                                    ),
+                                )
+                                ->label(__("Available At")),
+                        ])
+                        ->modalHeading(__("Rate Limit Info"))
+                        ->modalSubmitAction(false)
+                        ->icon(Heroicon::OutlinedEye)
+                        ->color("info")
+                        ->label("View Rate Limit"),
+                    Actions\Action::make("view_quota")
+                        ->infolist([
+                            TextEntry::make("attempts")
+                                ->state(
+                                    static fn(
+                                        Domain $record,
+                                    ) => Number::fileSize(
+                                        $record->viewQuotaCounter()["attempts"],
+                                    ),
+                                )
+                                ->label(__("Attempts")),
+                            TextEntry::make("remaining")
+                                ->state(
+                                    static fn(
+                                        Domain $record,
+                                    ) => Number::fileSize(
+                                        $record->viewQuotaCounter()[
+                                            "remaining"
+                                        ],
+                                    ),
+                                )
+                                ->label(__("Remaining")),
+                            TextEntry::make("availableAt")
+                                ->state(
+                                    static fn(Domain $record) => date(
+                                        "Y-m-d H:i:s",
+                                        time() +
+                                            $record->viewQuotaCounter()[
+                                                "availableIn"
+                                            ],
+                                    ),
+                                )
+                                ->label(__("Available At")),
+                        ])
+                        ->modalHeading(__("Quota Limit Info"))
+                        ->modalSubmitAction(false)
+                        ->icon(Heroicon::OutlinedEye)
+                        ->color("info")
+                        ->label("View Quota Limit"),
+                    Actions\Action::make("clear_rate")
+                        ->requiresConfirmation()
+                        ->action(
+                            static fn(
+                                Domain $record,
+                            ) => self::clearRateCounter($record),
+                        )
+                        ->icon(Heroicon::OutlinedCheckBadge)
+                        ->color("primary")
+                        ->label("Clear Rate Limit"),
+                    Actions\Action::make("clear_quota")
+                        ->requiresConfirmation()
+                        ->action(
+                            static fn(
+                                Domain $record,
+                            ) => self::clearQuotaCounter($record),
+                        )
+                        ->icon(Heroicon::OutlinedCheckBadge)
+                        ->color("primary")
+                        ->label("Clear Quota Limit"),
                     Actions\Action::make("query_mx_records")
                         ->infolist([
                             TextEntry::make("mx_records")
@@ -135,6 +229,24 @@ class DomainResource extends Resource
             ->body(__("You must delete all clients belongs to the domain."))
             ->send();
         $action->cancel();
+    }
+
+    private static function clearRateCounter(Domain $record): void
+    {
+        $record->clearRateCounter();
+        Notification::make()
+            ->title(__("Rate counter have been clear from the cache!"))
+            ->success()
+            ->send();
+    }
+
+    private static function clearQuotaCounter(Domain $record): void
+    {
+        $record->clearQuotaCounter();
+        Notification::make()
+            ->title(__("Quota counter have been clear from the cache!"))
+            ->success()
+            ->send();
     }
 
     private static function queryMxRecords(Domain $domain): string
