@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\RateLimiter;
 
 /**
  * Domain model class
@@ -14,6 +15,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Domain extends Model
 {
+    const RATE_LIMIT_SUFFIX = "domain-rate-limit";
+    const QUOTA_LIMIT_SUFFIX = "domain-quota-limit";
+
     /**
      * The table associated with the model.
      *
@@ -55,5 +59,50 @@ class Domain extends Model
     public function clients(): HasMany
     {
         return $this->hasMany(Client::class, "domain_id", "id");
+    }
+
+    public function viewRateCounter(): array
+    {
+        return $this->viewLimitCounter(
+            $this->limitCounterKey(self::RATE_LIMIT_SUFFIX),
+            $this->rate_limit,
+        );
+    }
+
+    public function viewQuotaCounter(): array
+    {
+        return $this->viewLimitCounter(
+            $this->limitCounterKey(self::QUOTA_LIMIT_SUFFIX),
+            $this->quota_limit,
+        );
+    }
+
+    public function clearRateCounter(): self
+    {
+        RateLimiter::clear($this->limitCounterKey(self::RATE_LIMIT_SUFFIX));
+        return $this;
+    }
+
+    public function clearQuotaCounter(): self
+    {
+        RateLimiter::clear($this->limitCounterKey(self::QUOTA_LIMIT_SUFFIX));
+        return $this;
+    }
+
+    private function viewLimitCounter(
+        string $counterKey,
+        int $maxAttempts = 0,
+    ): array {
+        return [
+            "attempts" => RateLimiter::attempts($counterKey),
+            "availableIn" => RateLimiter::availableIn($counterKey),
+            "maxAttempts" => $maxAttempts,
+            "remaining" => RateLimiter::remaining($counterKey, $maxAttempts),
+        ];
+    }
+
+    private function limitCounterKey(string $suffix): string
+    {
+        return sha1(implode([$this->name, $suffix]));
     }
 }

@@ -8,6 +8,7 @@ use App\Mail\Policy\Interface\PolicyInterface;
 use App\Mail\Policy\Interface\RequestInterface;
 use App\Mail\Policy\Interface\ResponseInterface;
 use App\Models\ClientAccess;
+use App\Models\Domain;
 use App\Models\RestrictedRecipient;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
@@ -120,7 +121,7 @@ class Policy implements PolicyInterface
             $domain = $clientAccesses[$sender][$address]["domain"];
             $policy = $clientAccesses[$sender][$address]["policy"];
             if (!empty($policy) && !empty($policy["rate_limit"])) {
-                $counterKey = self::limitCounterKey(
+                $counterKey = self::policyCounterKey(
                     $policy["name"],
                     $sender,
                     ClientAccess::RATE_LIMIT_SUFFIX,
@@ -135,11 +136,10 @@ class Policy implements PolicyInterface
                 }
                 RateLimiter::hit($counterKey, $policy["rate_period"]);
             }
-            elseif (!empty($domain) && !empty($domain["rate_limit"])) {
-                $counterKey = self::limitCounterKey(
+            if (!empty($domain) && !empty($domain["rate_limit"])) {
+                $counterKey = self::domainCounterKey(
                     $domain["name"],
-                    $sender,
-                    ClientAccess::RATE_LIMIT_SUFFIX,
+                    Domain::RATE_LIMIT_SUFFIX,
                 );
                 if (
                     RateLimiter::tooManyAttempts(
@@ -165,7 +165,7 @@ class Policy implements PolicyInterface
             $domain = $clientAccesses[$sender][$address]["domain"];
             $policy = $clientAccesses[$sender][$address]["policy"];
             if (!empty($policy) && !empty($policy["quota_limit"])) {
-                $counterKey = self::limitCounterKey(
+                $counterKey = self::policyCounterKey(
                     $policy["name"],
                     $sender,
                     ClientAccess::QUOTA_LIMIT_SUFFIX,
@@ -184,11 +184,10 @@ class Policy implements PolicyInterface
                     $request->getSize(),
                 );
             }
-            elseif (!empty($domain) && !empty($domain["quota_limit"])) {
-                $counterKey = self::limitCounterKey(
+            if (!empty($domain) && !empty($domain["quota_limit"])) {
+                $counterKey = self::domainCounterKey(
                     $domain["name"],
-                    $sender,
-                    ClientAccess::RATE_LIMIT_SUFFIX,
+                    Domain::QUOTA_LIMIT_SUFFIX,
                 );
                 if (
                     RateLimiter::tooManyAttempts(
@@ -218,11 +217,18 @@ class Policy implements PolicyInterface
         ) === AccessVerdict::Reject;
     }
 
-    private static function limitCounterKey(
-        string $key,
+    private static function policyCounterKey(
+        string $policy,
         string $sender,
         string $suffix,
     ) {
-        return sha1(implode([$key, $sender, $suffix]));
+        return sha1(implode([$policy, $sender, $suffix]));
+    }
+
+    private static function domainCounterKey(
+        string $domain,
+        string $suffix,
+    ) {
+        return sha1(implode([$domain, $suffix]));
     }
 }
