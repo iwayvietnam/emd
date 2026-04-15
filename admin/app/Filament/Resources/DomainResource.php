@@ -14,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns;
 use Filament\Tables\Table;
+use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use BackedEnum;
 use UnitEnum;
