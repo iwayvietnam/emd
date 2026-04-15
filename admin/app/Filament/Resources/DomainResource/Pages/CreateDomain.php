@@ -83,7 +83,7 @@ class CreateDomain extends CreateRecord
                             ),
                         ),
                     Select::make("quota_period")
-                        ->default(LimitPeriod::PerMinute)
+                        ->default(LimitPeriod::None)
                         ->options(LimitPeriod::class)
                         ->required(
                             static fn(Get $get) => $get("quota_limit") > 0,
@@ -102,7 +102,7 @@ class CreateDomain extends CreateRecord
                             ),
                         ),
                     Select::make("rate_period")
-                        ->default(LimitPeriod::PerMinute)
+                        ->default(LimitPeriod::None)
                         ->options(LimitPeriod::class)
                         ->required(
                             static fn(Get $get) => $get("rate_limit") > 0,

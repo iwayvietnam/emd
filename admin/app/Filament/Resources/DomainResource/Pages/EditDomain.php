@@ -50,7 +50,6 @@ class EditDomain extends EditRecord
                             ),
                         ),
                     Select::make("quota_period")
-                        ->default(LimitPeriod::PerMinute)
                         ->options(LimitPeriod::class)
                         ->required(
                             static fn(Get $get) => $get("quota_limit") > 0,
@@ -69,7 +68,6 @@ class EditDomain extends EditRecord
                             ),
                         ),
                     Select::make("rate_period")
-                        ->default(LimitPeriod::PerMinute)
                         ->options(LimitPeriod::class)
                         ->required(
                             static fn(Get $get) => $get("rate_limit") > 0,
