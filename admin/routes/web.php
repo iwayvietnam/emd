@@ -3,7 +3,8 @@
 use App\Http\Controllers\TrackingController;
 use Illuminate\Support\Facades\Route;
 
-Route::controller(TrackingController::class)
+Route::domain(config("emd.api.domain"))
+    ->controller(TrackingController::class)
     ->prefix("tracking")
     ->group(static function () {
         Route::get("/open/{idHash}.gif", "openImage")->name("tracking_open");
