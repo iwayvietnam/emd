@@ -7,7 +7,6 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\Contracts\OAuthenticatable;
 use Laravel\Passport\HasApiTokens;
 
 /**
@@ -17,7 +16,7 @@ use Laravel\Passport\HasApiTokens;
  * @category Models
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
-class User extends Authenticatable implements FilamentUser, OAuthenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
 
