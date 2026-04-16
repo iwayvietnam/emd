@@ -144,7 +144,7 @@ class EmailController extends Controller
             $message->sent_at = now();
             $message->save();
         } catch (MailerException $e) {
-            logger()::error($e);
+            logger()->error($e);
             $failed = $e;
         }
 
