@@ -67,8 +67,19 @@ class PolicyResource extends Resource
                             ),
                         ),
                     Select::make("quota_period")
-                        ->default(LimitPeriod::PerMinute)
+                        ->default(LimitPeriod::None)
                         ->options(LimitPeriod::class)
+                        ->rules([
+                            static fn(Get $get) => static function (
+                                string $attribute,
+                                $value,
+                                \Closure $fail,
+                            ) use ($get) {
+                                if ($get("quota_limit") > 0 && $value == 0) {
+                                    $fail(__("Please select quota period."));
+                                }
+                            },
+                        ])
                         ->required(
                             static fn(Get $get) => $get("quota_limit") > 0,
                         )
@@ -86,8 +97,19 @@ class PolicyResource extends Resource
                             ),
                         ),
                     Select::make("rate_period")
-                        ->default(LimitPeriod::PerMinute)
+                        ->default(LimitPeriod::None)
                         ->options(LimitPeriod::class)
+                        ->rules([
+                            static fn(Get $get) => static function (
+                                string $attribute,
+                                $value,
+                                \Closure $fail,
+                            ) use ($get) {
+                                if ($get("rate_limit") > 0 && $value == 0) {
+                                    $fail(__("Please select rate period."));
+                                }
+                            },
+                        ])
                         ->required(
                             static fn(Get $get) => $get("rate_limit") > 0,
                         )
