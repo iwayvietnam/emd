@@ -44,7 +44,7 @@ class DomainResource extends Resource
     {
         return $table
             ->columns([
-                Columns\TextColumn::make("name")->sortable()->label(__("Name")),
+                Columns\TextColumn::make("name")->searchable()->sortable()->label(__("Name")),
                 Columns\TextColumn::make("email")->label(__("Email")),
                 Columns\TagsColumn::make("clients.name")
                     ->limit(2)
