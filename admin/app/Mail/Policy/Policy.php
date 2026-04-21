@@ -118,7 +118,6 @@ class Policy implements PolicyInterface
         $address = $request->getClientAddress();
         $sender = $request->getSender();
         if (isset($clientAccesses[$sender][$address]["policy"])) {
-            $domain = $clientAccesses[$sender][$address]["domain"];
             $policy = $clientAccesses[$sender][$address]["policy"];
             if (!empty($policy) && !empty($policy["rate_limit"])) {
                 $counterKey = self::policyCounterKey(
@@ -136,6 +135,7 @@ class Policy implements PolicyInterface
                 }
                 RateLimiter::hit($counterKey, $policy["rate_period"]);
             }
+            $domain = $clientAccesses[$sender][$address]["domain"];
             if (!empty($domain) && !empty($domain["rate_limit"])) {
                 $counterKey = self::domainCounterKey(
                     $domain["name"],
@@ -162,7 +162,6 @@ class Policy implements PolicyInterface
         $address = $request->getClientAddress();
         $sender = $request->getSender();
         if (isset($clientAccesses[$sender][$address]["policy"])) {
-            $domain = $clientAccesses[$sender][$address]["domain"];
             $policy = $clientAccesses[$sender][$address]["policy"];
             if (!empty($policy) && !empty($policy["quota_limit"])) {
                 $counterKey = self::policyCounterKey(
@@ -184,6 +183,7 @@ class Policy implements PolicyInterface
                     $request->getSize(),
                 );
             }
+            $domain = $clientAccesses[$sender][$address]["domain"];
             if (!empty($domain) && !empty($domain["quota_limit"])) {
                 $counterKey = self::domainCounterKey(
                     $domain["name"],
