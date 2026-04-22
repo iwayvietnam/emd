@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Enums\LimitPeriod;
+use App\Models\Domain;
 use App\Models\ClientAccess;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
@@ -56,7 +57,7 @@ class ResetLimitCounter extends Command implements Isolatable
                     if ($day === "Mon") {
                         $record->clearQuotaCounter();
                         $this->info(
-                            "Clear quota counter of {$record->sender}!",
+                            "Clear policy quota counter of {$record->sender}!",
                         );
                     }
                     break;
@@ -64,13 +65,13 @@ class ResetLimitCounter extends Command implements Isolatable
                     if ($date === 1) {
                         $record->clearQuotaCounter();
                         $this->info(
-                            "Clear quota counter of {$record->sender}!",
+                            "Clear policy quota counter of {$record->sender}!",
                         );
                     }
                     break;
                 default:
                     $record->clearQuotaCounter();
-                    $this->info("Clear quota counter of {$record->sender}!");
+                    $this->info("Clear policy quota counter of {$record->sender}!");
                     break;
             }
 
@@ -79,18 +80,64 @@ class ResetLimitCounter extends Command implements Isolatable
                 case LimitPeriod::PerWeek:
                     if ($day === "Mon") {
                         $record->clearRateCounter();
-                        $this->info("Clear rate counter of {$record->sender}!");
+                        $this->info("Clear policy rate counter of {$record->sender}!");
                     }
                     break;
                 case LimitPeriod::PerMonth:
                     if ($date === 1) {
                         $record->clearRateCounter();
-                        $this->info("Clear rate counter of {$record->sender}!");
+                        $this->info("Clear policy rate counter of {$record->sender}!");
                     }
                     break;
                 default:
                     $record->clearRateCounter();
-                    $this->info("Clear rate counter of {$record->sender}!");
+                    $this->info("Clear policy rate counter of {$record->sender}!");
+                    break;
+            }
+        }
+
+        foreach (Domain::all() as $record) {
+            $period = LimitPeriod::tryFrom($record->policy->quota_period);
+            switch ($period) {
+                case LimitPeriod::PerWeek:
+                    if ($day === "Mon") {
+                        $record->clearQuotaCounter();
+                        $this->info(
+                            "Clear quota counter of {$record->name}!",
+                        );
+                    }
+                    break;
+                case LimitPeriod::PerMonth:
+                    if ($date === 1) {
+                        $record->clearQuotaCounter();
+                        $this->info(
+                            "Clear quota counter of {$record->name}!",
+                        );
+                    }
+                    break;
+                default:
+                    $record->clearQuotaCounter();
+                    $this->info("Clear quota counter of {$record->name}!");
+                    break;
+            }
+
+            $period = LimitPeriod::tryFrom($record->policy->rate_period);
+            switch ($period) {
+                case LimitPeriod::PerWeek:
+                    if ($day === "Mon") {
+                        $record->clearRateCounter();
+                        $this->info("Clear rate counter of {$record->name}!");
+                    }
+                    break;
+                case LimitPeriod::PerMonth:
+                    if ($date === 1) {
+                        $record->clearRateCounter();
+                        $this->info("Clear rate counter of {$record->name}!");
+                    }
+                    break;
+                default:
+                    $record->clearRateCounter();
+                    $this->info("Clear rate counter of {$record->name}!");
                     break;
             }
         }
