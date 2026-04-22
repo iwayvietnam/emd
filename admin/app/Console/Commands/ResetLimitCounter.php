@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Enums\LimitPeriod;
-use App\Models\Domain;
 use App\Models\ClientAccess;
+use App\Models\Domain;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 use Symfony\Component\Console\Attribute\AsCommand;
