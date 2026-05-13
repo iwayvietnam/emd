@@ -208,7 +208,7 @@ class MailServer extends Model
                     " | ",
                     sprintf(
                         self::CHMOD_CMD,
-                        "600",
+                        "700",
                         config("emd.opendkim.keys_directory"),
                     ),
                 ]),
