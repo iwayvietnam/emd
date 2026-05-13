@@ -21,6 +21,7 @@ class MailServer extends Model
     const CHMOD_CMD = "sudo -S chmod -R %s %s";
     const CHOWN_CMD = "sudo -S chown -R %s %s";
     const CONFIG_DIR = "/etc/postfix";
+    const DKIM_KEY_MOD = "700";
 
     /**
      * The table associated with the model.
@@ -208,7 +209,7 @@ class MailServer extends Model
                     " | ",
                     sprintf(
                         self::CHMOD_CMD,
-                        "700",
+                        self::DKIM_KEY_MOD,
                         config("emd.opendkim.keys_directory"),
                     ),
                 ]),
