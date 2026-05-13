@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\Avatar;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -16,7 +18,7 @@ use Laravel\Passport\HasApiTokens;
  * @category Models
  * @author   Nguyen Van Nguyen - nguyennv@iwayvietnam.com
  */
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -69,5 +71,11 @@ class User extends Authenticatable implements FilamentUser
             $model->clients()->delete();
             $model->tokens()->delete();
         });
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        $avatar = Avatar::User;
+        return asset("avatars/{$avatar->value}");
     }
 }
