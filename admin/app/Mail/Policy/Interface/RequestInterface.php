@@ -103,6 +103,27 @@ interface RequestInterface
     function getSize(): int;
 
     /**
+     * Get cLient cert subject attribute
+     *
+     * @return string
+     */
+    function getCLientCertSubject(): string;
+
+    /**
+     * Get cLient cert issuer attribute
+     *
+     * @return string
+     */
+    function getCLientCertIssuer(): string;
+
+    /**
+     * Get cLient cert fingerprint attribute
+     *
+     * @return string
+     */
+    function getCLientCertFingerprint(): string;
+
+    /**
      * Get server address attribute
      *
      * @return string

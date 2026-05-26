@@ -150,6 +150,30 @@ class PolicyRequest implements RequestInterface
     /**
      * {@inheritdoc}
      */
+    public function getCLientCertSubject(): string
+    {
+        return $this->attributes["ccert_subject"] ?? "";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCLientCertIssuer(): string
+    {
+        return $this->attributes["ccert_issuer"] ?? "";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCLientCertFingerprint(): string
+    {
+        return $this->attributes["ccert_fingerprint"] ?? "";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getServerAddress(): string
     {
         return $this->attributes["server_address"] ?? "";
