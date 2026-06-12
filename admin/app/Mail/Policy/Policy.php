@@ -23,9 +23,9 @@ use Illuminate\Support\Facades\RateLimiter;
 class Policy implements PolicyInterface
 {
     const CACHE_STORE = "array";
-    const ALLOW_SASL = true;
+    const PERMIT_SASL = true;
 
-    private readonly bool $allowSasl;
+    private readonly bool $permitSasl;
 
     /**
      * Constructor
@@ -34,7 +34,7 @@ class Policy implements PolicyInterface
      */
     public function __construct()
     {
-        $this->allowSasl = (bool) config("emd.policy.allow_sasl", self::ALLOW_SASL);
+        $this->permitSasl = (bool) config("emd.policy.permit_sasl", self::PERMIT_SASL);
     }
 
     /**
@@ -118,7 +118,7 @@ class Policy implements PolicyInterface
         $sender = $request->getSender();
         $saslUsername = $request->getSaslUsername();
 
-        if ($this->allowSasl && !empty($saslUsername) && ($saslUsername === $sender)) {
+        if ($this->permitSasl && !empty($saslUsername) && ($saslUsername === $sender)) {
             return false;
         }
 
