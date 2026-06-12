@@ -23,6 +23,19 @@ use Illuminate\Support\Facades\RateLimiter;
 class Policy implements PolicyInterface
 {
     const CACHE_STORE = "array";
+    const ALLOW_SASL = true;
+
+    private readonly bool $allowSasl;
+
+    /**
+     * Constructor
+     *
+     * @return self
+     */
+    public function __construct()
+    {
+        $this->allowSasl = (bool) config("emd.policy.allow_sasl", self::ALLOW_SASL);
+    }
 
     /**
      * {@inheritdoc}
@@ -103,6 +116,12 @@ class Policy implements PolicyInterface
     ): bool {
         $address = $request->getClientAddress();
         $sender = $request->getSender();
+        $saslUsername = $request->getSaslUsername();
+
+        if ($this->allowSasl && !empty($saslUsername) && ($saslUsername === $sender)) {
+            return false;
+        }
+
         if (isset($clientAccesses[$sender][$address]["verdict"])) {
             $verdict = $clientAccesses[$sender][$address]["verdict"];
             return AccessVerdict::tryFrom($verdict) === AccessVerdict::Reject;

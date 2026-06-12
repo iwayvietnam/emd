@@ -96,6 +96,13 @@ interface RequestInterface
     function getInstance(): string;
 
     /**
+     * Get sasl username
+     *
+     * @return string
+     */
+    function getSaslUsername(): string;
+
+    /**
      * Get message size attribute
      *
      * @return int

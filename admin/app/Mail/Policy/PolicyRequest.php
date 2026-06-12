@@ -142,6 +142,14 @@ class PolicyRequest implements RequestInterface
     /**
      * {@inheritdoc}
      */
+    public function getSaslUsername(): string
+    {
+        return $this->attributes["sasl_username"] ?? "";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getSize(): int
     {
         return intval($this->attributes["size"] ?? 0);
