@@ -16,6 +16,7 @@
         "nelexa/zip": "^4.0.",
         "phpseclib/phpseclib": "^3.0",
         "roadrunner-php/laravel-bridge": "^6.0",
+        "spiral/roadrunner-tcp": "^4.1",
         "webklex/php-imap": "^6.2",
         "workerman/workerman": "^5.2"
     },
