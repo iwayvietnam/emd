@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Workers\PolicyWorker;
 use Spiral\RoadRunner\Environment\Mode;
 use Spiral\RoadRunnerLaravel\Grpc\GrpcWorker;
 use Spiral\RoadRunnerLaravel\Http\HttpWorker;
@@ -34,5 +35,6 @@ return [
         Mode::MODE_JOBS => QueueWorker::class,
         Mode::MODE_GRPC => GrpcWorker::class,
         Mode::MODE_TEMPORAL => TemporalWorker::class,
+        PolicyWorker::WORKER_NAME => PolicyWorker::class,
     ],
 ];
