@@ -21,7 +21,7 @@ use Spiral\RoadRunnerLaravel\WorkerOptionsInterface;
  */
 class PolicyWorker implements WorkerInterface
 {
-    const WORKER_NAME = "POLICY";
+    const WORKER_NAME = "policy";
 
     public function start(WorkerOptionsInterface $options): void
     {
