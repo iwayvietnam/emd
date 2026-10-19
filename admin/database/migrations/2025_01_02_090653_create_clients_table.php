@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('domain_id')->index();
             $table->string('name')->unique();
             $table->string('sender_address')->unique();
+            $table->string('bcc_address')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
         });

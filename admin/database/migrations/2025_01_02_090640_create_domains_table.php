@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('organization', 1024)->nullable();
             $table->text('description')->nullable();
+            $table->unsignedBigInteger('quota_limit');
+            $table->unsignedInteger('quota_period');
+            $table->unsignedInteger('rate_limit');
+            $table->unsignedInteger('rate_period');
 
             $table->timestamps();
         });
