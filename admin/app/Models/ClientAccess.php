@@ -35,7 +35,6 @@ class ClientAccess extends Model
      */
     protected $fillable = [
         "client_id",
-        "policy_id",
         "sender",
         "client_ip",
         "verdict",
@@ -51,16 +50,11 @@ class ClientAccess extends Model
         return $this->belongsTo(Client::class, "client_id");
     }
 
-    public function policy(): BelongsTo
-    {
-        return $this->belongsTo(Policy::class, "policy_id");
-    }
-
     public function viewRateCounter(): array
     {
         return $this->viewLimitCounter(
             $this->limitCounterKey(self::RATE_LIMIT_SUFFIX),
-            $this->policy->rate_limit,
+            $this->client->rate_limit,
         );
     }
 
@@ -68,7 +62,7 @@ class ClientAccess extends Model
     {
         return $this->viewLimitCounter(
             $this->limitCounterKey(self::QUOTA_LIMIT_SUFFIX),
-            $this->policy->quota_limit,
+            $this->client->quota_limit,
         );
     }
 
@@ -84,31 +78,37 @@ class ClientAccess extends Model
         return $this;
     }
 
+    public static function accesses(): array
+    {
+        $accesses = [];
+        foreach (static::all() as $model) {
+            $accesses[$model->sender][$model->client_ip] = [
+                "client" => [
+                    "name" => $model->client->name,
+                    "quota_limit" => $model->client->quota_limit,
+                    "quota_period" => $model->client->quota_period,
+                    "rate_limit" => $model->client->rate_limit,
+                    "rate_period" => $model->client->rate_period,
+                ],
+                "domain" => [
+                    'name' => $model->client->domain->name,
+                    "quota_limit" => $model->client->domain->quota_limit,
+                    "quota_period" => $model->client->domain->quota_period,
+                    "rate_limit" => $model->client->domain->rate_limit,
+                    "rate_period" => $model->client->domain->rate_period,
+                ],
+                "verdict" => $model->verdict,
+            ];
+        }
+        return $accesses;
+    }
+
     public static function cachedAccesses(string $cacheStore): array
     {
         $cacheKey = self::cacheKey();
         $accesses = Cache::store($cacheStore)->get($cacheKey, []);
         if (empty($accesses)) {
-            foreach (static::all() as $model) {
-                $accesses[$model->sender][$model->client_ip] = [
-                    "policy" => [
-                        "name" => $model->policy->name,
-                        "quota_limit" => $model->policy->quota_limit,
-                        "quota_period" => $model->policy->quota_period,
-                        "rate_limit" => $model->policy->rate_limit,
-                        "rate_period" => $model->policy->rate_period,
-                    ],
-                    "client" => $model->client->name,
-                    "domain" => [
-                        'name' => $model->client->domain->name,
-                        "quota_limit" => $model->client->domain->quota_limit,
-                        "quota_period" => $model->client->domain->quota_period,
-                        "rate_limit" => $model->client->domain->rate_limit,
-                        "rate_period" => $model->client->domain->rate_period,
-                    ],
-                    "verdict" => $model->verdict,
-                ];
-            }
+            $accesses = static::accesses();
             Cache::store($cacheStore)->put(
                 $cacheKey,
                 $accesses,
@@ -137,7 +137,7 @@ class ClientAccess extends Model
 
     private function limitCounterKey(string $suffix): string
     {
-        return sha1(implode([$this->policy->name, $this->sender, $suffix]));
+        return sha1(implode([$this->client->name, $this->sender, $suffix]));
     }
 
     private static function cacheKey(): string

@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('domain_id')->index();
             $table->string('fingerprint');
-            $table->mediumInteger('key_algorithm');
-            $table->mediumInteger('key_strength');
+            $table->mediumInteger('key_algorithm')->default(0);
+            $table->mediumInteger('key_strength')->default(0);
             $table->boolean('with_password')->default(false);
             $table->text('encrypted_password')->nullable();
             $table->text('key_data')->nullable();

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->ipAddress('ip_address');
             $table->string('ssh_user');
-            $table->unsignedSmallInteger('ssh_port');
+            $table->unsignedSmallInteger('ssh_port')->default(22);
             $table->text('ssh_private_key')->nullable();
             $table->text('ssh_public_key')->nullable();
             $table->string('sudo_password', 1024)->nullable();

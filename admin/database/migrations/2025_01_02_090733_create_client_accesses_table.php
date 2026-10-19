@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('client_accesses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->index();
-            $table->foreignId('policy_id')->index();
             $table->string('sender');
             $table->ipAddress('client_ip');
             $table->enum('verdict', [

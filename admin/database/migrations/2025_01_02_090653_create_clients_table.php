@@ -18,6 +18,10 @@ return new class extends Migration
             $table->string('sender_address')->unique();
             $table->string('bcc_address')->nullable();
             $table->text('description')->nullable();
+            $table->unsignedBigInteger('quota_limit')->default(0);
+            $table->unsignedInteger('quota_period')->default(0);
+            $table->unsignedInteger('rate_limit')->default(0);
+            $table->unsignedInteger('rate_period')->default(0);
             $table->timestamps();
         });
     }

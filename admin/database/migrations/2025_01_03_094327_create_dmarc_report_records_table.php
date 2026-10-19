@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('report_id')->index();
             $table->string('source_ip', 64);
-            $table->unsignedSmallInteger('count');
+            $table->unsignedSmallInteger('count')->default(0);
             $table->string('header_from');
             $table->string('envelope_from')->nullable();
             $table->string('envelope_to')->nullable();

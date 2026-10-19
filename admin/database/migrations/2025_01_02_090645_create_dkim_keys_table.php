@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('domain_id')->index();
             $table->string('domain');
             $table->string('selector');
-            $table->mediumInteger('key_bits');
+            $table->mediumInteger('key_bits')->default(1024);
             $table->text('private_key')->nullable();
             $table->text('dns_record')->nullable();
             $table->timestamps();

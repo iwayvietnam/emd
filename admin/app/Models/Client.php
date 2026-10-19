@@ -32,6 +32,10 @@ class Client extends Model
         "sender_address",
         "bcc_address",
         "description",
+        "quota_limit",
+        "quota_period",
+        "rate_limit",
+        "rate_period",
     ];
 
     public function domain(): BelongsTo
@@ -42,6 +46,16 @@ class Client extends Model
     protected static function boot(): void
     {
         parent::boot();
+
+        static::saving(static function (self $model) {
+            if ($model->quota_limit == 0) {
+                $model->quota_period = 0;
+            }
+
+            if ($model->rate_limit == 0) {
+                $model->rate_period = 0;
+            }
+        });
 
         static::deleting(
             static fn(self $model) => ClientAccess::where(

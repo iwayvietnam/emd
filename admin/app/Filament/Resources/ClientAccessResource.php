@@ -55,100 +55,100 @@ class ClientAccessResource extends Resource
             ])
             ->actions([
                 Actions\ActionGroup::make([
-                    Actions\Action::make("view_rate")
-                        ->infolist([
-                            TextEntry::make("attempts")
-                                ->state(
-                                    static fn(
-                                        ClientAccess $record,
-                                    ) => $record->viewRateCounter()["attempts"],
-                                )
-                                ->label(__("Attempts")),
-                            TextEntry::make("remaining")
-                                ->state(
-                                    static fn(
-                                        ClientAccess $record,
-                                    ) => $record->viewRateCounter()[
-                                        "remaining"
-                                    ],
-                                )
-                                ->label(__("Remaining")),
-                            TextEntry::make("availableAt")
-                                ->state(
-                                    static fn(ClientAccess $record) => date(
-                                        "Y-m-d H:i:s",
-                                        time() +
-                                            $record->viewRateCounter()[
-                                                "availableIn"
-                                            ],
-                                    ),
-                                )
-                                ->label(__("Available At")),
-                        ])
-                        ->modalHeading(__("Rate Limit Info"))
-                        ->modalSubmitAction(false)
-                        ->icon(Heroicon::OutlinedEye)
-                        ->color("info")
-                        ->label("View Rate Limit"),
-                    Actions\Action::make("view_quota")
-                        ->infolist([
-                            TextEntry::make("attempts")
-                                ->state(
-                                    static fn(
-                                        ClientAccess $record,
-                                    ) => Number::fileSize(
-                                        $record->viewQuotaCounter()["attempts"],
-                                    ),
-                                )
-                                ->label(__("Attempts")),
-                            TextEntry::make("remaining")
-                                ->state(
-                                    static fn(
-                                        ClientAccess $record,
-                                    ) => Number::fileSize(
-                                        $record->viewQuotaCounter()[
-                                            "remaining"
-                                        ],
-                                    ),
-                                )
-                                ->label(__("Remaining")),
-                            TextEntry::make("availableAt")
-                                ->state(
-                                    static fn(ClientAccess $record) => date(
-                                        "Y-m-d H:i:s",
-                                        time() +
-                                            $record->viewQuotaCounter()[
-                                                "availableIn"
-                                            ],
-                                    ),
-                                )
-                                ->label(__("Available At")),
-                        ])
-                        ->modalHeading(__("Quota Limit Info"))
-                        ->modalSubmitAction(false)
-                        ->icon(Heroicon::OutlinedEye)
-                        ->color("info")
-                        ->label("View Quota Limit"),
-                    Actions\Action::make("clear_rate")
-                        ->requiresConfirmation()
-                        ->action(
-                            static fn(
-                                ClientAccess $record,
-                            ) => self::clearRateCounter($record),
-                        )
-                        ->icon(Heroicon::OutlinedCheckBadge)
-                        ->color("primary")
-                        ->label("Clear Rate Limit"),
-                    Actions\Action::make("clear_quota")
-                        ->requiresConfirmation()
-                        ->action(
-                            static fn(
-                                ClientAccess $record,
-                            ) => self::clearQuotaCounter($record),
-                        )
-                        ->icon(Heroicon::OutlinedCheckBadge)
-                        ->color("primary")
-                        ->label("Clear Quota Limit"),
+                    // Actions\Action::make("view_rate")
+                    //     ->infolist([
+                    //         TextEntry::make("attempts")
+                    //             ->state(
+                    //                 static fn(
+                    //                     ClientAccess $record,
+                    //                 ) => $record->viewRateCounter()["attempts"],
+                    //             )
+                    //             ->label(__("Attempts")),
+                    //         TextEntry::make("remaining")
+                    //             ->state(
+                    //                 static fn(
+                    //                     ClientAccess $record,
+                    //                 ) => $record->viewRateCounter()[
+                    //                     "remaining"
+                    //                 ],
+                    //             )
+                    //             ->label(__("Remaining")),
+                    //         TextEntry::make("availableAt")
+                    //             ->state(
+                    //                 static fn(ClientAccess $record) => date(
+                    //                     "Y-m-d H:i:s",
+                    //                     time() +
+                    //                         $record->viewRateCounter()[
+                    //                             "availableIn"
+                    //                         ],
+                    //                 ),
+                    //             )
+                    //             ->label(__("Available At")),
+                    //     ])
+                    //     ->modalHeading(__("Rate Limit Info"))
+                    //     ->modalSubmitAction(false)
+                    //     ->icon(Heroicon::OutlinedEye)
+                    //     ->color("info")
+                    //     ->label("View Rate Limit"),
+                    // Actions\Action::make("view_quota")
+                    //     ->infolist([
+                    //         TextEntry::make("attempts")
+                    //             ->state(
+                    //                 static fn(
+                    //                     ClientAccess $record,
+                    //                 ) => Number::fileSize(
+                    //                     $record->viewQuotaCounter()["attempts"],
+                    //                 ),
+                    //             )
+                    //             ->label(__("Attempts")),
+                    //         TextEntry::make("remaining")
+                    //             ->state(
+                    //                 static fn(
+                    //                     ClientAccess $record,
+                    //                 ) => Number::fileSize(
+                    //                     $record->viewQuotaCounter()[
+                    //                         "remaining"
+                    //                     ],
+                    //                 ),
+                    //             )
+                    //             ->label(__("Remaining")),
+                    //         TextEntry::make("availableAt")
+                    //             ->state(
+                    //                 static fn(ClientAccess $record) => date(
+                    //                     "Y-m-d H:i:s",
+                    //                     time() +
+                    //                         $record->viewQuotaCounter()[
+                    //                             "availableIn"
+                    //                         ],
+                    //                 ),
+                    //             )
+                    //             ->label(__("Available At")),
+                    //     ])
+                    //     ->modalHeading(__("Quota Limit Info"))
+                    //     ->modalSubmitAction(false)
+                    //     ->icon(Heroicon::OutlinedEye)
+                    //     ->color("info")
+                    //     ->label("View Quota Limit"),
+                    // Actions\Action::make("clear_rate")
+                    //     ->requiresConfirmation()
+                    //     ->action(
+                    //         static fn(
+                    //             ClientAccess $record,
+                    //         ) => self::clearRateCounter($record),
+                    //     )
+                    //     ->icon(Heroicon::OutlinedCheckBadge)
+                    //     ->color("primary")
+                    //     ->label("Clear Rate Limit"),
+                    // Actions\Action::make("clear_quota")
+                    //     ->requiresConfirmation()
+                    //     ->action(
+                    //         static fn(
+                    //             ClientAccess $record,
+                    //         ) => self::clearQuotaCounter($record),
+                    //     )
+                    //     ->icon(Heroicon::OutlinedCheckBadge)
+                    //     ->color("primary")
+                    //     ->label("Clear Quota Limit"),
                     Actions\DeleteAction::make(),
                 ]),
             ])
