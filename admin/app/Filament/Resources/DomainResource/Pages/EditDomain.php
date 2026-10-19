@@ -34,68 +34,68 @@ class EditDomain extends EditRecord
             Textarea::make("description")
                 ->columnSpan(2)
                 ->label(__("Description")),
-            Grid::make(4)
-                ->columnSpan(2)
-                ->schema([
-                    TextInput::make("quota_limit")
-                        ->required()
-                        ->integer()
-                        ->minValue(0)
-                        ->default(0)
-                        ->live()
-                        ->label(__("Quota"))
-                        ->helperText(
-                            __(
-                                "Maximum capacity in megabytes that client can send per time unit.",
-                            ),
-                        ),
-                    Select::make("quota_period")
-                        ->options(LimitPeriod::class)
-                        ->rules([
-                            static fn(Get $get) => static function (
-                                string $attribute,
-                                $value,
-                                \Closure $fail,
-                            ) use ($get) {
-                                if ($get("quota_limit") > 0 && $value == 0) {
-                                    $fail(__("Please select quota period."));
-                                }
-                            },
-                        ])
-                        ->required(
-                            static fn(Get $get) => $get("quota_limit") > 0,
-                        )
-                        ->label(__("Quota Time Unit")),
-                    TextInput::make("rate_limit")
-                        ->required()
-                        ->integer()
-                        ->minValue(0)
-                        ->default(0)
-                        ->live()
-                        ->label(__("Rate"))
-                        ->helperText(
-                            __(
-                                "Maximum amount of message that client can send per time unit.",
-                            ),
-                        ),
-                    Select::make("rate_period")
-                        ->options(LimitPeriod::class)
-                        ->rules([
-                            static fn(Get $get) => static function (
-                                string $attribute,
-                                $value,
-                                \Closure $fail,
-                            ) use ($get) {
-                                if ($get("rate_limit") > 0 && $value == 0) {
-                                    $fail(__("Please select rate period."));
-                                }
-                            },
-                        ])
-                        ->required(
-                            static fn(Get $get) => $get("rate_limit") > 0,
-                        )
-                        ->label(__("Rate Time Unit")),
-                ]),
+            // Grid::make(4)
+            //     ->columnSpan(2)
+            //     ->schema([
+            //         TextInput::make("quota_limit")
+            //             ->required()
+            //             ->integer()
+            //             ->minValue(0)
+            //             ->default(0)
+            //             ->live()
+            //             ->label(__("Quota"))
+            //             ->helperText(
+            //                 __(
+            //                     "Maximum capacity in megabytes that client can send per time unit.",
+            //                 ),
+            //             ),
+            //         Select::make("quota_period")
+            //             ->options(LimitPeriod::class)
+            //             ->rules([
+            //                 static fn(Get $get) => static function (
+            //                     string $attribute,
+            //                     $value,
+            //                     \Closure $fail,
+            //                 ) use ($get) {
+            //                     if ($get("quota_limit") > 0 && $value == 0) {
+            //                         $fail(__("Please select quota period."));
+            //                     }
+            //                 },
+            //             ])
+            //             ->required(
+            //                 static fn(Get $get) => $get("quota_limit") > 0,
+            //             )
+            //             ->label(__("Quota Time Unit")),
+            //         TextInput::make("rate_limit")
+            //             ->required()
+            //             ->integer()
+            //             ->minValue(0)
+            //             ->default(0)
+            //             ->live()
+            //             ->label(__("Rate"))
+            //             ->helperText(
+            //                 __(
+            //                     "Maximum amount of message that client can send per time unit.",
+            //                 ),
+            //             ),
+            //         Select::make("rate_period")
+            //             ->options(LimitPeriod::class)
+            //             ->rules([
+            //                 static fn(Get $get) => static function (
+            //                     string $attribute,
+            //                     $value,
+            //                     \Closure $fail,
+            //                 ) use ($get) {
+            //                     if ($get("rate_limit") > 0 && $value == 0) {
+            //                         $fail(__("Please select rate period."));
+            //                     }
+            //                 },
+            //             ])
+            //             ->required(
+            //                 static fn(Get $get) => $get("rate_limit") > 0,
+            //             )
+            //             ->label(__("Rate Time Unit")),
+            //     ]),
         ]);
     }
 
