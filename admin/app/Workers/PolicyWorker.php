@@ -40,8 +40,8 @@ class PolicyWorker implements WorkerInterface
 
                 if ($request->event === TcpEvent::Data) {
                     $start = hrtime(true);
-                    var $policy = new Policy();
-                    var $action = $policy->check(
+                    $policy = new Policy();
+                    $action = $policy->check(
                         PolicyRequest::fromData($request->getBody())
                     )->getAction();
                     Log::debug(
